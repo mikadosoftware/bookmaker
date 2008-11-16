@@ -1,0 +1,88 @@
+============
+Sound
+============
+
+
+http://chelskov.org/?p=8
+
+$ kldload snd_driver
+$ cat /dev/sndstat
+
+I’ll explain: the snd_driver is a meta driver, which actually finds 
+the correct sound driver for your sound card and loads it into the kernel. 
+The second command just tells us which driver it actually loaded. 
+In my case, this was snd_ich, so I simply added snd_ich_load=”YES” to the 
+/boot/loader.conf file, and my sound works on every boot.
+
+or just push any file into the sound output
+
+% cat filename > /dev/dsp
+
+
+audio cds
+---------
+http://networking.ringofsaturn.com/Unix/FreeBSD-Burning.php
+
+ATAPI CAM
+CAM subsystem allows ATAPI cd-devices to be visible in the SCSI system
+Most programs like cdrecord, are scsi based entirely, so need this
+
+burncd, a freebsd userland utility, can burn iso direct to ATAPI
+
+sysutils/cdrtools has mkisofs so is useful
+
+
+
+biblio
+------
+http://www.freebsd.org/doc/handbook/creating-cds.html
+
+To install CAM
+
+enter this into /boot/loader.conf (this is the configuration for 3rd stage of Freebsd boot process (http://www.freebsd.org/doc/en/books/handbook/boot.html) )::
+
+
+ atapicam_load="YES"
+
+We should now be able to see the CD in dmesg, and it is part of dev/cd0
+
+#camcontrol devlist
+
+or 
+
+#cdrecord --scanbus
+
+should tell us what the scsi label is (dev= below)
+
+cdrecord dev=1,0,0 -eject speed=48 -pad -audio *.wav 
+
+
+
+---------
+
+Burning MP3s onto an audio CD
+In order to burn MP3s as an audio CD, you first have to convert the MP3's to .wav format. The mpg123 tool (part of the mpg321 package) is able to do this.
+
+The following script may be used to burn all MP3s in the current directory as an audio CD. The script first converts all spaces in MP3 filenames to underscores. The MP3s are then decoded into .wav files. Finally, cdrecord burns the .wav files to disc. The script assumes a CD recorder device path of 0,0,0 and a 48x burn rate. For more information, see the Linux MP3 CD Burning mini-HOWTO.
+
+#!/bin/sh
+
+# Convert files containing spaces to underscores
+for i in *.mp3; do mv "$i" `echo $i | tr ' ' '_'`; done
+
+# Convert MP3s to WAV files
+for i in *.mp3; do mpg123 -w `basename $i .mp3`.wav $i; done
+
+# Burn the CD
+cdrecord dev=0,0,0 -eject speed=48 -pad -audio *.wav 
+------------
+http://www.brandonhutchinson.com/Burning_CDs_with_cdrecord.html
+------------
+
+
+MP3 audio
+---------
+http://www.freebsd.org/doc/en/books/handbook/sound-mp3.html
+
+player - xmms
+ 

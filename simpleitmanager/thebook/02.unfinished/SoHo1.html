@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
+<title>Pauls notes on home freebsd</title>
+<link rel="stylesheet" href="/css/thebook.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="pauls-notes-on-home-freebsd">
+<h1 class="title">Pauls notes on home freebsd</h1>
+
+<div class="section" id="bloody-router">
+<h1>bloody router</h1>
+<p>getting around my router.  It refuses active FTP and stuffs up
+DNS caching so, install from CD as usual, but choose DHCP instead of fixed IP and
+use passive FTP to download binaries</p>
+</div>
+<div class="section" id="install-process-from-boot-only-cd">
+<h1>Install process from boot only CD</h1>
+<ol class="arabic simple">
+<li>boot from CD</li>
+<li>choose appropriate settings, and install from FTP</li>
+<li>CHoose passive FTP</li>
+<li>choose DHCP so that my router will think this host exists</li>
+<li>Now download from FTP sites a minimal install</li>
+<li>port_add -r cvsup-without-gui; rehash</li>
+<li>&quot;reply from unexpected source&quot; - some DNS resolutions will go out from my router
+and then not be cached by the router, but will be sent direct to me from the external DNS
+My machine will get worried by this (man in the middle ?).
+THe way to fix is either try a diff URL or change /etc/resolv.conf after DHCP assigned</li>
+<li>ports install and src install
+use the ports supfiles as in the folder</li>
+</ol>
+<p>$ make install sysutils/screen</p>
+</div>
+<div class="section" id="the-basics-from-now">
+<h1>The basics from now</h1>
+<ul class="simple">
+<li>ports and src install</li>
+<li>(re)BuildWorld</li>
+<li>installing ports</li>
+<li>upgrading ports</li>
+<li>keeping track of what is there</li>
+<li>Building X</li>
+</ul>
+</div>
+<div class="section" id="sysadmin-stuff">
+<h1>Sysadmin stuff</h1>
+<ul class="simple">
+<li>backups</li>
+<li>DNS</li>
+<li>Email</li>
+<li>Firewalls</li>
+<li>web, cherrypy, wsgi,</li>
+<li>mysql</li>
+</ul>
+</div>
+<div class="section" id="ports-and-src-install">
+<h1>ports and src install</h1>
+<p>using files in current folder</p>
+<p>cvsup ports-supfile; cvsup src-supfile</p>
+<p>THis should be run reguarly (daily?)</p>
+</div>
+<div class="section" id="re-buildworld">
+<h1>(re)BuildWorld</h1>
+<p>Why do we do this?:</p>
+<pre class="literal-block">
+&quot;To take full advantage of your new system you should recompile the kernel. This is practically a necessity, as certain memory structures may have changed, and programs like ps(1) and top(1) will fail to work until the kernel and source code versions are the same.&quot;
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/makeworld.html
+</pre>
+<p>In short, if we change the src code, we will almost always need to change the kernel too.
+So if we rebuild world, that is the FreeBSD specifically written stuff,
+we will need to change the kernel too. It makes sense</p>
+<p>1. Alter make.conf
+NO_PROFILE=    true    #    Avoid compiling profiled libraries</p>
+<ol class="arabic simple" start="2">
+<li>make -j4 buildworld</li>
+</ol>
+<p># cd /usr/src
+# make buildkernel KERNCONF=MYKERNEL
+# make installkernel KERNCONF=MYKERNEL</p>
+<p>reboot (single user)</p>
+<p># cd /usr/src
+# make installworld</p>
+<p>mergemaster - I need more help on this. but take defaults for now. On a running system
+a bit harder...maybe a thing that compares the defaults against my changes and new changes...</p>
+</div>
+<div class="section" id="keeping-track">
+<h1>Keeping track</h1>
+<p>WHat has changed with each cvsup?
+- cvsup tells us, but knowing if it is important is anothr matter
+- if it is in src/lib it is probably worth a rebuild...
+- and of course we like to use Freebsd-stable instead.</p>
+<div class="section" id="x11">
+<h2>X11</h2>
+<p>/usr/ports/x11-fonts/ttmkfdir</p>
+<p>fonts
+C:WINDOWSFonts
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x-fonts.html
+pscp <a href="#id1"><span class="problematic" id="id2">*</span></a>.ttf <a class="reference external" href="mailto:root&#64;192.168.1.11">root&#64;192.168.1.11</a>:/usr/local/lib/X11/fonts/TrueType/
+add line to xorg.conf
+FontPath &quot;/usr/X11R6/lib/X11/fonts/URW&quot;
+type 1 fonts make</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">thebook/02.unfinished/SoHo1.chp</tt>, line 111); <em><a href="#id2">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+</div>
+</div>
+<div class="section" id="xdm">
+<h1>XDM</h1>
+<dl class="docutils">
+<dt>can be set as a tty -</dt>
+<dd>ttyv8   &quot;/usr/local/bin/xdm -nodaemon&quot;  xterm   off secure</dd>
+</dl>
+<p>config</p>
+<blockquote>
+usr/local/lib/X11/xdm</blockquote>
+<p>windows mgr</p>
+<p><a class="reference external" href="http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x11-wm.html">http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x11-wm.html</a>
+# cd /usr/ports/x11-wm/xfce4
+# make install clean</p>
+<p>% echo &quot;/usr/local/bin/startxfce4&quot; &gt; ~/.xinitrc</p>
+</div>
+<div class="section" id="phone-line">
+<h1>Phone Line</h1>
+<p>Phone Line - ADSL Filter - DSL Modem - Ethernet Out - Own FIrewall/router - WIFI?</p>
+<p><a class="reference external" href="http://www.broadbandbuyer.co.uk/Shop/ShopDetail.asp?ProductID=4122">http://www.broadbandbuyer.co.uk/Shop/ShopDetail.asp?ProductID=4122</a></p>
+<div class="section" id="dns">
+<h2>DNS</h2>
+<p>BIND8 is installed by default
+named_enable=&quot;YES&quot;</p>
+</div>
+<div class="section" id="ntp">
+<h2>NTP</h2>
+</div>
+<div class="section" id="ftp">
+<h2>FTP</h2>
+</div>
+<div class="section" id="nfs">
+<h2>NFS</h2>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+NOtes
+=====
+
+- panda-py
+- fabforce5
+- thebook
+
+Getting paulbrian to be a reasonably defensible 'name' in IT mgmt/CIO
+getting to know which agencies / people deal with > 75K
+ - screenscraper, which looks at job ads, which grabs those > 75K 
+   which then outputs who is the agent responsible.
+
+

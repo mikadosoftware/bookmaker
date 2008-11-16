@@ -1,0 +1,162 @@
+===========================
+Pauls notes on home freebsd
+===========================
+
+bloody router
+-------------
+getting around my router.  It refuses active FTP and stuffs up
+DNS caching so, install from CD as usual, but choose DHCP instead of fixed IP and
+use passive FTP to download binaries
+
+
+
+Install process from boot only CD
+---------------------------------
+1. boot from CD
+2. choose appropriate settings, and install from FTP
+3. CHoose passive FTP
+4. choose DHCP so that my router will think this host exists
+5. Now download from FTP sites a minimal install
+
+6. port_add -r cvsup-without-gui; rehash
+
+7. "reply from unexpected source" - some DNS resolutions will go out from my router
+   and then not be cached by the router, but will be sent direct to me from the external DNS
+   My machine will get worried by this (man in the middle ?).
+   THe way to fix is either try a diff URL or change /etc/resolv.conf after DHCP assigned
+
+8. ports install and src install
+   use the ports supfiles as in the folder
+
+
+$ make install sysutils/screen
+
+
+The basics from now
+-------------------
+- ports and src install
+- (re)BuildWorld
+- installing ports
+- upgrading ports
+- keeping track of what is there
+- Building X
+
+
+Sysadmin stuff
+--------------
+- backups
+- DNS
+- Email
+- Firewalls
+- web, cherrypy, wsgi,
+- mysql
+
+
+
+ports and src install
+---------------------
+
+using files in current folder
+
+cvsup ports-supfile; cvsup src-supfile
+
+THis should be run reguarly (daily?)
+
+(re)BuildWorld
+--------------
+Why do we do this?::
+
+  "To take full advantage of your new system you should recompile the kernel. This is practically a necessity, as certain memory structures may have changed, and programs like ps(1) and top(1) will fail to work until the kernel and source code versions are the same."
+  http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/makeworld.html
+
+In short, if we change the src code, we will almost always need to change the kernel too.
+So if we rebuild world, that is the FreeBSD specifically written stuff,
+we will need to change the kernel too. It makes sense
+
+
+
+1. Alter make.conf
+NO_PROFILE=    true    #    Avoid compiling profiled libraries
+
+2. make -j4 buildworld
+
+# cd /usr/src
+# make buildkernel KERNCONF=MYKERNEL
+# make installkernel KERNCONF=MYKERNEL
+
+reboot (single user)
+
+# cd /usr/src
+# make installworld
+
+
+mergemaster - I need more help on this. but take defaults for now. On a running system
+a bit harder...maybe a thing that compares the defaults against my changes and new changes...
+
+
+
+Keeping track
+-------------
+WHat has changed with each cvsup?
+- cvsup tells us, but knowing if it is important is anothr matter
+- if it is in src/lib it is probably worth a rebuild...
+- and of course we like to use Freebsd-stable instead.
+
+
+X11
+===
+
+/usr/ports/x11-fonts/ttmkfdir
+
+fonts
+C:\WINDOWS\Fonts
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x-fonts.html
+pscp *.ttf root@192.168.1.11:/usr/local/lib/X11/fonts/TrueType/
+add line to xorg.conf
+FontPath "/usr/X11R6/lib/X11/fonts/URW"
+type 1 fonts make 
+
+
+XDM
+---
+can be set as a tty -
+ ttyv8   "/usr/local/bin/xdm -nodaemon"  xterm   off secure
+
+config
+
+ usr/local/lib/X11/xdm
+
+windows mgr
+
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x11-wm.html
+# cd /usr/ports/x11-wm/xfce4
+# make install clean
+
+% echo "/usr/local/bin/startxfce4" > ~/.xinitrc
+
+
+
+Phone Line 
+----------
+Phone Line - ADSL Filter - DSL Modem - Ethernet Out - Own FIrewall/router - WIFI?
+
+http://www.broadbandbuyer.co.uk/Shop/ShopDetail.asp?ProductID=4122
+
+
+DNS
+===
+BIND8 is installed by default
+named_enable="YES"
+
+
+NTP
+===
+
+
+FTP
+===
+
+
+
+NFS
+===

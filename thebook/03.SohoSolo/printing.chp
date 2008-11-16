@@ -1,0 +1,124 @@
+==============
+Printing      
+==============
+
+OK, some of the worst systems administration problems, the most frustrating times come fromt
+trying to get ink onto paper.
+
+
+We shall install CUPS on a USB conected printer. THen on a network enabled printer.
+discuss the diffeences, and the secruity implicatons.
+
+
+
+Where do i get my PPD file from?
+================================
+There is a list, maintained by volunteers of PPD files and the printers they work with (and how well they work) at
+http://www.linuxprinting.org/printer_list.cgi
+
+
+
+trouble shooting
+----------------
+1. Unable to open device file "/dev/ulpt0": Permission denied
+
+solution 1
+
+http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html
+
+crw-------  1 root  wheel       0,  78 May 19 19:07 ttyvf
+crw-r--r--  1 root  operator    0,  80 May 19 19:19 ulpt0
+crw-r--r--  1 root  operator    0,  81 May 19 19:07 unlpt0
+lrwxr-xr-x  1 root  wheel            6 May 19 19:07 urandom -> random
+
+solution 1
+
+http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html
+
+The printer is a HL-1430 connected to USB and the error I got was: 'Unable to open USB device "usb:/dev/unlpt0" Permission Denied.'
+Now I don't know if this is relevant in any way. After trying all kinds of solutions I finally decided to simply do "chmod 777 /dev/unlpt0", and that solved the problem.
+
+results 1
+Nope, it dod not complain, bt still sat there and did nothing
+
+put the setup back 
+> chmod 0644 ulpt0
+
+solutuon 2
+Be sensible
+
+The model number shows this is
+HP LaserJet 1000W printer  	Q1342A - end of life
+
+Linuxprinting.org
+http://www.openprinting.org/show_printer.cgi?recnum=HP-LaserJet_1000
+
+OK, This printer requires the foo2zjs printer driver.
+This needs firmware loading up each boot.
+This is going to get complicated
+
+http://foo2zjs.rkkda.com/
+
+OK - we download from there. (note on paypal request)
+This asks us to run make (on freebsd we need gmake - its easy to tell - make fails horribly)
+
+then reading INSTALL we need to get some more firmware files
+
+it seems I need 
+http://foo2zjs.rkkda.com/firmware/sihp1000.tar.gz
+
+but the code assumes I have wget. It seemed easier to pkg_add wget than check the code - 
+it seems to just untar it but...
+
+OK 
+
+HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1505 NOTES
+--------------------------------------------------------
+    These printers need their firmware downloaded to them every time they
+    are powered up.
+
+        On Linux with USB connected printer:
+            If you are running Linux and the printer is connected via USB, you
+            can arrange for the firmware to be automatically downloaded to the
+            printer by performing one more installation step:
+
+            # make install-hotplug
+
+            Unplug and re-plug the USB printer.
+
+        On another OS or with a parallel port connected printer:
+
+            You must send a firmware file to the printer each time you power it
+            up.  If you downloaded the extra files for the HP above, a typical
+            command line to load the firmware would be ONE of these:
+
+===>            cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/usb/lp0
+                cat /usr/share/foo2zjs/firmware/sihp1005.dl > /dev/usb/lp0
+                cat /usr/share/foo2zjs/firmware/sihp1018.dl > /dev/usb/lp0
+                cat /usr/share/foo2zjs/firmware/sihp1020.dl > /dev/usb/lp0
+                cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/usb/lp0
+
+problem 3
+manhattan# cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/ulpt0
+cat: stdout: Input/output error
+
+
+OK - 
+http://foo2zjs.rkkda.com/forum/read.php?12,605,605
+
+first you should build the kernel without ulpt driver.
+then you should get foo2zjs and follow the instructions in the readme file. if you'll have any questions - report me! 
+
+ok - rebuild the kernel
+in /usr/src/sys/i386/conf is GENERIC a file telng make how to build the kernel and what to leave ut. Comment out ulpt
+rebuid
+
+OK - 
+cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/ugen0.1
+
+that actually did something - it wrote and the printer got excited.
+However... cups does not see it...
+
+
+OK - I give up - buy a parallel to ethernet adaptor
+ 

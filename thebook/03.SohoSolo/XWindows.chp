@@ -1,0 +1,332 @@
+.. include:: ../hdr.rst
+
+X Windows
+=========
+
+X-Windows, otherwise known as just *X*, is the Unix version of the well-known Windows/Mouse Graphical User Interface.
+First developed at Parc-Xerox [#]_ the concept of using 
+overlapping windows, and a 'mouse' is often seen as the *only* way to interact with a computer.
+
+Of course the unix tradition is for a command line interface - that of typing in commands to a shell,
+and is a more powerful way to interact in almost all cases [#]_ . X-windows is of course the comic book variant of the command line
+that is the normal world of books. However at times comics can replace normal books.
+
+
+Installing
+----------
+There is a meta-port for X windows. x11/xorg
+SImply install this - takes about 6 hours.
+
+Firstly, we are still at the command line when we boot our machine, and after logging in I still
+only have the prompt. On a machine that has X installed, we can type ::
+  
+  startx
+
+and up comes the GUI. (to get out of the GUI, use ctl-alt-backspace. This will stop the current X session)
+
+
+So let us get X installed and running. NB. installing X from Ports takes hours, and if you compile KDE or GNOME
+instead of xfce4, you can easily have it running for a full 24 hours. Honest. Try xfce4 for now.
+
+Configuring windows
+-------------------
+See chapter 5 of Handbook
+
+I am assuming we are only using one video card and one monitor. 
+More complex arrangements can come later.
+
+
+:sidebar: Enabling the mouse daemon. 
+          You should have the mouse daemon enabled in /etc/rc.conf
+          moused_enable="YES"
+          Otherwise, X will try and use /dev/sysmouse and nothing much will happen whne you move the mouse
+
+
+Initial Configuation.
+---------------------
+After we have successfully got the meta port above installed we want to configure the X settings. This is firly complex, but
+also pretty well automated. All the settings are controlled from one file, xorg.conf, which is usually found in 
+/usr/local/etc/X11/xorg.conf.  Except that right now there is no such file there. Firstly we create it by getting Xorg to do the hard work::
+ 
+ $ Xorg -configure
+
+This will automatically scan your hardware and put a config file in /root called xorg.config.new
+
+Try it out - you never know !::
+
+ $ Xorg -config /root/xorg.config.new
+
+You will see a sawtooth background with a X cross in the middle. Try moving the mouse. If the cross moves too,
+good. If not, you probably need to enable the mouse daemon. (see sidebar)
+
+More than likely you will have a sawtooth pattern that has lines scanning through it wildly. 
+This is because the scan and refresh rates that X Windows is trying to use are out of whack with the ones the monitor uses.
+
+DOnt forget - you can "kill" off the X display using ctl-alt-backspace
+
+so, we find the hard part of X windows installation. FInding refresh rates. FOr some reason these are always hard to get 
+hold of.
+
+Monitor specs
+-------------
+
+::
+
+ Before configuration of X11 the following information about the target system is needed:
+ - Monitor specifications
+ - Video Adapter chipset
+ - Video Adapter memory
+
+some background
+http://www.monitorworld.com/faq_pages/q10_page.html::
+
+    A monitor's maximum vertical refresh rate is limited by how fast it can direct the electron beam over all of the picture elements on the monitor. This involves moving the electron beam in the same manner as you would read the words in a book, left to right, top to bottom. It is limited by the maximum HSR, which determines the maximum horizontal pixel addressability the monitor can display and the number of scanlines (i.e. vertical addressability). For example, to display a screen with an addressability of 640 pixels horizontally and 480 vertically, a monitor with a HSR of 31.5kHz would take 480/31.5k = 15.2 ms to scan the entire screen once. In one second, this monitor could be refreshed 1000ms/15.2ms = 65.6 times.
+    However, the vertical sync - movement of the electron gun to the upper left corner of the screen - 
+    requires some time, so the resulting vertical refresh rate is only 60 Hz.
+
+
+A (fair) bit of googleing gets me ::
+
+ EDID Name : CAL L15CX (my monitor badge)
+ Minimum HorizSync : 30.000 kHz
+ Maximum HorizSync : 60.000 kHz
+ Minimum VertRefresh : 56 Hz
+ Maximum VertRefresh : 75 Hz
+ Maximum PixelClock : 80.000 MHz
+ Maximum Width : 1024 pixels
+ Maximum Height : 768 pixels
+ Preferred Width : 1024 pixels
+ Preferred Height : 768 pixels
+ Preferred VertRefresh : 75 Hz
+ Physical Width : 300 mm
+ Physical Height : 230 mm
+
+
+SO I want to enter the following  ::
+
+ HorizSync    30-60
+ VertRefresh  56-75
+
+I try it - and hey presto, the sawtooth is still flickering.
+So I play around a bit. Now the lines are rolling up the screen, so I guess it is the vertical refresh rate that is wrong
+I constrain the refresh rates, 69-75, 74-75, and then try 70-70. Hey, google is not so useful after all the refresh rate 
+I found was too high. dropping it down to 70HZ gives me a clear fixed sawtooth. And the manufacturers website has broken links on it 
+so I fear that unless you buy top quality monitors this sort of problem is always going to be withus.
+
+Please note however, that just typing startx often just works with good enough defaults. The whole thing was usable before 
+I played around. I just like it so.::
+
+ HorizSync    50-60
+ VertRefresh  56-70
+
+If I dropped the horizontal sync, the vert refresh goes out of whack.
+
+
+More Monitor stuff
+------------------
+
+::
+ Section "Screen"
+        Identifier "Screen0"
+        Device     "Card0"
+        Monitor    "Monitor0"
+        DefaultDepth 24
+        SubSection "Display"
+                Viewport  0 0
+                Depth     24
+                Modes     "1024x768"
+        EndSubSection
+ EndSection
+
+
+in short we want the mode line to have number of pixels supported, and the defaultdepth to link to that 
+level
+
+
+Keyboard layout
+---------------
+Looking elsewhere in xorg.conf we find ::
+
+  Section "InputDevice"
+    Identifier  "Keyboard0"
+    Driver      "kbd"
+
+Even though typing on the command line before we run X I can use my keyboard and the characters I expect 
+appear OK, this is because the OS is reading the line in /etc/rc.conf that says *keymap=uk.iso*.
+Unfortunately X will ignore this and default to some American setting. Which means that *"* is in the wrong place as is a fair number of other characters.
+This is annoying, but luckily we know that here, in xorg.conf are the settings that X will use.
+
+We can see the various options in /usr/local/share/X11/xkb/rules/org.lst
+UK is gb. 
+(Now actually Great Britain is not the same as United Kingdom, and this is one of those internationalisation
+problems, that the real world is a lot more complicated than one poor programmer can be bothered to deal with)
+
+Now this file is in the Xkb directory and if you grep for ^!
+! model
+! layout
+! variant
+! option
+
+so I want::
+
+  Option "XkbLayout" "gb"
+
+If I wanted to give a command about a variant it is::
+
+  Option "XkbVariant" "xxxx"
+
+
+
+
+Turn off Capslock
+-----------------
+Oh dear god yes.
+Have a look in /usr/local/share/X11/xkb/rules/org.lst - do you see it. Oh wonder of wonders. A way to 
+turn off the capslock key, the useless appendix of the typewriter, out-evolved and just laying there waiting for an 
+unwary thumb to catch it an ruin a line of text.
+ 
+
+under !option  I find ctrl:nocaps
+
+
+Option "XkbOptions" "ctrl:nocaps"
+
+(OK, its Options with an s. Nothing is quite perfect, just accept it for now. A little bit of handwaving.)
+
+
+	
+Fix the config file in the right place
+--------------------------------------
+
+# cp xorg.conf.new /etc/X11/xorg.conf
+OR
+# cp xorg.conf.new /usr/local/etc/X11/xorg.conf
+ 
+Now try startx - and horray I can type shft-2 and see " and if I press capslock, it ignores it (well it treats it as
+a second ctl key. This is very very good. Wait till the section on emacs for a full explanation, but really dropping
+caps lock for an extra control key is great)
+
+
+Fonts
+------
+
+
+
+
+X11
+===
+
+::
+
+ /usr/ports/x11-fonts/ttmkfdir
+
+ fonts
+ C:\WINDOWS\Fonts
+ http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x-fonts.html
+ pscp *.ttf root@192.168.1.11:/usr/local/lib/X11/fonts/TrueType/
+ add line to xorg.conf
+ FontPath "/usr/X11R6/lib/X11/fonts/URW"
+ type 1 fonts make 
+
+
+
+x11/rxvt-unicode is a highly recommended text editor (see reddit thread
+http://www.reddit.com/comments/6wn5w/ask_proggit_whats_your_favorite_terminal_emulator/)
+
+
+XDM
+---
+For testing purposes, we just want the XDM to run as a normal process not a daemon.
+so we call it as ::
+
+ #xdm -nodaemon
+
+(if you get stuck, simply ctl-alt-f1 to tty and kill the daemon xdm. You should understand how to do that by now)
+
+now, normally ::
+
+ % echo "/usr/local/bin/startxfce4" > ~/.xinitrc
+
+
+will ensure that when I type 'startx' xfce will run.
+However if I use xdm, it does not use my .xinitrc file.
+
+xdm uses files found in ' usr/local/lib/X11/xdm' for configuration.
+SO I can use a ~/.xsession or the global xsession file
+
+
+% echo "/usr/local/bin/startxfce4" > ~/.xsession
+
+
+so 
+1. .xinitrc file with startxfce4 works only with startx, not with xdm
+2. .xsession file with startxfce4 works with xdm
+
+
+Now how to run xdm every boot
+-----------------------------
+can be set as a tty - in /etc/ttys this line is off by default.::
+
+ ttyv8   "/usr/local/bin/xdm -nodaemon"  xterm   off secure
+
+setting it to on will ensure each boot gets you a graphical login.
+
+
+
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x11-wm.html
+# cd /usr/ports/x11-wm/xfce4
+# make install clean
+
+
+
+Swapping between vitrual terminals
+----------------------------------
+X runs on a virtual terminal (alt-F1 alt-F2 etc)
+If in X you can go to the other tty using ctl-alt-F1 for example.
+Then get back using alt-F9 (usually there are 8 tty set up in /etc/ttys - so X snaffles the 9th)
+
+
+SPlash screens and xmodmap
+--------------------------
+http://www.freebsd.org/doc/en/books/faq/x.html#XDM-BOOT
+
+
+More than one card / monitor
+============================
+Cards are 'Device' in the config file - you can tell which is labelled which by looking at the Device secion(s)
+It will tell you the Identifier (Card0) and which driver is being used (nv for nvidia) the board name and PCI ids 
+Really all you want to know is the identifiers 
+
+----------------------
+
+Phone Line 
+----------
+Phone Line - ADSL Filter - DSL Modem - Ethernet Out - Own FIrewall/router - WIFI?
+
+http://www.broadbandbuyer.co.uk/Shop/ShopDetail.asp?ProductID=4122
+
+
+DNS
+===
+BIND8 is installed by default
+named_enable="YES"
+
+
+NTP
+===
+
+
+FTP
+===
+
+
+
+NFS
+===
+
+
+
+*_ THe only time I can see gui-style interaction as more powerful is in photo-editing and similar efforts.
+
+.. [#] (and the history of that development and how Apple and Microsoft subsequently
+took the concepts to the mainstream is fascinating and can be found at .)

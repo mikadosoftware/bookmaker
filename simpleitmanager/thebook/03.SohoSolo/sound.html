@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>Sound</title>
+<link rel="stylesheet" href="/css/thebook.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="sound">
+<h1 class="title">Sound</h1>
+
+<p><a class="reference external" href="http://chelskov.org/?p=8">http://chelskov.org/?p=8</a></p>
+<p>$ kldload snd_driver
+$ cat /dev/sndstat</p>
+<p>Ill explain: the snd_driver is a meta driver, which actually finds
+the correct sound driver for your sound card and loads it into the kernel.
+The second command just tells us which driver it actually loaded.
+In my case, this was snd_ich, so I simply added snd_ich_load=YES to the
+/boot/loader.conf file, and my sound works on every boot.</p>
+<p>or just push any file into the sound output</p>
+<p>% cat filename &gt; /dev/dsp</p>
+<div class="section" id="audio-cds">
+<h1>audio cds</h1>
+<p><a class="reference external" href="http://networking.ringofsaturn.com/Unix/FreeBSD-Burning.php">http://networking.ringofsaturn.com/Unix/FreeBSD-Burning.php</a></p>
+<p>ATAPI CAM
+CAM subsystem allows ATAPI cd-devices to be visible in the SCSI system
+Most programs like cdrecord, are scsi based entirely, so need this</p>
+<p>burncd, a freebsd userland utility, can burn iso direct to ATAPI</p>
+<p>sysutils/cdrtools has mkisofs so is useful</p>
+</div>
+<div class="section" id="biblio">
+<h1>biblio</h1>
+<p><a class="reference external" href="http://www.freebsd.org/doc/handbook/creating-cds.html">http://www.freebsd.org/doc/handbook/creating-cds.html</a></p>
+<p>To install CAM</p>
+<p>enter this into /boot/loader.conf (this is the configuration for 3rd stage of Freebsd boot process (<a class="reference external" href="http://www.freebsd.org/doc/en/books/handbook/boot.html">http://www.freebsd.org/doc/en/books/handbook/boot.html</a>) ):</p>
+<pre class="literal-block">
+atapicam_load=&quot;YES&quot;
+</pre>
+<p>We should now be able to see the CD in dmesg, and it is part of dev/cd0</p>
+<p>#camcontrol devlist</p>
+<p>or</p>
+<p>#cdrecord --scanbus</p>
+<p>should tell us what the scsi label is (dev= below)</p>
+<p>cdrecord dev=1,0,0 -eject speed=48 -pad -audio <a href="#id1"><span class="problematic" id="id2">*</span></a>.wav</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">thebook/03.SohoSolo/sound.chp</tt>, line 57); <em><a href="#id2">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+<hr class="docutils" />
+<p>Burning MP3s onto an audio CD
+In order to burn MP3s as an audio CD, you first have to convert the MP3's to .wav format. The mpg123 tool (part of the mpg321 package) is able to do this.</p>
+<p>The following script may be used to burn all MP3s in the current directory as an audio CD. The script first converts all spaces in MP3 filenames to underscores. The MP3s are then decoded into .wav files. Finally, cdrecord burns the .wav files to disc. The script assumes a CD recorder device path of 0,0,0 and a 48x burn rate. For more information, see the Linux MP3 CD Burning mini-HOWTO.</p>
+<p>#!/bin/sh</p>
+<p># Convert files containing spaces to underscores
+for i in <a href="#id3"><span class="problematic" id="id4">*</span></a>.mp3; do mv &quot;$i&quot; <cite>echo $i | tr ' ' '_'</cite>; done</p>
+<div class="system-message" id="id3">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">thebook/03.SohoSolo/sound.chp</tt>, line 70); <em><a href="#id4">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+<p># Convert MP3s to WAV files
+for i in <a href="#id5"><span class="problematic" id="id6">*</span></a>.mp3; do mpg123 -w <cite>basename $i .mp3</cite>.wav $i; done</p>
+<div class="system-message" id="id5">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">thebook/03.SohoSolo/sound.chp</tt>, line 73); <em><a href="#id6">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+<p># Burn the CD
+cdrecord dev=0,0,0 -eject speed=48 -pad -audio <a href="#id7"><span class="problematic" id="id8">*</span></a>.wav
+------------
+<a class="reference external" href="http://www.brandonhutchinson.com/Burning_CDs_with_cdrecord.html">http://www.brandonhutchinson.com/Burning_CDs_with_cdrecord.html</a>
+------------</p>
+<div class="system-message" id="id7">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">thebook/03.SohoSolo/sound.chp</tt>, line 76); <em><a href="#id8">backlink</a></em></p>
+Inline emphasis start-string without end-string.</div>
+</div>
+<div class="section" id="mp3-audio">
+<h1>MP3 audio</h1>
+<p><a class="reference external" href="http://www.freebsd.org/doc/en/books/handbook/sound-mp3.html">http://www.freebsd.org/doc/en/books/handbook/sound-mp3.html</a></p>
+<p>player - xmms</p>
+</div>
+</div>
+</body>
+</html>

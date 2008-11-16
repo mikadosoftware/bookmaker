@@ -1,0 +1,137 @@
+==========
+subversion
+==========
+
+Source control 
+==============
+
+
+install and configure
+=====================
+- install from ports, ensuring we use the BDB backend
+
+  WITH_BDB=true
+
+we create a single location for our repository. ::
+
+  svnadmin create /usr/home/pbrian/repos/PBRIAN
+
+set up users and passwords, assuming you use the svnserve daemon which is
+a fairly easy network approach.
+
+
+  <repository>/conf/svnserve.conf 
+  - uncomment the lines below
+  anon-access = read
+  auth-access = write
+  password-db = passwd
+  realm = paul-brian.com
+    
+
+  svnserve -r /usr/home/pbrian/repos -d 
+  svnserve -r /usr/home/pbrian/repos -d --listen-host localhost
+
+
+now I should be able to see all that is going on in my repository with
+
+  svn ls svn://localhost/PBRIAN
+
+for debugging the first time, I find the below useful::
+
+  svnserve -r /usr/home/pbrian/repos --listen-host localhost -X
+  <this listens on my localhost>
+
+I do not have to have the svnserve running all the time. in fact it could be a security risk
+
+
+so far
+------
+I have a listening svn daemon on my machine, and a repository.
+The svn daemon is listening for all repositorys at /home/pbrian/repos
+At the moment only PBRIAN repository exists, so i need to access
+the repository as follows
+
+  svn ls svn://localhost/PBRIAN/
+
+Autostarting
+------------
+The port has added to /usr/local/etc/rc.d (where startup scripts are kept)
+a script *svnserve*
+
+This script has 3 important changes
+
+- the path to the repository directory
+- the user and group svn
+
+I shall change the path to the one above. But I need to add a user and group called svn
+(it could be anything but that is a sensible default)
+
+  pbrianlap# pw group add svn
+  pbrianlap# pw user add svn -g svn
+
+  chown -R svn:svn /usr/home/pbrian/repos/
+  (this last is easy to forget - svn user needs to be able to write to the repository)
+
+
+
+
+
+first time - setting up a working directory
+-------------------------------------------
+Firstly - think how you will be setting up the work.
+I am writing a book-cum-website. It is fairly linear and simple, so I will
+keep to the recommended 'trunk-tag-branch' approach
+I cannot imagine having many branches, the book will not diverge a lot, so 
+I shall create a file struncture as below
+
+  /usr/home/pbrian/thebook
+  -tags	
+  -trunk
+   -thebook
+    -introduction.chp
+
+
+::
+  
+  svn import thebook svn://localhost/PBRIAN -m 'my first import'
+
+you will be asked for you authentication password and username.
+these then get cached by svn for next time.
+
+
+Directories and stuff
+---------------------
+checkouts can be awkward.
+the difference between these two commands for example
+
+  svn co svn://localhost/PBRIAN/ 
+
+  svn co svn://localhost/PBRIAN/ ./
+
+pbrianlap# svn co svn://localhost/PBRIAN/
+A    PBRIAN/trunk
+A    PBRIAN/trunk/build
+A    PBRIAN/trunk/build/build.log
+A    PBRIAN/trunk/build/tools
+A    PBRIAN/trunk/build/tools/build_pkg_maker
+
+
+pbrianlap# svn co svn://localhost/PBRIAN/ ./
+A    trunk
+A    trunk/build
+A    trunk/build/build.log
+A    trunk/build/tools
+A    trunk/build/tools/build_pkg_maker
+
+
+
+
+
+
+
+
+
+
+
+
+

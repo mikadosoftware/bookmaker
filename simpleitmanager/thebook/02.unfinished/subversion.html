@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>subversion</title>
+<link rel="stylesheet" href="/css/thebook.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="subversion">
+<h1 class="title">subversion</h1>
+
+<div class="section" id="source-control">
+<h1>Source control</h1>
+</div>
+<div class="section" id="install-and-configure">
+<h1>install and configure</h1>
+<ul>
+<li><p class="first">install from ports, ensuring we use the BDB backend</p>
+<p>WITH_BDB=true</p>
+</li>
+</ul>
+<p>we create a single location for our repository.</p>
+<pre class="literal-block">
+svnadmin create /usr/home/pbrian/repos/PBRIAN
+</pre>
+<p>set up users and passwords, assuming you use the svnserve daemon which is
+a fairly easy network approach.</p>
+<blockquote>
+<p>&lt;repository&gt;/conf/svnserve.conf
+- uncomment the lines below
+anon-access = read
+auth-access = write
+password-db = passwd
+realm = paul-brian.com</p>
+<p>svnserve -r /usr/home/pbrian/repos -d
+svnserve -r /usr/home/pbrian/repos -d --listen-host localhost</p>
+</blockquote>
+<p>now I should be able to see all that is going on in my repository with</p>
+<blockquote>
+svn ls svn://localhost/PBRIAN</blockquote>
+<p>for debugging the first time, I find the below useful:</p>
+<pre class="literal-block">
+svnserve -r /usr/home/pbrian/repos --listen-host localhost -X
+&lt;this listens on my localhost&gt;
+</pre>
+<p>I do not have to have the svnserve running all the time. in fact it could be a security risk</p>
+<div class="section" id="so-far">
+<h2>so far</h2>
+<p>I have a listening svn daemon on my machine, and a repository.
+The svn daemon is listening for all repositorys at /home/pbrian/repos
+At the moment only PBRIAN repository exists, so i need to access
+the repository as follows</p>
+<blockquote>
+svn ls svn://localhost/PBRIAN/</blockquote>
+</div>
+<div class="section" id="autostarting">
+<h2>Autostarting</h2>
+<p>The port has added to /usr/local/etc/rc.d (where startup scripts are kept)
+a script <em>svnserve</em></p>
+<p>This script has 3 important changes</p>
+<ul class="simple">
+<li>the path to the repository directory</li>
+<li>the user and group svn</li>
+</ul>
+<p>I shall change the path to the one above. But I need to add a user and group called svn
+(it could be anything but that is a sensible default)</p>
+<blockquote>
+<p>pbrianlap# pw group add svn
+pbrianlap# pw user add svn -g svn</p>
+<p>chown -R svn:svn /usr/home/pbrian/repos/
+(this last is easy to forget - svn user needs to be able to write to the repository)</p>
+</blockquote>
+</div>
+<div class="section" id="first-time-setting-up-a-working-directory">
+<h2>first time - setting up a working directory</h2>
+<p>Firstly - think how you will be setting up the work.
+I am writing a book-cum-website. It is fairly linear and simple, so I will
+keep to the recommended 'trunk-tag-branch' approach
+I cannot imagine having many branches, the book will not diverge a lot, so
+I shall create a file struncture as below</p>
+<blockquote>
+<p>/usr/home/pbrian/thebook
+-tags
+-trunk</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">thebook/02.unfinished/subversion.chp</tt>, line 90)</p>
+Unexpected indentation.</div>
+<blockquote>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-t<var>hebook</var></span></kbd></td>
+<td>-introduction.chp</td></tr>
+</tbody>
+</table>
+</blockquote>
+</blockquote>
+<pre class="literal-block">
+svn import thebook svn://localhost/PBRIAN -m 'my first import'
+</pre>
+<p>you will be asked for you authentication password and username.
+these then get cached by svn for next time.</p>
+</div>
+<div class="section" id="directories-and-stuff">
+<h2>Directories and stuff</h2>
+<p>checkouts can be awkward.
+the difference between these two commands for example</p>
+<blockquote>
+<p>svn co svn://localhost/PBRIAN/</p>
+<p>svn co svn://localhost/PBRIAN/ ./</p>
+</blockquote>
+<p>pbrianlap# svn co svn://localhost/PBRIAN/
+A    PBRIAN/trunk
+A    PBRIAN/trunk/build
+A    PBRIAN/trunk/build/build.log
+A    PBRIAN/trunk/build/tools
+A    PBRIAN/trunk/build/tools/build_pkg_maker</p>
+<p>pbrianlap# svn co svn://localhost/PBRIAN/ ./
+A    trunk
+A    trunk/build
+A    trunk/build/build.log
+A    trunk/build/tools
+A    trunk/build/tools/build_pkg_maker</p>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+http://swik.net/FreeBSD
+Curiously running git as root on a FREEBSD box tends to fail on commit stage 
+probably best not to run as root
+a

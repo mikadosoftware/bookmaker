@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>Printing</title>
+<link rel="stylesheet" href="/css/thebook.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="printing">
+<h1 class="title">Printing</h1>
+
+<p>OK, some of the worst systems administration problems, the most frustrating times come fromt
+trying to get ink onto paper.</p>
+<p>We shall install CUPS on a USB conected printer. THen on a network enabled printer.
+discuss the diffeences, and the secruity implicatons.</p>
+<div class="section" id="where-do-i-get-my-ppd-file-from">
+<h1>Where do i get my PPD file from?</h1>
+<p>There is a list, maintained by volunteers of PPD files and the printers they work with (and how well they work) at
+<a class="reference external" href="http://www.linuxprinting.org/printer_list.cgi">http://www.linuxprinting.org/printer_list.cgi</a></p>
+<div class="section" id="trouble-shooting">
+<h2>trouble shooting</h2>
+<ol class="arabic simple">
+<li>Unable to open device file &quot;/dev/ulpt0&quot;: Permission denied</li>
+</ol>
+<p>solution 1</p>
+<p><a class="reference external" href="http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html">http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html</a></p>
+<p>crw-------  1 root  wheel       0,  78 May 19 19:07 ttyvf
+crw-r--r--  1 root  operator    0,  80 May 19 19:19 ulpt0
+crw-r--r--  1 root  operator    0,  81 May 19 19:07 unlpt0
+lrwxr-xr-x  1 root  wheel            6 May 19 19:07 urandom -&gt; random</p>
+<p>solution 1</p>
+<p><a class="reference external" href="http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html">http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html</a></p>
+<p>The printer is a HL-1430 connected to USB and the error I got was: 'Unable to open USB device &quot;usb:/dev/unlpt0&quot; Permission Denied.'
+Now I don't know if this is relevant in any way. After trying all kinds of solutions I finally decided to simply do &quot;chmod 777 /dev/unlpt0&quot;, and that solved the problem.</p>
+<p>results 1
+Nope, it dod not complain, bt still sat there and did nothing</p>
+<p>put the setup back
+&gt; chmod 0644 ulpt0</p>
+<p>solutuon 2
+Be sensible</p>
+<p>The model number shows this is
+HP LaserJet 1000W printer       Q1342A - end of life</p>
+<p>Linuxprinting.org
+<a class="reference external" href="http://www.openprinting.org/show_printer.cgi?recnum=HP-LaserJet_1000">http://www.openprinting.org/show_printer.cgi?recnum=HP-LaserJet_1000</a></p>
+<p>OK, This printer requires the foo2zjs printer driver.
+This needs firmware loading up each boot.
+This is going to get complicated</p>
+<p><a class="reference external" href="http://foo2zjs.rkkda.com/">http://foo2zjs.rkkda.com/</a></p>
+<p>OK - we download from there. (note on paypal request)
+This asks us to run make (on freebsd we need gmake - its easy to tell - make fails horribly)</p>
+<p>then reading INSTALL we need to get some more firmware files</p>
+<p>it seems I need
+<a class="reference external" href="http://foo2zjs.rkkda.com/firmware/sihp1000.tar.gz">http://foo2zjs.rkkda.com/firmware/sihp1000.tar.gz</a></p>
+<p>but the code assumes I have wget. It seemed easier to pkg_add wget than check the code -
+it seems to just untar it but...</p>
+<p>OK</p>
+</div>
+<div class="section" id="hp-laserjet-1000-1005-1018-1020-p1005-p1006-p1505-notes">
+<h2>HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1505 NOTES</h2>
+<blockquote>
+<p>These printers need their firmware downloaded to them every time they
+are powered up.</p>
+<blockquote>
+<dl class="docutils">
+<dt>On Linux with USB connected printer:</dt>
+<dd><p class="first">If you are running Linux and the printer is connected via USB, you
+can arrange for the firmware to be automatically downloaded to the
+printer by performing one more installation step:</p>
+<p># make install-hotplug</p>
+<p class="last">Unplug and re-plug the USB printer.</p>
+</dd>
+</dl>
+<p>On another OS or with a parallel port connected printer:</p>
+<blockquote>
+You must send a firmware file to the printer each time you power it
+up.  If you downloaded the extra files for the HP above, a typical
+command line to load the firmware would be ONE of these:</blockquote>
+</blockquote>
+</blockquote>
+<dl class="docutils">
+<dt>===&gt;            cat /usr/share/foo2zjs/firmware/sihp1000.dl &gt; /dev/usb/lp0</dt>
+<dd>cat /usr/share/foo2zjs/firmware/sihp1005.dl &gt; /dev/usb/lp0
+cat /usr/share/foo2zjs/firmware/sihp1018.dl &gt; /dev/usb/lp0
+cat /usr/share/foo2zjs/firmware/sihp1020.dl &gt; /dev/usb/lp0
+cat /usr/share/foo2xqx/firmware/sihpP1005.dl &gt; /dev/usb/lp0</dd>
+</dl>
+<p>problem 3
+manhattan# cat /usr/share/foo2zjs/firmware/sihp1000.dl &gt; /dev/ulpt0
+cat: stdout: Input/output error</p>
+<p>OK -
+<a class="reference external" href="http://foo2zjs.rkkda.com/forum/read.php?12,605,605">http://foo2zjs.rkkda.com/forum/read.php?12,605,605</a></p>
+<p>first you should build the kernel without ulpt driver.
+then you should get foo2zjs and follow the instructions in the readme file. if you'll have any questions - report me!</p>
+<p>ok - rebuild the kernel
+in /usr/src/sys/i386/conf is GENERIC a file telng make how to build the kernel and what to leave ut. Comment out ulpt
+rebuid</p>
+<p>OK -
+cat /usr/share/foo2zjs/firmware/sihp1000.dl &gt; /dev/ugen0.1</p>
+<p>that actually did something - it wrote and the printer got excited.
+However... cups does not see it...</p>
+<p>OK - I give up - buy a parallel to ethernet adaptor</p>
+</div>
+</div>
+</div>
+</body>
+</html>

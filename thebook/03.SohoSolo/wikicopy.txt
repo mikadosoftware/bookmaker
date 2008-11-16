@@ -1,0 +1,45 @@
+http://www.freebsd.org/doc/en_US.ISO8859-1/articles/rc-scripting/
+
+Notes on how we set up start up scripts
+
+This is an excellant article below
+
+http://www.freebsd.org/doc/en_US.ISO8859-1/articles/rc-scripting/
+
+
+basically we call in /etc/rc.subr script which supploes useful functions.
+
+#!/bin/sh
+#
+#
+# modified by pbrian based on script by darko
+# 10 oct 07
+# http://www.freebsd.org/doc/en_US.ISO8859-1/articles/rc-scripting/rcng-dummy.html
+# PROVIDE: svn
+# REQUIRE:
+# BEFORE:
+# KEYWORD:
+
+#include the rc.subr file for ease
+. /etc/rc.subr
+
+name="svn"
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+
+svn_start()
+{
+         echo -n " SVN Server"
+        /usr/local/bin/svnserve -r /usr/local/PIRC/svn -d --listen-host $(hostname)
+}
+
+svn_stop()
+{
+        /usr/bin/killall svnserve
+        echo -n " SVN Server"
+}
+
+
+#finally call functions in /etc/rc.subr that runs our above scripts with the correct args
+load_rc_config $name
+run_rc_command "$1"

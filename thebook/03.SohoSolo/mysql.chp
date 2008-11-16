@@ -1,0 +1,7 @@
+=====
+mysql
+=====
+
+http://www.ghastlyfop.com/blog/2008/01/lamp-performance-for-dummies.html
+
+key_buffer_size is the amount of memory that MySQL puts aside to keep table indexes in memory, which is a very good thing.

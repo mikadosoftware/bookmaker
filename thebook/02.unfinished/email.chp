@@ -1,0 +1,35 @@
+=====
+Email
+=====
+
+
+Email is the serial-killer app of the Internet, it keeps on being the one thing everyone wants in each generation. It has become part of everyday life and it is vital to manainging correctly.
+
+
+The standard setup
+
+This is on the mail Transport Agent (MTA). This is the part that recieves the email for final delivery, then puts it into the post box ready to be collected.
+
+- postfix
+- mailscanner
+- clam-av
+- spamassassin
+
+This set of four gives us a standard border email server. It will receive mail for a given domain and then prepare those mails for storage and reading.  THis will happen by postfix receving a email via SMTP, then passing it to mailscanner, which is designed to shove emails thorugh various external rograms and return them to the control of postfix. So basically, we shall receive an email in postfix, then pass it around through antivirus and spam checking, then back to postfix.
+
+
+Further work 
+We shall also use SASL to ensure SMTP-AUTH is used
+we shall also use dovecot to pick up the emails 
+WE shall also use a side database to capture the emails being put into dovecot
+(in other words there will be a maildir and a database probably mysql)
+
+I intend to make this to store emails for later analysis, textual and other.
+
+
+
+bibliography
+------------
+http://gentoo-wiki.com/HOWTO_Email_Virus_Scanner_--_Mailscanner#MailScanner_Configuration_with_Clamav
+A
+
