@@ -24,7 +24,7 @@ html_dir = 'simpleitmanager'
 
 cmdpath = '/usr/home/pbrian/downloads/docutils-0.5/tools/rst2html.py'
 cmdpath = 'rst2html.py'
-options = ['--stylesheet-path=/css/thebook.css',
+options = ['--stylesheet-path=css/thebook.css',
           '--link-stylesheet']
 errors = []
 
