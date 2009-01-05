@@ -1,0 +1,37 @@
+========================================
+misc stuff I will find another place for
+========================================
+
+passwords
+---------
+/etc/passwd is a bit long in the tooth.
+/etc/master.passwd is where the action is now kept.
+if you look at that and need to, for example, change the login shell
+you need to run pwd_mkdb /etc/master.passwd afterwords
+
+
+
+Edit these files to contain the following. In .bashrc put these statements.
+
+# .bashrc - Bourne Again Shell configuration file # for interactive shells. # file permissions: rwxr-xr-x umask 022 BLOCKSIZE=K; export BLOCKSIZE EDITOR=pico; export EDITOR PAGER=/usr/bin/more; export PAGER
+
+# some useful aliases alias h='fc -l' alias j=jobs alias m=$PAGER alias ll='ls -laFo' alias ls='ls -la -G' alias g='egrep -i' alias ll='ls -laFo' alias ls='ls -la -G' alias g='egrep -i'
+
+# set prompt PS1="u@ w $> "
+
+Now for .bash_profile put the following statements:
+
+# .bash_profile - Bourne Again Shell configuration file # for login shells. PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/bin: # file permissions: rwxr-xr-x umask 022 BLOCKSIZE=K; export BLOCKSIZE EDITOR=pico; export EDITOR PAGER=/usr/bin/more; export PAGER
+
+# set ENV to a file invoked each time bash is started # for interactive use. ENV=$HOME/.shrc; export ENV # some useful aliases alias h='fc -l' alias j=jobs alias m=$PAGER alias ll='ls -laFo' alias ls='ls -la -G' alias g='egrep -i'
+
+# set prompt PS1="u@w $> " 
+
+http://www.freeos.com/articles/4040/
+
+
+
+href="http://www.cyberciti.biz/tips/freebsd-how-to-start-restart-stop-network-service.html"
+
+# /etc/rc.d/netif restart && /etc/rc.d/routing restart
+

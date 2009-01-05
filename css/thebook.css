@@ -2,10 +2,11 @@
 
 body {
      font-family: calibri, helvetica, sans-serif;
-     padding-left: 5cm;
-     padding-right: 5cm;
+     padding-left: 10%;
+     padding-right: 10%;
 }
-//  my changes
+
+
 
 
 h1 {
@@ -14,8 +15,9 @@ h1 {
 
 
 h1+p:first-letter {
-//  color:silver;
+  color:silver;
   font-size:xx-large;
+ 
 }
 
 
@@ -73,7 +75,12 @@ h1+p:first-letter {
 {
   background-color: #036;
   color: #ffffff;
+
 }
 
 
+.literal-block {
+  color: red;
+  margin-right: none; 
+}
 

@@ -1,0 +1,11 @@
+
+
+Almost every digital camera these days has a USB interface, and more importantly it should support 
+
+
+::
+
+ugen0: <Canon Inc. Canon Digital Camera, class 0/0, rev 1.10/0.01, addr 2> on uhub0
+ugen0: at uhub0 port 2 (addr 2) disconnected
+ugen0: detached
+ugen0: <Canon Inc. Canon Digital Camera, class 0/0, rev 1.10/0.01, addr 2> on uhub0

@@ -76,6 +76,25 @@ Inline emphasis start-string without end-string.</div>
 <p><a class="reference external" href="http://www.freebsd.org/doc/en/books/handbook/sound-mp3.html">http://www.freebsd.org/doc/en/books/handbook/sound-mp3.html</a></p>
 <p>player - xmms</p>
 </div>
+<div class="section" id="to-record-sound">
+<h1>TO record sound</h1>
+<p>I need to run something called esd
+<a class="reference external" href="http://en.wikipedia.org/wiki/Enlightened_Sound_Daemon">http://en.wikipedia.org/wiki/Enlightened_Sound_Daemon</a></p>
+<p>mixer - some kind of audio mixer...
+man mixer</p>
+<p>[<a class="reference external" href="mailto:root&#64;paullaptop">root&#64;paullaptop</a> ~]# mixer
+Mixer vol      is currently set to 100:100
+Mixer pcm      is currently set to  54:82
+Mixer mic      is currently set to 100:100
+Mixer rec      is currently set to   0:0
+Recording source: mic</p>
+<p>the below command forces the &quot;mixer&quot; to set itself where i want
+mixer vol 90:90 pcm 54:82 mic 90:90 rec 50:50 =rec mic</p>
+<p>so rec is some kind of sound channel and hoorah now it works.</p>
+<p>esd was not running - does mixer replace esd?</p>
+<p>STUN
+<a class="reference external" href="http://cnscenter.future.co.kr/resource/ietf/ind-draft/draft-takeda-symmetric-nat-traversal-00.txt">http://cnscenter.future.co.kr/resource/ietf/ind-draft/draft-takeda-symmetric-nat-traversal-00.txt</a></p>
+</div>
 </div>
 </body>
 </html>

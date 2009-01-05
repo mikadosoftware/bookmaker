@@ -2,6 +2,26 @@
 Printing      
 ==============
 
+
+CUPS
+====
+A short history.
+
+Overview
+--------
+http://www.cups.org/documentation.php/overview.html
+http://www.linuxfoundation.org/en/OpenPrinting/Database/CUPSDocumentation
+
+
+Installation and setup
+----------------------
+use ports
+run cupsd
+http://localhost:631/admin
+
+
+
+
 OK, some of the worst systems administration problems, the most frustrating times come fromt
 trying to get ink onto paper.
 
@@ -9,12 +29,62 @@ trying to get ink onto paper.
 We shall install CUPS on a USB conected printer. THen on a network enabled printer.
 discuss the diffeences, and the secruity implicatons.
 
+PPD file
+========
+I am using a Brother HL-5270DN printer, it is ethernet enabled and fast. 
+If I look up the PPD file at I find the entry easily and it says it works "perfectly"
+
+so a PPD file looks like ::
+
+    *PPD-Adobe: "4.3"
+    *% This program is free software; you can redistribute it and/or modify it
+    *% under the terms of the GNU General Public License as published by the Free
+    ...
+    *%================================================
+    *%	Copyright(C) 2005 Brother Industries, Ltd.
+    *%	"Brother HL-5270DN BR-Script3"
+    *%================================================
+
+    *%==== General Information Keywords ========================
+    *FormatVersion: "4.3"
+    *FileVersion: "1.03"
+    *LanguageEncoding: ISOLatin1
+    *LanguageVersion: English
+    *Manufacturer: "Brother"
+    ...
 
 
 Where do i get my PPD file from?
 ================================
 There is a list, maintained by volunteers of PPD files and the printers they work with (and how well they work) at
 http://www.linuxprinting.org/printer_list.cgi
+
+
+Using command line printing
+---------------------------
+This should work
+
+  $ lpr -P Brother_HL_5270DN mytestfile.txt
+
+however there may be problems. The most common is that the old non CUPS printing software 
+is also named lp or lpr. and that they sit higher up $PATH than the stuff CUPS installs
+
+  $ /usr/local/bin/lpr -P Brother_HL_5270DN resolv.conf
+
+if that works you just have a path problem.  It can be fixed on install of CUPS by XXX
+Or you can move /usr/local/bin *before* /usr/bin in your $PATH [1]_
+Or force a replace of the old with a softlink to the new
+
+  $ ln -s /usr/local/bin/lpr /usr/bin/lpr
+
+
+
+
+
+
+
+ 
+
 
 
 
@@ -121,4 +191,7 @@ However... cups does not see it...
 
 
 OK - I give up - buy a parallel to ethernet adaptor
+
+
+.. [1] From http://www.freebsddiary.org/cups.php
  
