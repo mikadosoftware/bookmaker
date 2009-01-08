@@ -3,110 +3,151 @@
 
 '''
 :author: pbrian
-aim
+
+
+aim and fire
 ---
-To build the book into a nice format - initially just use 
-rst2html but can get more complex
-check_call(["ls", "-l"])
+Build the rst formatted .chp files into a website, and pdfs, aiming to get to some book format eventually
+
+
 
 The concept - look at a directory. It should be full of other directories and 
 .chp files (text, called chp for chapter)
 
+Nov 08
+------
+adding things like doing pdfs ...
+
+
+Jan 09
+------
+found, from joel spolsky
+http://matthewjamestaylor.com/blog/ultimate-3-column-blog-style-pixels.htm
+
+ will steal what I can
+
+also want to create a system that publishes some of the chapters and not others
+
+
+
+
+
+
+
 '''
 
+
+
+from optparse import OptionParser
 import os, sys, subprocess
 import pprint
+from docutils.examples import html_parts
+from lib import  kill_pdf_odds, create_pdf, publish_this_file, getdirpath, get_html_from_rst, write_index, deploylive, strip_html, get_tmpl_dict
+#getting lazy...
+from config import *
 
 
-### CONSTANTS 
-chapters_dir = 'thebook'
-html_dir = 'simpleitmanager'
 
-cmdpath = '/usr/home/pbrian/downloads/docutils-0.5/tools/rst2html.py'
-cmdpath = 'rst2html.py'
-options = ['--stylesheet-path=css/thebook.css',
-          '--link-stylesheet']
-errors = []
 
-index_list ={} 
+def create_html(source, destination, errors):
+    """given source path and dest path, convert rst into html in dest """
+
+
+    print "---> Starting %s" % source 
+
+    #HTML
+    try:
+        rst_txt = open(source).read()
+        (html_title, html_body) = get_html_from_rst(rst_txt)
+        plain_title = strip_html(html_title)
+ 
+        tmpl_txt = open("main.tmpl").read()                
+
+        d = get_tmpl_dict()
+        d["title"] = plain_title
+        d["maintext"] =  html_title + html_body
+        d["rhs"] = rhs_text
+
+
+        outstr = tmpl_txt % d
+        fo = open(destination, 'w')
+        fo.write(outstr)
+        fo.close()
+
+        return plain_title
+
+    except Exception, e:
+        errors.append(e)
+
+ 
+     
+   
+def loopthrudir(root, dirs, files, index_list):
+    """from walk, run cmds on all files in this dir """
+
+    thisdirlist = []
+    thishtmldir = getdirpath("html", root, HTML_DIR, latex_dir) 
+    thispdfdir  = getdirpath("pdf", root, HTML_DIR, latex_dir) 
+    thisdir     = root
+
+    #### bit weak
+    try:
+        os.mkdir(thishtmldir)
+        os.mkdir(thispdfdir)
+    except:
+        pass
+
+
+    for f in files:
+        #check if want to publish
+        if not publish_this_file(f):
+            continue
+
+
+        source = os.path.join(thisdir, f)
+        newhtml = f.replace('.chp','.html')
+        destination = os.path.join(thishtmldir, newhtml)
+
+        
+        #HTML
+        page_title = create_html(source, destination, errors)
+        thisdirlist.append([destination, page_title])
+
+        if opts.no_pdf == False:          
+            #LaTeX
+            ltx_file = f.replace('.chp','.ltx') 
+            ltx_source = os.path.join(latex_dir, ltx_file)
+            create_pdf(source, ltx_source, errors)
+
+    
+    index_list[thishtmldir] = thisdirlist
 
 
 ###main loop
-def main():
+def main(index_list):
+    """ Go through the directory holding the .chp files, and run each file through 
+        the rst generator(s)"""
 
     for root, dirs, files in os.walk(chapters_dir):
         if root.find('.svn') != -1: 
             continue
         else:
-            print root, dirs, files
-            loopthrudir(root, dirs, files )    
-    write_index()
-
-def gethtmldirpath(root):
-    '''given the root of where the walk is, decide what the html path is '''
-    return os.path.join(html_dir, root)
+            loopthrudir(root, dirs, files, index_list)    
+    ### write a contents file
+    write_index(index_list, HTML_DIR, rhs_text)
 
 
-def loopthrudir(root, dirs, files):
-    
-    thisdirlist = []
-    thishtmldir = gethtmldirpath(root) 
-    thisdir     = root
-
-    try:
-        os.mkdir(thishtmldir)
-    except:
-        pass
-
-    for f in files:
-        #must end .chp
-        junk,ext = os.path.splitext(f)
-        if ext not in ('.chp',): continue
-
-        source = os.path.join(thisdir, f)
-        newhtml = f.replace('.chp','.html')
-        destination = os.path.join(thishtmldir, newhtml)
-        thisdirlist.append(destination)
-
-
-        #build subprocess command
-        cmds = [cmdpath]
-        cmds.extend(options)
-        cmds.extend([source, destination])
-
-
-        try:
-            subprocess.check_call(cmds)
-        except Exception, e:
-            errors.append(e)
-
-    index_list[thishtmldir] = thisdirlist
-   
-def write_index():
-   
-    fo = open(os.path.join(html_dir,'index.html'),'wb')
-    fo.write('<html><body><ol>')
-
-
-       
-    for i in sorted(index_list.keys()):
-        fo.write('</ol><h3>%s</h3><ol>' % i.replace('simpleitmanager/thebook/',''))
-        for ii in index_list[i]:
-            ii = ii.replace(html_dir + '/', '')      #trying to put index.html one level down from mkbook.py 
-	    fo.write('<li> <a href="%s">%s</a></li> \n' % (ii,
-                                                 os.path.basename(ii).replace('.html','')))
-    fo.write('</ol></body></html>')
-    fo.close()
-
-    print 'Total errors: %s' % len(errors)
-    pprint.pprint(errors)
-
-def deploylive():
-    print '== starting deploy'
-    subprocess.check_call(['cp','-r',html_dir, '/usr/local/www/data/'])
-    subprocess.check_call(['cp','-r','css','/usr/local/www/data/'])
 
 if __name__ == '__main__':
-    main()
+
+
+    ### parse options
+    parser = OptionParser()
+    parser.add_option("--no-pdf", dest="no_pdf", action="store_true",
+                      default=False, help="do not generate pdfs")
+    (opts, args) = parser.parse_args()
+
+    ### main loop
+    main(index_list)
     deploylive()
 

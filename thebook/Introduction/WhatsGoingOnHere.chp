@@ -1,30 +1,55 @@
-.. include:: ../hdr.rst
 
 ======================
 What is going on here?
 ======================
 
-Well, firstly this is a book about how to be an IT manager, for IT managers, by an IT manager. I wrote it to be the book *I* would have wanted when I started out.  I choose IT manager as a career some time ago (International Movie Idol seemed to involve too much travel and long hours. Have you seen the bags under George Clooney's eyes. I'm well out of it. Honest.)
 
-Of the several things I enjoy doing when I am not working, I enjoy cooking (and, of course, eating), and a while back I learnt to cook a "proper" risotto. I stood over the pot, Jamie Oliver propped up on the scales, slowly ladling in stock and testing the "bite" of the rice every few minutes. I made a fairly decent risotto if I do say so, and I kept on trying, and occasionally ordering from different restaurants to see how I compared. I had the technical part down.  But one thing always bothered me - it would take me a good hour to cook a risotto, but each restaurant could turn around my dish in ten minutes, whilst cooking others at the same time. It seemed like they knew a way to cook rice that I did not, a secret method, better rice perhaps? Then I read a second cookbook. This one mentioned how "real" restaurants cook the base the day before, stop just as it gets al-dente and cool off the rice. Then when I place my order it can be whipped out of the fridge and used as a base for piping hot risotto.  Other authors explain a chain of tricks, how the chicken from Sunday becomes the stock for Monday's risotto, which becomes Wednesday's mozzarella cakes.   
+Let me explain, it may take a minute so do relax. 
 
-Several questions came to mind. "why didn't you mention that first time around?" was high on the list.  But deeper was the question  "if I was learning to be a Head Chef, how on earth would I find the tips and tricks like that." For a restaurant that cooks good risotto but you wait an hour for it to turn up will go bust quick. An IT department that cannot manage to release that vital new feature in less than 3 months is in a very similar position. And no matter how good your technical skills are, if there is no rice ready in the fridge, nothing will get a risotto out in less than an hour. 
-
-Cooks are expected to serve tutelage under head chefs, where presumably they pick up things like this (although given some restaurants I go to this may not be a hard and fast rule). But the IT industry has grown at such a pace that mentoring like that is a rarity. Most IT managers are thrown in at the deep end, and there are a lot of customers waiting an hour or more [1]_.  So I wanted to write a book containing the tricks of the trade.  I hope to enliven the text with other IT professionals' experiences and anecdotes, and this will grow in a hopefully useful manner.
+I choose "IT Manager" as a career some time ago [*]_ and this site is me, trying to make sense of what I have learnt, trying to create the reference *I* would have wanted when I started out.  
 
 
-This book is divided into two interwoven threads, *SoHo From Scratch* and *Real World Tradecraft*.   
 
-- SoHo From Scratch. 
-  This is closest to the traditional computer how-to section. I believe that every IT manager should be able to do every job that reports to her, at least to a decent level of competency.  
-  Elsewhere I liken this to ensuring that your Head Chef is able to cook well at home first.  If an IT manager is not able to run a relatively simple but complete small office network first then, like a head chef who cannot cook, why do we think she can run a busy restaurant ?
+One of the things I enjoy doing when I am not working, is cooking, and a while back I learnt to cook a "proper" risotto. I stood over the pot, Jamie Oliver propped up on the scales, slowly ladling in stock and testing the "bite" of the rice every few minutes.  I make a fairly decent risotto if I do say so, and I had the technical part down.  But one thing always bothered me - it would take me a good hour to cook a risotto, but a restaurant could turn around my dish in ten minutes.  
 
-- Real World Tradecraft.
-  This is discussing the sort of situations we only get when actually trying to run the restaurant, like my risotto, there are plenty of situations where technical knowledge will only get you so far - you need tradecraft. The short cuts that make the difference between a customer waiting an hour for a risotto or just ten minutes.  These will rise mostly out of the SoHo discussions.
- 
+It seemed like they knew a way to cook rice that I did not, some secret, professional, method. 
 
-Anyway, dip in and enjoy, I hope you find some of the views you find here interesting, perhaps even stimulating. And please take the code, read it and maybe contribute back. Take care. 
+Trade Secrets Matter
+--------------------
+
+Eventually I found another cookbook that explained how "real" restaurants cook the base the day before, stop just as it gets al-dente and cool off the rice.  Then when I place my order it can be whipped out of the fridge and used as a base for piping hot risotto.  
+
+Several questions came to mind. *"Why didn't you mention that first time around? I thought I was doing it wrong."* was high on the list.  
+But deeper than that was the realisation that every profession or craft has these hidden tips - *trade secrets* if you will.
+
+And running a company's IT is no different - there are technical skills, and there is tradecraft. The attitude, approach and organisation that is the difference between talented amateur and professional.
+
+Jamie Oliver did not mention it first time because he was aiming his book at people who will cook at home for their friends.
+The writers of most IT books are similarly aimed - not at the IT manager, but at the guy who is installing Linux for the first time.  Just as Jamie Oliver's book will teach you to cook but not how to be a chef, most books on IT will teach you to recompile a kernel but not what trade offs exist in Patch Management, nor how to compare them apples with the oranges of the database upgrade.
+
+Most IT managers are thrown in at the deep end - and it is amazing more IT projects do not fail under those circumstances. [1]_. 
+
+
+People Matter
+-------------
+
+And I believe that these things matter.  Computers and programming have given the world (and even the impoverised parts eventually) the most flexible human tool ever, and one that will undoubtedly change our world.  
+
+And that changing world will need guiding and humanising by people at or near the top of organisations and instituions - in other words, us, IT managers.  (I feel we need a costume, maybe a cape? But it is not a laughing matter - automation can dehumanise the workplace, killing productivity as well as our souls. )
+
+So I wanted to write a something, book, site, blog containing the tricks of the trade.
+
+The site is divided into three areas, 
+
+- *SoHo From Scratch*, which is closest to a traditional "how-to", the sort of thing I was moaning about a minute ago. 
+- *Trade Secrets*, which is supposed to be the insights I have gleaned from years in the trenches, and probably will look like wild-eyed ranting to everyone else, and 
+- *Other Points of View*, which I am hoping to expand slowly with interviews and thoughts from other IT managers in the industry, providing a rounded view on my ranting.
+
+Anyway, dip in and enjoy, I hope you find some of the views you find here interesting, perhaps even stimulating. And you will find some Open Source Code - please take the code, read it and maybe contribute back. Take care. 
 
 Just don't order fish on a Monday.
 
-_ [1] Ref to various studies showing IT projects over budget.
+
+.. [*] (International Movie Idol seemed to involve too much travel and long hours. Have you seen the bags under George Clooney's eyes? I'm well out of it.)
+
+.. [1] Ref to various studies showing IT projects over budget.

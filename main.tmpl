@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>%(title)s</title>
   
-  <link rel="stylesheet" href="../../../css/cookbook.css" type="text/css" />
+  <link rel="stylesheet" href="%(html_root)s/css/cookbook.css" type="text/css" />
 
 
 </head>
@@ -16,16 +16,17 @@
 
 <div id="header">
 
-<img src="/test1-10.jpg" 
+<img src="%(html_root)s/img/tour_tonbridge.jpg" 
          style="width:100%%; position:relative; top:-10px;"
          alt="itmanagerscookbook.com"
          title="IT Manager's CookBook"
          />
 
    <ul style="width:50%%;">
-     <li><a href="http://www.itmanagerscookbook.com">Home</a></li>
-     <li><a href="http://www.itmanagerscookbook.com">Introduction</a></li>
-     <li><a href="http://www.itmanagerscookbook.com">What's going on here?</a></li>
+     <li><a href="%(html_root)s/Introduction/WhatsGoingOnHere.html">Home</a></li>
+     <li><a href="%(html_root)s/Introduction/introduction.html">Introduction</a></li>
+     <li><a href="%(html_root)s/contents.html">Contents</a></li>
+
    </ul>
 </div>
 
@@ -41,7 +42,6 @@
         <div class="col2">
             <!-- Column 2 start -->
 %(rhs)s
-%(index)s
 
 			<!-- Column 2 end -->
 

@@ -2,3 +2,22 @@ http://swik.net/FreeBSD
 Curiously running git as root on a FREEBSD box tends to fail on commit stage 
 probably best not to run as root
 a
+
+
+Two worlds of source control
+----------------------------
+There are two worlds of source control, probably best typified by two Open Source products - svn and git.
+
+The major difference is *not* distributed but how they treat the idea of a master or trunk. Whilst both systems *can* work in 
+
+
+The simple approach - the master branch is *always* stable. It is ready to run.
+Some people advocate using the trunk as the main development location. 
+This is wrong. Use the trunk as the point at which approved changes are brought in
+
+process like 
+
+- create branch from the stable master explicitly in order to work on a specific milestone.
+- all changes are made in the branch.
+- If you have "been away" from the branch too long, you should have divided up the milestone into smaller deliverables (see Option Theory)
+
