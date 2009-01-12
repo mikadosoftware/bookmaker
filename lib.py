@@ -3,6 +3,7 @@ import pprint
 from docutils.examples import html_parts
 import config
 import ConfigParser
+import shutil
 
 
 #parts = /usr/local/lib/python2.5/site-packages/docutils-0.5-py2.5.egg/docutils
@@ -45,7 +46,7 @@ def write_index(index_list, html_dir, rhs_text):
     tmpl_txt = open("main.tmpl").read()
 
     ### write put page    
-    fo = open(os.path.join(html_dir,'index.html'),'wb')
+    fo = open(os.path.join(html_dir,'contents.html'),'wb')
     fo.write(tmpl_txt % d)
     fo.close()
 
@@ -147,42 +148,29 @@ exclude = []
         return valid_flag
 
 
+
     #test the user defined include/exclude
     include_file = os.path.join(root, config.incl_file_name) 
+
     #does it exist - if not we publish all files
     if not os.path.isfile(include_file):
         return True #if no include file print anyway
+
+    ### An include file exists.
 
     c = ConfigParser.ConfigParser()
     c.read(include_file)
 
     #[('include', 'ibmadverts.chp pov.chp')] -> {include:'ibmadverts.chp, ...
-    items = dict(c.items('include'))
-
-    ### capture the specific exlcusions, but if none in file have a default
-    try:
-        files_to_include = items["include"].split() #assumes no spaces in filename
-    except Exception, e:
-        files_to_include = None 
+    items = dict(c.items('exclude'))
 
     try:
         files_to_exclude = items["exclude"].split() #assumes no spaces in filename        
     except Exception, e:
-        files_to_exclude = []
-
+       files_to_exclude = []
 
 
     #logic for publishing
-    if files_to_include:
-        if f in files_to_include : 
-            valid_flag = True
-            #succeed once
-            return valid_flag 
-        else:
-            print "-- %s not in include list. Ignoring" % os.path.basename(f)
-            valid_flag = False
-
-
     if f in files_to_exclude : 
         valid_flag = False
         print "-- %s to be excluded." % os.path.basename(f) 
@@ -191,7 +179,7 @@ exclude = []
     else:
         valid_flag = True
    
-    # if not included, no publish > if not excluded, publish. Correct order of logic, as I want to publish by default
+    # if not excluded, publish. 
     return valid_flag
 
 
@@ -232,6 +220,7 @@ def kill_pdf_odds(abs_latex_dir):
 
 def check_environment():
     """THe variaous file locations should still exits """
+    shutil.rmtree(config.HTML_DIR)
     if not os.path.isdir(config.HTML_DIR):
         os.mkdir(config.HTML_DIR)
     

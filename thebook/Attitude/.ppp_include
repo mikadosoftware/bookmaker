@@ -1,2 +1,2 @@
-[include]
-include:ibmadverts.chp pov.chp computerliteracy.chp
+[exclude]
+exclude:whyOSS.chp   futureshifts.chp  geekphilosophy.chp  ducttapeOrReplace.chp  enterprise_search.chp  project_mgmt.chp  personalInformationManagement.chp   interestingstuff.chp  remoteworking.chp    Making_me_visible.chp 
