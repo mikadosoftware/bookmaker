@@ -4,6 +4,19 @@ probably best not to run as root
 a
 
 
+http://toolmantim.com/articles/setting_up_a_new_remote_git_repository
+v good on setting up git
+
+basics - we create a remote "bare" repository - that is a .git directory
+- we tell our .git/config file of a ref as url
+- we push to that remote repo
+- we can then clone that repo and then pull down regularly.  We find that origin
+has been defined already for us.
+
+
+
+
+
 Two worlds of source control
 ----------------------------
 There are two worlds of source control, probably best typified by two Open Source products - svn and git.

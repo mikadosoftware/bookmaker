@@ -7,3 +7,16 @@ www2.bc.edu/~fichman/Fichman_Options_Thinking.doc+option+pricing+project+managem
 shifting from MUST to MAY
 This is where a rewrite is a bad idea - it reduces flexibility overall for the period.
 
+
+
+Milestones are business statements
+Tickets are technical
+
+THis is not a hard and fast rule, but if we see tickets that say things like "the US report needs fixing"
+
+tickets
+
+- too vague
+- too business context
+
+milestones should not themselves be technical 

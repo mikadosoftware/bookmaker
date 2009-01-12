@@ -1,0 +1,57 @@
+====================
+IT Managers Tool Box
+====================
+
+
+CIOtools is a collective name for a disparate bunch of tools that I have either written or contributed too, or find vey useful and/or necessary to life as an IT Manager.  I suspect it would be better called IT Managers Tool Box.
+
+
+Project Portfolio Management
+============================
+This is probably the tops - project management is vital, managing a portfolio of projects even more so.
+
+(move to own explanation)
+
+I beleive there are 3 layers of project management for IT
+
+1. Business Requirements (Feature Requests)
+   We are driven by the business requirements (this is *not* the same as "doing what the business says" nor is it the same as saying "IT does not know what it is doing, please tell us". These are generally malicious interpretations of a genuine attempt to get a dialog going between IT and "the business")
+   This is the level of the CIO   
+
+
+2. Application Change Requests
+   (this is the level of the "technology Architect"
+   Here we 
+
+3. Ticket tracking, cost and effort estimation.
+
+
+
+We need to recognise that a business owner (non programmer) will have a different (less subtle) view of the technology landscape than us. And that is mostly fine.  The business owner will have a view of many different products that are supported by IT, products like "The HR database" or "the intranet" or "the research application"
+These products will mostly but not completely map to real IT applications.  ie Web entry application and report generator application. The two are different and diverse applications, 
+   
+
+
+
+
+
+
+FabForce5
+=========
+Necessary SQL tools
+
+Simple WebSite CMS
+==================
+I know I know its another CMS. But this time its better writing your own, honest... Would I lie to you?
+
+
+
+
+Third Party
+===========
+
+OpenSource ERP
+
+
+Linking purchase payments to projects.
+

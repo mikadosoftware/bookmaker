@@ -8,7 +8,8 @@ HTML_DIR = 'simpleitmanager'
 HTML_DEPLOY_DIR = "/root/foo/"
 IMG_DIR = "img"
 
-
+###
+incl_file_name = '.ppp_include'
 
 
 latex_dir  = 'simpleITmanager_latex'

@@ -4,13 +4,11 @@ What is going on here?
 ======================
 
 
-Let me explain, it may take a minute so do relax. 
+Let me explain, it may take a minute or so, so please do lean back and relax. 
 
-I choose "IT Manager" as a career some time ago [*]_ and this site is me, trying to make sense of what I have learnt, trying to create the reference *I* would have wanted when I started out.  
+I choose "IT Manager" as a career some time ago [*]_ and I have had my ups and downs, and this site is me, trying to make sense of what happened, what I have learnt, trying to create the reference *I* would have wanted when I started out.  
 
-
-
-One of the things I enjoy doing when I am not working, is cooking, and a while back I learnt to cook a "proper" risotto. I stood over the pot, Jamie Oliver propped up on the scales, slowly ladling in stock and testing the "bite" of the rice every few minutes.  I make a fairly decent risotto if I do say so, and I had the technical part down.  But one thing always bothered me - it would take me a good hour to cook a risotto, but a restaurant could turn around my dish in ten minutes.  
+Now, one of the things I enjoy doing when I am not working, is cooking, and a while back I learnt to cook a "proper" risotto. I stood over the pot, Jamie Oliver propped up on the scales, slowly ladling in stock and testing the "bite" of the rice every few minutes.  I make a fairly decent risotto if I do say so, and I had the technical part down.  But one thing always bothered me - it would take me a good hour to cook a risotto, but at a restaurant, they could turn around my dish in ten minutes.  
 
 It seemed like they knew a way to cook rice that I did not, some secret, professional, method. 
 
@@ -25,31 +23,35 @@ But deeper than that was the realisation that every profession or craft has thes
 And running a company's IT is no different - there are technical skills, and there is tradecraft. The attitude, approach and organisation that is the difference between talented amateur and professional.
 
 Jamie Oliver did not mention it first time because he was aiming his book at people who will cook at home for their friends.
-The writers of most IT books are similarly aimed - not at the IT manager, but at the guy who is installing Linux for the first time.  Just as Jamie Oliver's book will teach you to cook but not how to be a chef, most books on IT will teach you to recompile a kernel but not what trade offs exist in Patch Management, nor how to compare them apples with the oranges of the database upgrade.
+The writers of most IT books are similarly aimed - not at the IT manager who has to work out how to fit all this in, but at the much more numerous "professional programmer".  Just as Jamie Oliver's book will teach you to cook but not how to be a chef, most books on IT will teach you to write a unittest, but not how to organise the writing of 1,000 tests *at the same time* as having to replace that old email system.
 
 Most IT managers are thrown in at the deep end - and it is amazing more IT projects do not fail under those circumstances. [1]_. 
 
 
-People Matter
--------------
+It Matters
+----------
 
-And I believe that these things matter.  Computers and programming have given the world (and even the impoverised parts eventually) the most flexible human tool ever, and one that will undoubtedly change our world.  
+And I believe that these things matter.  Computers and programming have given the world [2]_  the most flexible human tool ever, and one that will undoubtedly change our world.  
 
-And that changing world will need guiding and humanising by people at or near the top of organisations and instituions - in other words, us, IT managers.  (I feel we need a costume, maybe a cape? But it is not a laughing matter - automation can dehumanise the workplace, killing productivity as well as our souls. )
+And that changing world will need guiding and humanising by people at or near the top of organisations and instituions - in other words, us, IT managers.  And we are needed - badly done, automation can dehumanise the workplace, killing productivity as well as our souls.
 
 So I wanted to write a something, book, site, blog containing the tricks of the trade.
 
-The site is divided into three areas, 
 
-- *SoHo From Scratch*, which is closest to a traditional "how-to", the sort of thing I was moaning about a minute ago. 
+
+- *SoHo From Scratch*, which is closest to a traditional "how-to".  I strongly belive you cannot "manage" a job you cannot do, and so every IT manager should be able to program a computer with a "real" language, and administer a simple SoHo network.
+
 - *Trade Secrets*, which is supposed to be the insights I have gleaned from years in the trenches, and probably will look like wild-eyed ranting to everyone else, and 
-- *Other Points of View*, which I am hoping to expand slowly with interviews and thoughts from other IT managers in the industry, providing a rounded view on my ranting.
 
-Anyway, dip in and enjoy, I hope you find some of the views you find here interesting, perhaps even stimulating. And you will find some Open Source Code - please take the code, read it and maybe contribute back. Take care. 
+- *Other Points of View*, which I am hoping to expand slowly with interviews and thoughts from other IT managers in the industry, providing a rounded view on my ranting. Or possibly just other people ranting.  
 
-Just don't order fish on a Monday.
+Anyway, dip in and enjoy, I hope you find some of the views you find here interesting, perhaps even stimulating. 
+
+Take care, but just don't order fish on a Monday.
 
 
 .. [*] (International Movie Idol seemed to involve too much travel and long hours. Have you seen the bags under George Clooney's eyes? I'm well out of it.)
 
 .. [1] Ref to various studies showing IT projects over budget.
+
+.. [2] (and even the impoverised parts will eventually benefit, maybe one day leap-frogging the richer parts)

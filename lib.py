@@ -2,7 +2,12 @@ import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
 import config
+import ConfigParser
 
+
+#parts = /usr/local/lib/python2.5/site-packages/docutils-0.5-py2.5.egg/docutils
+#>>> from docutils import core
+#>>> help(core.publish_parts)
 
     
 def write_index(index_list, html_dir, rhs_text):
@@ -14,16 +19,17 @@ def write_index(index_list, html_dir, rhs_text):
 
     XXX This needs rethinking.
     """   
-    print "+++++++++++++++++++++"
-    pprint.pprint(index_list)
-    print "+++++++++++++++++++++"
 
     contents = ''' '''
    
     for i in sorted(index_list.keys()):
+        if len(index_list[i]) == 0: continue #no pages in this "folder"
+
         contents += '</ol><h3>%s</h3><ol>' % i.replace('simpleitmanager/thebook/','')
         for (ii, page_title) in index_list[i]:
-            if not page_title: page_title = 'xxx'
+            if not page_title: 
+                page_title = os.path.splitext(os.path.basename(ii))[0]
+
             ii = ii.replace(html_dir + '/thebook/', '')      #trying to put index.html one level down from mkbook.py 
 	    contents += '<li> <a href="%s">%s</a></li> \n' % (ii, page_title)
 
@@ -39,35 +45,41 @@ def write_index(index_list, html_dir, rhs_text):
     tmpl_txt = open("main.tmpl").read()
 
     ### write put page    
-    fo = open(os.path.join(html_dir,'contents.html'),'wb')
+    fo = open(os.path.join(html_dir,'index.html'),'wb')
     fo.write(tmpl_txt % d)
     fo.close()
 
 def deploylive():
-    print '== starting deploy'
-    
+    """move from where html files create to the DocumentRoot """    
     import shutil, glob
+ 
+    print "start deploy from %s to %s." % (config.HTML_DIR, config.HTML_DEPLOY_DIR)
+
     shutil.rmtree(config.HTML_DEPLOY_DIR)
     shutil.copytree(os.path.join(config.HTML_DIR, config.chapters_dir), config.HTML_DEPLOY_DIR)
     for file in glob.glob(config.HTML_DIR + "/*.html"):
-        print file
-        shutil.copy(file, config.HTML_DEPLOY_DIR)
+         shutil.copy(file, config.HTML_DEPLOY_DIR)
+         print os.path.basename(file),   
 
 
     subprocess.check_call(['cp','-r','css', config.HTML_DEPLOY_DIR ])
     subprocess.check_call(['cp','-r','img', config.HTML_DEPLOY_DIR ])
-
+    print "deploy done"
 
 def get_html_from_rst(uStr):
     ''' THis uses ReSt to get some HTML from just text in text area. It is a bit funny - I force                            
     the title and body to be joined before it beocmes UStr, then I return title and body seperate.                          
-    Seems to work as long as css is ok.'''
+    Seems to work as long as css is ok.
+    '''
+
     try:
         p = html_parts(uStr.decode('latin1'), initial_header_level=2)
         return (p['html_title'], p['body'])
 
     except Exception, e:
         return 'rst2html failed: %s' % str(e)
+
+
 
 def strip_html(htmlstr):
     """ given string remove any html tags, leaving plain text
@@ -107,18 +119,80 @@ def get_tmpl_dict():
 
 
 
-def publish_this_file(f):
+def publish_this_file(root, f):
     """given a file basename, decide if we want to publish it
     
     At the moment the only criteria is ends in .chp, but clearly can extend 
-    so define which artilces to publish (or not)"""
+    so define which artilces to publish (or not)
+
+    I have created a file .ppp_include 
+    which looks like 
+
+include = ['ibmadverts.chp',]
+exclude = []
+
+    if a file is listed in include we include it, if it is in exclude we do not
+    if the .ppp_include file is missing include all
+    XXX - todo - raise a warning if filelisted but not in dir
+ 
+    """
+
     #must end .chp
     junk, ext = os.path.splitext(f)
     if ext in ('.chp',): 
-        return True
+        valid_flag = True
     else:
-        return False
+        valid_flag = False
+        #break on any failure
+        return valid_flag
 
+
+    #test the user defined include/exclude
+    include_file = os.path.join(root, config.incl_file_name) 
+    #does it exist - if not we publish all files
+    if not os.path.isfile(include_file):
+        return True #if no include file print anyway
+
+    c = ConfigParser.ConfigParser()
+    c.read(include_file)
+
+    #[('include', 'ibmadverts.chp pov.chp')] -> {include:'ibmadverts.chp, ...
+    items = dict(c.items('include'))
+
+    ### capture the specific exlcusions, but if none in file have a default
+    try:
+        files_to_include = items["include"].split() #assumes no spaces in filename
+    except Exception, e:
+        files_to_include = None 
+
+    try:
+        files_to_exclude = items["exclude"].split() #assumes no spaces in filename        
+    except Exception, e:
+        files_to_exclude = []
+
+
+
+    #logic for publishing
+    if files_to_include:
+        if f in files_to_include : 
+            valid_flag = True
+            #succeed once
+            return valid_flag 
+        else:
+            print "-- %s not in include list. Ignoring" % os.path.basename(f)
+            valid_flag = False
+
+
+    if f in files_to_exclude : 
+        valid_flag = False
+        print "-- %s to be excluded." % os.path.basename(f) 
+        #succeed once
+        return valid_flag 
+    else:
+        valid_flag = True
+   
+    # if not included, no publish > if not excluded, publish. Correct order of logic, as I want to publish by default
+    return valid_flag
 
 
 def create_pdf(source, ltx_source, errors):
@@ -155,6 +229,13 @@ def kill_pdf_odds(abs_latex_dir):
         j, ext = os.path.splitext(f)
         if ext in (".log", ".aux", ".out"): 
             os.remove(os.path.join(abs_latex_dir, f))
+
+def check_environment():
+    """THe variaous file locations should still exits """
+    if not os.path.isdir(config.HTML_DIR):
+        os.mkdir(config.HTML_DIR)
+    
+
 
 def _test():
     import doctest
