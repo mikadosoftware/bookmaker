@@ -46,7 +46,7 @@ def write_index(index_list, html_dir, rhs_text):
     tmpl_txt = open("main.tmpl").read()
 
     ### write put page    
-    fo = open(os.path.join(html_dir,'contents.html'),'wb')
+    fo = open(os.path.join(html_dir,'index.html'),'wb')
     fo.write(tmpl_txt % d)
     fo.close()
 
@@ -75,7 +75,7 @@ def get_html_from_rst(uStr):
 
     try:
         p = html_parts(uStr.decode('latin1'), initial_header_level=2)
-        return (p['html_title'], p['body'])
+        return (p['html_title'], p['body'], p['subtitle'])
 
     except Exception, e:
         return 'rst2html failed: %s' % str(e)

@@ -100,7 +100,7 @@ def create_html(source, destination, errors, dry_run=False):
     print "---> Starting %s to %s" % (source, destination) 
     try:
         rst_txt = open(source).read()
-        (html_title, html_body) = get_html_from_rst(rst_txt)
+        (html_title, html_body, subtitle) = get_html_from_rst(rst_txt)
         plain_title = strip_html(html_title)
  
         tmpl_txt = open("main.tmpl").read()                
@@ -109,14 +109,14 @@ def create_html(source, destination, errors, dry_run=False):
         d["title"] = plain_title
         d["maintext"] =  html_title + html_body
         d["rhs"] = rhs_text
-
+        d['subtitle'] = subtitle
 
         outstr = tmpl_txt % d
         fo = open(destination, 'w')
         fo.write(outstr)
         fo.close()
 
-        return plain_title
+        return (plain_title, subtitle)
 
     except Exception, e:
         errors.append(e)
@@ -152,8 +152,8 @@ def loopthrudir(root, dirs, files, index_list):
 
         
         #HTML
-        page_title = create_html(source, destination, errors, opts.dry_run)
-        thisdirlist.append([destination, page_title])
+        page_title, subtitle = create_html(source, destination, errors, opts.dry_run)
+        thisdirlist.append([destination, page_title, subtitle])
 
         if opts.no_pdf == False:          
             #LaTeX
