@@ -1,12 +1,14 @@
+import os.path
 
 HTMLROOT = "/root/foo"
 
 
 ### CONSTANTS 
-chapters_dir = 'thebook'
-HTML_DIR = 'simpleitmanager'
+chapters_dir = '/root/thebook/thebook'
+HTML_DIR = '/root/thebook/simpleitmanager'
 HTML_DEPLOY_DIR = "/root/foo/"
-IMG_DIR = "img"
+IMG_DIR = os.path.join("/root/thebook", "img")
+CSS_DIR = os.path.join("/root/thebook", "css")
 
 ###
 incl_file_name = '.ppp_include'
@@ -29,6 +31,6 @@ errors = []
 pdflatex_cmds = ['pdflatex', '--output-directory=%s' % latex_dir, '--interaction=nonstopmode']
 to_latex_cmds   = ['rst2latex.py']
 
-index_list ={} 
+
 rhs_text = open('rhs.tmpl').read()
 

@@ -172,3 +172,8 @@ h1.title {
   color:#369;
 }
 
+
+/// experimental - hiding the subtitle as I use it for the table of contents
+.subtitle {
+
+}

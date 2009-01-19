@@ -46,6 +46,20 @@ So the basics of operation are
 3. Use templates, CSS and images as needed to help things along.  
 4. Have some control structure 
 
+Process
+-------
+
+main() runs an os.walk over chapters_dir, passing the details of each dir to loopthrudir()
+loopthrudir() defines the dest directories, and for each file in src_dir 
+  checks if it should be published, creates dest paths, asks create_html() to rst-html and write to disk,
+  stores a dict of data about that page in index_list (dict by section)
+
+create_html() calls rst to get the html of the page, then grabs the main.tmpl and passes in html and other data 
+writes that file to the dest location.
+
+
+
+
 
 Antecedants
 -----------
@@ -84,76 +98,106 @@ from optparse import OptionParser
 import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
-from lib import  kill_pdf_odds, create_pdf, publish_this_file, getdirpath, get_html_from_rst, write_index, deploylive, strip_html, get_tmpl_dict, check_environment
+from lib import  kill_pdf_odds, create_pdf, publish_this_file, getdirpath, get_html_from_rst, write_index, deploylive, get_tmpl_dict, check_environment
 #getting lazy...
 from config import *
 
 
 
 
-def create_html(source, destination, errors, dry_run=False):
-    """given source path and dest path, convert rst into html in dest """
+def create_html(source, destination, dry_run=False):
+    """
+    given source path and dest path, convert rst into html in dest 
 
-    #HTML
+    returns
+    -------
+    a dictionary representing the returns from rst conversion and 
+    src, dest, errors in conversion
+
+    """
+    #dry run test
     if dry_run == True: return ""
-
-    print "---> Starting %s to %s" % (source, destination) 
+    errors_converting_page = []
+    
+    print "---> convert %s to %s" % (source, destination) 
     try:
-        rst_txt = open(source).read()
-        (html_title, html_body, subtitle) = get_html_from_rst(rst_txt)
-        plain_title = strip_html(html_title)
- 
-        tmpl_txt = open("main.tmpl").read()                
+        rst_txt = unicode(open(source).read(),'utf8') #i should save all my files as utf8 anyway
+        page_info = get_html_from_rst(rst_txt) #now have html plus meta data
 
-        d = get_tmpl_dict()
-        d["title"] = plain_title
-        d["maintext"] =  html_title + html_body
-        d["rhs"] = rhs_text
-        d['subtitle'] = subtitle
-
-        outstr = tmpl_txt % d
-        fo = open(destination, 'w')
-        fo.write(outstr)
-        fo.close()
-
-        return (plain_title, subtitle)
-
+    #problems getting rst to html - if it is severe, well do not publish it!!   
     except Exception, e:
-        errors.append(e)
+        raise e  
+
+
+
+    #write out tmpl to destination
+    tmpl_txt = open("main.tmpl").read()                
+
+    d = get_tmpl_dict()
+    d["title"] = page_info['title']
+    d["maintext"] =  page_info['html_body']
+    d["rhs"] = rhs_text
+    d['subtitle'] = page_info['subtitle']
+
+    outstr = tmpl_txt % d
+    fo = open(destination, 'w')
+    fo.write(outstr)
+    fo.close()
+
+    page_info["src"] = source
+    page_info["dest"] = destination
+    page_info["errors"] = errors_converting_page
+
+    return page_info
+
 
  
      
    
-def loopthrudir(root, dirs, files, index_list):
-    """from walk, run cmds on all files in this dir """
+def loopthrudir(root, dirs, files):
+    """This does the meat of the work. 
+    Go through all files in a dir, 
+    pdf, or htmlise them, and return their meta data (title etc)
+   
+    Returns
+    -------
+    a list of all "pages" in this directory, as page-like objects.
+   
+    """
 
     thisdirlist = []
-    thishtmldir = getdirpath("html", root, HTML_DIR, latex_dir) 
-    thispdfdir  = getdirpath("pdf", root, HTML_DIR, latex_dir) 
-    thisdir     = root
+    # '''given the root of where the walk is, decide what the html path is bit 
+    #we do this cos the html destimation is emtpy and we need to mirror it
+    src_dir     = root
+    dest_htmldir = getdirpath("html", src_dir) 
+    dest_pdfdir  = getdirpath("pdf", src_dir) 
+
 
     #### bit weak
     try:
-        os.mkdir(thishtmldir)
-        os.mkdir(thispdfdir)
+        os.mkdir(dest_htmldir)
+        os.mkdir(dest_pdfdir)
     except:
         pass
 
 
     for f in files:
+        print "-- %s" % os.path.basename(f)
         #check if want to publish
         if not publish_this_file(root, f):
             continue
 
 
-        source = os.path.join(thisdir, f)
+        #decide on source and destimation. src_dir is told to us and is not really "this"
+        source = os.path.join(src_dir, f)
         newhtml = f.replace('.chp','.html')
-        destination = os.path.join(thishtmldir, newhtml)
+        destination = os.path.join(dest_htmldir, newhtml)
 
         
-        #HTML
-        page_title, subtitle = create_html(source, destination, errors, opts.dry_run)
-        thisdirlist.append([destination, page_title, subtitle])
+        #create HTML, return a dict that understand what the page is, holds titles etc
+        page_info = create_html(source, destination, opts.dry_run)
+        thisdirlist.append(page_info)
+
 
         if opts.no_pdf == False:          
             #LaTeX
@@ -161,8 +205,7 @@ def loopthrudir(root, dirs, files, index_list):
             ltx_source = os.path.join(latex_dir, ltx_file)
             create_pdf(source, ltx_source, errors)
 
-    
-    index_list[thishtmldir] = thisdirlist
+    return thisdirlist
 
 
 ###main loop
@@ -170,13 +213,19 @@ def main(index_list):
     """ Go through the directory holding the .chp files, and run each file through 
         the rst generator(s)"""
 
+    ignore_dirs = ('.svn', '.git')
+    
+
     for root, dirs, files in os.walk(chapters_dir):
-        if root.find('.svn') != -1: 
-            continue
-        else:
-            loopthrudir(root, dirs, files, index_list)    
+        for d in ignore_dirs:
+            if root.find(d) != -1: 
+                continue
+            else:
+                index_list[root] = loopthrudir(root, dirs, files)    
+
     ### write a contents file
-    write_index(index_list, HTML_DIR, rhs_text)
+    write_index(index_list,  rhs_text)
+
 
 
 
@@ -193,6 +242,8 @@ if __name__ == '__main__':
                       default=False, help="do not generate HTML")
 
     (opts, args) = parser.parse_args()
+
+    index_list = {} 
 
     ### main loop
     check_environment()

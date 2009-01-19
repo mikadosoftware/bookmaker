@@ -1,6 +1,7 @@
 import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
+from docutils import core
 import config
 import ConfigParser
 import shutil
@@ -11,42 +12,59 @@ import shutil
 #>>> help(core.publish_parts)
 
     
-def write_index(index_list, html_dir, rhs_text):
+def write_index(index_list, rhs_text):
     """ 
 
     receive this
-    {'intro': [ [<filepath>, <filetitle>], ...], }
+    {'intro': [ {...dict holding details on a page...}
+
  
 
     XXX This needs rethinking.
     """   
 
     contents = ''' '''
-   
-    for i in sorted(index_list.keys()):
-        if len(index_list[i]) == 0: continue #no pages in this "folder"
 
-        contents += '</ol><h3>%s</h3><ol>' % i.replace('simpleitmanager/thebook/','')
-        for (ii, page_title) in index_list[i]:
-            if not page_title: 
-                page_title = os.path.splitext(os.path.basename(ii))[0]
+    ### go thru the dict of sections, where each section is a list of dict of page data
+    ### {'introduction section':[{<pageinfo>},...
+ 
+    for section in sorted(index_list.keys()):
+        if len(index_list[section]) == 0: continue #no pages in this "folder"
 
-            ii = ii.replace(html_dir + '/thebook/', '')      #trying to put index.html one level down from mkbook.py 
-	    contents += '<li> <a href="%s">%s</a></li> \n' % (ii, page_title)
+        contents += '</ul><h3>%s</h3><ul>' % os.path.basename(section)
 
-    contents += '</ol>'
+        for page_info in index_list[section]:
+            if page_info["title"] == "": 
+                page_title = os.path.splitext(os.path.basename(page_info['src']))[0]
+            else:
+                page_title = page_info["title"] 
+
+
+
+            ###
+            dest_href = page_info['dest'].replace(config.HTML_DIR + "/", '')      #trying to put index.html one level down from mkbook.py 
+
+            print "writing this src, %s to this html page %s then indexing as %s" % (page_info['src'], 
+                                                                                     page_info['dest'],
+                                                                                     dest_href)
+            
+
+	    contents += '''<li> <a href="%s">%s</a>
+                           <span class="subtitle">(%s)</span>
+                           </li> \n''' % (dest_href, page_title, page_info["subtitle"])
+
+    contents += '</ul>'
 
     ### now we have a formatted page of contents, put it in the main site tmpl
     d = get_tmpl_dict()
     d["title"] = page_title
     d["maintext"] = contents
     d["rhs"] = rhs_text
-    
 
     tmpl_txt = open("main.tmpl").read()
 
     ### write put page    
-    fo = open(os.path.join(html_dir,'index.html'),'wb')
+    fo = open(os.path.join(config.HTML_DIR,'index.html'),'wb')
     fo.write(tmpl_txt % d)
     fo.close()
 
@@ -57,10 +75,12 @@ def deploylive():
     print "start deploy from %s to %s." % (config.HTML_DIR, config.HTML_DEPLOY_DIR)
 
     shutil.rmtree(config.HTML_DEPLOY_DIR)
-    shutil.copytree(os.path.join(config.HTML_DIR, config.chapters_dir), config.HTML_DEPLOY_DIR)
-    for file in glob.glob(config.HTML_DIR + "/*.html"):
-         shutil.copy(file, config.HTML_DEPLOY_DIR)
-         print os.path.basename(file),   
+
+    shutil.copytree(config.HTML_DIR, config.HTML_DEPLOY_DIR)
+
+#    for file in glob.glob(config.HTML_DIR + "/*.html"):
+#         shutil.copy(file, config.HTML_DEPLOY_DIR)
+#         print os.path.basename(file),   
 
 
     subprocess.check_call(['cp','-r','css', config.HTML_DEPLOY_DIR ])
@@ -71,41 +91,58 @@ def get_html_from_rst(uStr):
     ''' THis uses ReSt to get some HTML from just text in text area. It is a bit funny - I force                            
     the title and body to be joined before it beocmes UStr, then I return title and body seperate.                          
     Seems to work as long as css is ok.
+
+    returns
+    -------
+    A dict of data about the page::
+
+      ['subtitle', 'version', 'encoding', 'html_prolog', 'header', 'meta', 'html_title', 'title', 'stylesheet', 'html_subtitle', 'html_body', 'body', 'head', 'body_suffix', 'fragment', 'docinfo', 'html_head', 'head_prefix', 'body_prefix', 'footer', 'body_pre_docinfo', 'whole']
+
+    examples,py in docutils.core is used    
     '''
 
+
     try:
-        p = html_parts(uStr.decode('latin1'), initial_header_level=2)
-        return (p['html_title'], p['body'], p['subtitle'])
+        overrides = {'input_encoding': "unicode",
+                 'initial_header_level': 2}
+        p = core.publish_parts(uStr, writer_name="html", settings_overrides=overrides)
+        return p
 
     except Exception, e:
+        print 'fail', e
         return 'rst2html failed: %s' % str(e)
 
 
 
-def strip_html(htmlstr):
-    """ given string remove any html tags, leaving plain text
+
+def getdirpath(html_pdf, root):
+    '''Given the root of where the walk is, 
+       decide what the dest html path is 
+
+     so if we are looking at /foo/bar as holding all the rst files
+     and /foo/bar/MyImportantSection as a sub dir
+     and we want to put the html stage into /wibble/wobble
+     we want to see a dest of /wibble/wobble and /wibble/wobble/MyImptSubDir
+     '''
     
-    >>> strip_html("<li>hello</li>")
-    'hello'
- 
-    """
-    import re
-    r = re.compile("\<.*?\>") #non greedy match between <>
-    matches = r.findall(htmlstr)
-    #print "given: %s" % htmlstr,
 
-    for i in matches:
-        htmlstr = htmlstr.replace(i, '')
-    #print " %s" % htmlstr
-    return htmlstr
-
-
-def getdirpath(html_pdf, root, html_dir, latex_dir):
-    '''given the root of where the walk is, decide what the html path is '''
     if html_pdf == 'html':
-        return os.path.join(html_dir, root)
+#        print '************'
+#        print 'given this dir %s, and a dest \
+#root of %s return ' % (root, config.HTML_DIR)
+        
+        path_from_docroot = root.replace(config.chapters_dir, '')
+        if path_from_docroot.find("/") == 0:
+            path_from_docroot = path_from_docroot[1:]
+#        print ">>", path_from_docroot
+#        print "joingin", config.HTML_DIR, path_from_docroot, os.getcwd()
+#        print os.path.abspath(os.path.join(config.HTML_DIR, path_from_docroot))
+        dst = os.path.join(config.HTML_DIR, path_from_docroot)
+#        print "--", dst
+#        print '+++++++'
+        return dst
     else:
-        return os.path.join(latex_dir, root)
+        return os.path.join(config.latex_dir, root)
 
 
 def get_tmpl_dict():
@@ -219,11 +256,38 @@ def kill_pdf_odds(abs_latex_dir):
             os.remove(os.path.join(abs_latex_dir, f))
 
 def check_environment():
-    """THe variaous file locations should still exits """
-    shutil.rmtree(config.HTML_DIR)
-    if not os.path.isdir(config.HTML_DIR):
-        os.mkdir(config.HTML_DIR)
+    """Clean the file system so html etc can be produced.
+
+
+    We remove the staging html dir, and the final deploy dir.
+    We then repopulate the media (css, imgs) into the staging dir,
+    ready for the html to be made
+
+
+    XXX - it might be simpler to have img dir in each level of chapter dir, 
+     """
+
+    for expendable_dir in (config.HTML_DIR, config.HTML_DEPLOY_DIR):
+
+        if os.path.isdir(expendable_dir):
+            shutil.rmtree(expendable_dir)
+        os.mkdir(expendable_dir)
+
+    shutil.copytree(config.IMG_DIR, os.path.join(config.HTML_DIR, "img"))
+    shutil.copytree(config.CSS_DIR, os.path.join(config.HTML_DIR, "css"))
+
     
+
+class page(object):
+    """represents what we know about a (html) page
+
+
+    really this is a convenient way to store metadata about a file
+    """
+    def __init__(self, **kwds):
+        self.__dict__.update(kwds)
+
+
 
 
 def _test():

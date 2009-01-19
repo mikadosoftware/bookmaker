@@ -1,3 +1,4 @@
+
 ============
 Sound
 ============
@@ -8,10 +9,10 @@ http://chelskov.org/?p=8
 $ kldload snd_driver
 $ cat /dev/sndstat
 
-I’ll explain: the snd_driver is a meta driver, which actually finds 
+I'll explain: the snd_driver is a meta driver, which actually finds 
 the correct sound driver for your sound card and loads it into the kernel. 
 The second command just tells us which driver it actually loaded. 
-In my case, this was snd_ich, so I simply added snd_ich_load=”YES” to the 
+In my case, this was snd_ich, so I simply added snd_ich_load=YES to the 
 /boot/loader.conf file, and my sound works on every boot.
 
 or just push any file into the sound output
