@@ -1,32 +1,66 @@
-=============
-Energy and IT
-=============
+==============================
+Energy, the environment and IT
+==============================
 
 Its not easy being green
 ========================
 
+Lecture Begins ...
 
-The world is heating up, the mean temperature of the planet will increase 
-between 1.5 C and 3 C or more in the next 100 years.
+We all know the facts. The world is heating up, the mean temperature of the planet will increase between 1.5 C and 3 C or more in the next 100 years.
 Below 2C only averagely bad things will happen, above it really Bad Things.
+And it is up to us to mitigate the effects of those bad things as far as we can. After all its our children who will be wading to work.
+
+Lecture Ends.
+
+I am basing a huge amount of this essay on the book "Sustainable Energy - Without the hot air" by David JC MacKay. (see bibliography).  I throughly recommend the book, despite its authors obvious biases they are firnly leashed to consistent and clearly presented numbers.
+
+Electrical power consumption for computing accounts for an estimated 10% of Western power use and is growing. [1]_
+This is a "good thing" - it means my basic thesis is correct - computers are growing more and more central to our way of life and that good management of computers is therefore increasingly important.
+
+Of course its bad in other senses.  Like flooding of all major coastal cities. However there are several possible mitgation strategies (the phrase "solutions" seems a little too optimistic), that can be applied.  I am listing the major ones I know of
+
+1. The George W Bush
+   Future Technology will solve the problem, in some unspecified manner in the future. 
+   This is of course a possiblity, from fixing CO2 using algae to solar cell improvements. 
+   It does feel however, like maxing out credit cards, but buying some lottery tickets to  pay them off.
+
+2. The George Monbiot
+   Its all our fault, the rich west, you bunch of F**kers. Immediately stop using large amounts of energy,
+   let the poorer countries have fairer trade terms.
+   Well, I do believe that fairer trade terms are a Good Thing (if only because better terms encourage more trade which is about the only thing that all economists agree is beneficial.)
+   However mandating cut backs in energy use is frankly unlikely to 
+
+3. The Boy George 
+   Geo-engineering is apparently the term. THink of it as slapping huge amounts of make-up on to cover up more fundamental problems.  Some the whackier ideas include giant space mirrors to reflect back the suns energy (we cannot even get a telescopt up first time round, we will end up with a James Bond death ray mirror.  Actually thats pretty cool)
+   However some of the more considered ideas [2]_ include painting roads and urban roofs white (or increasing their infra-red albedo without necessarily interfering in the visible spectrum.  A 20% coverage would increase the earths albedo by xxx
+
+
+Frankly these do not seem particularly workable
 
 
 
-However there are two or three approaches, and like all good IT managers I am simplifying for ease
+4. Curious George
+   - reduce demand dramatically either by
+
+   - reducing the population 
+   - changing our lifestyle  
+   - keep the lifestyle, but use less energy through "efficiency"
+
+
+
+
+Four ways to reduce CO2 impact 
+------------------------------
 
 1. Stop using fossil fuels.
 2. Reduce the power consumption so it is easier/cheaper to stop using fossil fuels
 3. Reduce or replace other pollutants and contaniments in our processes
-4. Crow about it in adverts and down the pub. We do not toil to be quiet about our achievements
+4. Crow about it in adverts and down the pub. We do not toil to be quiet about our achievements.  Thats for Good People. We are simply good citizens.
 
 
 
 
-
-Electrical power consumption for computing accounts for an estimated 10% of Western power use and is growing
-THis is a "good thing" - it means my basic thesis is correct - computers are growing more and more central to our way of life and that good management of computers is better than bad.
-
-Of course its bad in other senses.
 
 Ways to reduce power consumption
 
@@ -42,6 +76,36 @@ Power
 -----
 1 Joule is 1 Watt per second
 KWH is a "lump" of power, the burning of a 40W bulb for 24 hours.
+
+
+A Joule is the international unit of energy.
+A watt is the international unit of power.
+A watt is a measure of energy *flow*. That is a watt is a flow of energy 
+(lets say out of the wall socket, into your lamp) of 1 Joule per second.
+
+One joule is approximately 1% of a peanut. This is a tiny amount.  Honestly. A more useful and commonly used amount of energy is the kilowatt-hour.
+
+
+A kilowatt is a thousand Joules per second.
+So a Kilowatt hour, is a thousand Joules per second flowing out of a wall socket over the course of an hour. Into our big bag of energy would come 
+
+  1000 x 60 x 60 
+
+  or
+
+  3,600,000 Joules
+
+
+Now a Joule = Calorie. Yes thats right, the maazine cover diet style of calorie. Except that every time you hear the word calorie in a diet related sense, it is used wrong - 1,000 times wrong. THe calorie you need to cut out in a diet is actally a kil-calorie. I have no idea why it got confused but there you are, it did. 
+
+So my wife's glossy tells me I need to eat only 2,500 calories a day or so. Which really means 2,500,000 Joules.
+Now I can easily scoff more than that, and with (a lot less ease) burn that up. A days hard hiking, or a job on a building site will probably use 3,600 calories a day. 
+
+SO we have a useful, human sized, measure of a "bag" of energy - a kWh.  Its easy to calculate (its about the energy used
+leaving a bar fire or a kettle on for an hour, its also the energy used by working hard for a day - perhaps getting a servant)
+
+
+So a kilowatt-hour is *not* a thousand watts per hour, or any other measure of flow. A kilowatt-hour is a bag of energy that is about the amount of work you could do in a day, and feel knackered at the end.
 
 
 
@@ -74,3 +138,12 @@ Sustainable Energy - Without the hot air
 David JC MacKay
 
 Much of the intelligent comments in this chapter are stolen shamelessly from him.
+
+
+
+
+
+
+
+.. [1] Citation needed !
+.. [2] damn - frontpage G2 friday 16th jan 2009?
