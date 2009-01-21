@@ -96,11 +96,19 @@ Sample rc.conf file with a full time set on boot::
   ntpd_enable="YES"
 
 
+Trouble shooting
+----------------
+I often get tripped up by this when running ntpdate manually::
+
+  "step-systime: Operation not permitted"
+
+It is a permissions problem, but crops up most often in Jails and related virtualised servers.  The access to the hardware layer is mediated and so even as root on a Jail, you cannot set time - time is fixed on the host OS. 
+
+
 
 Notes
 =====
-.. [#] Poul-Henning Kemp is a respected FreeBSD developer who ran a Stratum 1 Server. His server was referenced by a commercial domestic router sold in its millions, and by IP address. He was getting 3 million packets a day extra.
-Fuller story is at http://www.lightbluetouchpaper.org/2006/04/07/when-firmware-attacks-ddos-by-d-link/
+.. [#] Poul-Henning Kemp is a respected FreeBSD developer who ran a Stratum 1 Server. His server was referenced by a commercial domestic router sold in its millions, and by IP address. He was getting 3 million packets a day extra.  Full story is at http://www.lightbluetouchpaper.org/2006/04/07/when-firmware-attacks-ddos-by-d-link/
 
 
 Bibliography
