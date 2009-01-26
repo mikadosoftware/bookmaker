@@ -100,8 +100,8 @@ import pprint
 from docutils.examples import html_parts
 from lib import  kill_pdf_odds, create_pdf, publish_this_file, getdirpath, get_html_from_rst, write_index, deploylive, get_tmpl_dict, check_environment
 #getting lazy...
-from config import *
-
+#from config import *
+import config
 
 
 
@@ -136,7 +136,7 @@ def create_html(source, destination, dry_run=False):
     d = get_tmpl_dict()
     d["title"] = page_info['title']
     d["maintext"] =  page_info['html_body']
-    d["rhs"] = rhs_text
+    d["rhs"] = config.rhs_text
     d['subtitle'] = page_info['subtitle']
 
     outstr = tmpl_txt % d
@@ -216,7 +216,7 @@ def main(index_list):
     ignore_dirs = ('.svn', '.git')
     
 
-    for root, dirs, files in os.walk(chapters_dir):
+    for root, dirs, files in os.walk(config.chapters_dir):
         for d in ignore_dirs:
             if root.find(d) != -1: 
                 continue
@@ -224,7 +224,7 @@ def main(index_list):
                 index_list[root] = loopthrudir(root, dirs, files)    
 
     ### write a contents file
-    write_index(index_list,  rhs_text)
+    write_index(index_list)
 
 
 

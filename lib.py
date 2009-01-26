@@ -12,26 +12,73 @@ import shutil
 #>>> help(core.publish_parts)
 
     
-def write_index(index_list, rhs_text):
+def write_indexpage_to_disk(contents, section_path):
+    '''cleaning up write_index, use this to actually write to disk
+
+    section_path is the bit of this folder after chapters_dir,
+    so for example '/root/thebook/thebook/SoHoFromScratch/foo' > 'SoHoFromScratch/foo'
+    
+    ''' 
+
+    ### now we have a formatted page of contents, put it in the main site tmpl
+    d = get_tmpl_dict()
+    d["title"] = "Index for %s" % os.path.basename(section_path)
+    d["maintext"] = contents
+    d["rhs"] = config.rhs_text
+
+    tmpl_txt = open("main.tmpl").read()
+
+
+
+    ### write put page    
+    dest = os.path.join(os.path.join(config.HTML_DIR, section_path), 'index.html')
+
+    print "*** writing %s to %s\n" % (section_path, dest)
+    fo = open(dest,'wb')
+    fo.write(tmpl_txt % d)
+    fo.close()
+    
+
+
+def write_index(index_list):
     """ 
 
     receive this
     {'intro': [ {...dict holding details on a page...}
 
- 
+    I want an index.html in *each* directory, and maybe a big one in root dir. Not sure.
+    I think better to keep whats going on as the intro for now, maybe later do a 
+    *new* page. 
 
-    XXX This needs rethinking.
+    keys() looks like 
+['/root/thebook/thebook/Attitude',
+ '/root/thebook/thebook/SoHoFromScratch',
+ '/root/thebook/thebook/Introduction',
+ '/root/thebook/thebook',
+ '/root/thebook/thebook/OSS',
+ '/root/thebook/thebook/OtherPoV']
+
+nb config.chapters_dir = '/root/thebook/thebook'
+
+    
     """   
 
-    contents = ''' '''
+    all_contents = ''' '''              #the whole site index
+    this_section_contents = ''' '''     #index for just one section/directory
 
     ### go thru the dict of sections, where each section is a list of dict of page data
     ### {'introduction section':[{<pageinfo>},...
  
     for section in sorted(index_list.keys()):
+        this_section_contents = ''' '''
+        this_section_path = section.replace(config.chapters_dir, '')
+        if  this_section_path.find("/") == 0: 
+            this_section_path = this_section_path[1:]
+
+
         if len(index_list[section]) == 0: continue #no pages in this "folder"
 
-        contents += '</ul><h3>%s</h3><ul>' % os.path.basename(section)
+        this_section_contents += '<h3>%s</h3><ul>' % os.path.basename(section)
 
         for page_info in index_list[section]:
             if page_info["title"] == "": 
@@ -40,33 +87,24 @@ def write_index(index_list, rhs_text):
                 page_title = page_info["title"] 
 
 
+            ###  this is a bit confusing - I am planning to write an index page in each dir so only need basename?
+            dest_href = os.path.basename(page_info['dest'].replace(config.HTML_DIR + "/", ''))
+            
 
-            ###
-            dest_href = page_info['dest'].replace(config.HTML_DIR + "/", '')      #trying to put index.html one level down from mkbook.py 
-
-            print "writing this src, %s to this html page %s then indexing as %s" % (page_info['src'], 
+            print "*** writing this src, %s to this html page %s then indexing as %s\n\n" % (page_info['src'], 
                                                                                      page_info['dest'],
                                                                                      dest_href)
             
-
-	    contents += '''<li> <a href="%s">%s</a>
+	    this_section_contents += '''<li> <a href="%s">%s</a>
                            <span class="subtitle">(%s)</span>
                            </li> \n''' % (dest_href, page_title, page_info["subtitle"])
+             
+        this_section_contents += '</ul>'
+        write_indexpage_to_disk(this_section_contents, this_section_path)
+        all_contents += this_section_contents
 
-    contents += '</ul>'
+    write_indexpage_to_disk(all_contents, '')
 
-    ### now we have a formatted page of contents, put it in the main site tmpl
-    d = get_tmpl_dict()
-    d["title"] = page_title
-    d["maintext"] = contents
-    d["rhs"] = rhs_text
-
-    tmpl_txt = open("main.tmpl").read()
-
-    ### write put page    
-    fo = open(os.path.join(config.HTML_DIR,'index.html'),'wb')
-    fo.write(tmpl_txt % d)
-    fo.close()
 
 def deploylive():
     """move from where html files create to the DocumentRoot """    
@@ -85,7 +123,16 @@ def deploylive():
 
     subprocess.check_call(['cp','-r','css', config.HTML_DEPLOY_DIR ])
     subprocess.check_call(['cp','-r','img', config.HTML_DEPLOY_DIR ])
+    shutil.copy(os.path.join(config.HTML_DEPLOY_DIR, "Introduction/WhatsGoingOnHere.html"), 
+                os.path.join(config.HTML_DEPLOY_DIR, "index.html")) 
+
+
     print "deploy done"
+
+
+
+
+
 
 def get_html_from_rst(uStr):
     ''' THis uses ReSt to get some HTML from just text in text area. It is a bit funny - I force                            
@@ -275,7 +322,6 @@ def check_environment():
 
     shutil.copytree(config.IMG_DIR, os.path.join(config.HTML_DIR, "img"))
     shutil.copytree(config.CSS_DIR, os.path.join(config.HTML_DIR, "css"))
-
     
 
 class page(object):
