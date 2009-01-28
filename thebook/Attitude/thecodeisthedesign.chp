@@ -4,23 +4,20 @@ Writing code is designing
 
 What is never understood about programming
 ------------------------------------------
-
-Programming is just as much a creative act as acrhitecture, engineering and other "crafts".
-
-Of course my epiphany is 20 years behind the times, but its alright - most of the industry has not gotten close yet.
+::
 
  The code is the design
 
 It has always been sitting there at the back of my mind. And now, having someone else write it with clarity and force, I can see it is true.
 
-of course I am nearly 2 decades behind the times, but better late than never.
+Of course I am nearly two decades behind the times, but better late than never.
 Jack Reeves in 1992 published an essay (1) and followed up 13 years later with a commentary. (2)
 
 Go read them.
 
 No - you cheated. Go read them.
 
-Ok _ I'll give you the precis.
+Ok,  I'll give you the precis.
 
 Source code is the final design for a software project. The spec is not it, the screenshots, the careful word processed documents are not the design. The source code is the design, the blueprints, the final defintion.
 

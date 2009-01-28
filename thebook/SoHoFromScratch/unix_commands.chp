@@ -1,0 +1,30 @@
+
+=================
+Unix command line
+=================
+
+why type
+========
+
+Compare comamnd line and click GUI - scalability, prgrammability
+
+
+listing and sorting
+-------------------
+
+list files
+
+  ls -la
+
+
+list files in date order
+
+  ls -lt
+
+sort on size, 4th column in (zero based), use numeric not alapha sort, reverose order
+
+  ls -l | sort +4nr
+
+
+
+
