@@ -1,12 +1,13 @@
-=====
-LaTeX
-=====
+==============
+LaTeX and ReST
+==============
 
 
-LaTeX is an immensely powerful typesetting package. It is not a word processor, and is in many ways superior to any word processing package, except for one thing. It is hard to get started.  Really hard. 
+LaTeX is an immensely powerful typesetting package.  It is not a word processor.  It takes "plain" text and it works out the best way to present that text as a book or report or article.  It is used to produce truly beautiful layout, and more importantly, it allows, no, it makes you focus on the words, on what you are going to say.  I find it in many ways superior to any word processing package, except for one thing. It is hard to get started.  
 
-So, firstly a list of reasons why to use LaTeX.
+So here is my guide to getting started with LaTeX.
 
+Firstly a list of reasons why to use LaTeX.  Its always good to have reasons to sustain you through the dark times.
 
 - LaTeX is used by some of the cleverest people I know, and some of the cleverest people on the planet.  It is to all intents and purposes the language scientists learn to write their doctoral thesis, and publish their papers in journals.
 
@@ -22,10 +23,12 @@ So, firstly a list of reasons why to use LaTeX.
 and some more serious reasons
 
 
-- You can write a text file, and get out HTML, and pdf. 
+- You write a text file, and concentrate on the meaning.  LaTeX makes you look good. 
 
 - The output looks better.  It just does.  And you can make it even better.  You.
 
+
+Ok, so there is some clever LaTeX language which does typesetting.  But *writing* LaTeX is as horrible as writing HTML.  Yes, this is true, and luckily I do not do that.  Some clever people have written a Python suite called docutils, which basically takes text that is formatted in consistent manner, and can turn that into HTML or LaTeX.  Then you can turn that LaTeX into a pdf.
 
 
 I use ReST, which is a "lite" markup language.  This whole site was written in it. ::
@@ -45,6 +48,7 @@ I use ReST, which is a "lite" markup language.  This whole site was written in i
   .. img: myPhoto.jpg
 
 
+
 ReST is exceptionally flexible, and you can produce HTML at the drop of a hat::
 
   $ rst2html.py --stylesheet=style.css test.txt > test.html
@@ -58,6 +62,64 @@ Which you can then convert into a pdf::
   $ pdflatex test.ltx
 
 
+
+The LaTeX equivalent of the above ReST is  (some lines removed (...) for clarity) ::
+
+ \documentclass[10pt,a4paper,english]{article}
+ ...
+ \usepackage{graphicx}
+ ...
+ \title{This is a Title in ReST}
+ \author{}
+ \date{}
+ \hypersetup{
+ pdftitle={This is a Title in ReST}
+ }
+ \raggedbottom
+ \begin{document}
+ \maketitle
+
+ \setlength{\locallinewidth}{\linewidth}
+
+ This is just a paragraph, and below is a bullet list
+ \begin{itemize}
+ \item {} 
+ with bullet points
+
+ \item {} 
+ laid out easily
+
+ \item {} 
+ in any text editor.
+
+ \end{itemize}
+
+ and you can even include images like this one
+ % img: myPhoto.jpg 
+
+ \end{document}
+
+
+So, I start with ReST, and that can auto-convert into LaTeX.  This LaTeX will produce PDF's such as this
+
+
+
+.. img: /root/foo/foo.pdf
+
+
+Syling
+------
+Now that works, but frankly only a PhD dissertation committee could love it.  It is just not, well, jazzy enough these days.  A lot of LaTeX purists (who also happen to be leading experts in typesetting and information presentation but what do they know),  feel that the over-styling of modern documents tends to lose the content being discussed.  This is probably true but if you have a corporate style, you have trouble fighting it so go with the flow.
+
+My company had requirements for 12pt arial, title pages, headers and footers etc.  But I have this nice workflow that produces pdf outputs - how can I get the corporate styles I need without hand editing the LaTeX documents.  
+
+This is where .sty documents come in.  A .sty document is called a *Package* in LaTeX, but obviously has its roots in *style* (hence the .sty).  A LaTeX style file can be thought of like CSS for HTML.  Although .sty files also provide real functionality (the graphicx package is hugely complicated), for our purposes just getting to 12pt Arial is enough.
+
+
+
+
+
+
 And hey presto ! HTML and PDFs from just text documents. Perfect for knocking up documentation, business reports and the like.
 
 
@@ -69,8 +131,9 @@ It means I can concentrate on the words, and not have to fuss around with making
 
 It feels deeply effective to be able to write just some plain vanilla text, hit a command and view a professional looking, impressive document that can be mailed to whoever needs it.  Quotes, proposals, tenders, political in-fighting.  All of which I can concentrate on the *content* of the document, and then let ReST and LaTeX make me look good.
 
-
 Of course one can use MS Word (or any word processor) effectively and well,[#]_  but I have found this a indispensible tool.  Often I can find myself where Word is impractical (say on the tube with just a PDA) and just write an email to myself, in plain text, confident that when i am in front of a real computer, it will be a matter of minutes to turn it into a professional document.  
+
+Of course two issues stand out.
 
 Now stylesheets are what we are talking about.  HTML has CSS for its style 
   
