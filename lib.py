@@ -320,6 +320,11 @@ def check_environment():
             shutil.rmtree(expendable_dir)
         os.mkdir(expendable_dir)
 
+
+    #kind of assumes its there ...
+    shutil.rmtree(os.path.join(config.chapters_dir, "img"))
+    shutil.copytree(config.IMG_DIR, os.path.join(config.chapters_dir, "img"))
+    ### make destination OK
     shutil.copytree(config.IMG_DIR, os.path.join(config.HTML_DIR, "img"))
     shutil.copytree(config.CSS_DIR, os.path.join(config.HTML_DIR, "css"))
     

@@ -43,9 +43,8 @@ I use ReST, which is a "lite" markup language.  This whole site was written in i
   - laid out easily 
   - in any text editor.
 
-  and you can even include images like this one
-   
-  .. img: myPhoto.jpg
+  and you can even include images.
+
 
 
 
@@ -60,6 +59,17 @@ And of course it can do the same with LaTeX::
 Which you can then convert into a pdf::
 
   $ pdflatex test.ltx
+
+
+Now unfortunately this looks, well, a little uninspiring
+
+
+.. figure:: ../img/file.jpg
+   :class: screenshot
+   :width: 178px
+   :height: 240px
+
+   A screen shot of the simple pdf produced above
 
 
 
@@ -79,44 +89,48 @@ The LaTeX equivalent of the above ReST is  (some lines removed (...) for clarity
  \begin{document}
  \maketitle
 
- \setlength{\locallinewidth}{\linewidth}
-
- This is just a paragraph, and below is a bullet list
- \begin{itemize}
- \item {} 
- with bullet points
-
- \item {} 
- laid out easily
-
- \item {} 
- in any text editor.
-
- \end{itemize}
-
- and you can even include images like this one
- % img: myPhoto.jpg 
+ ...
 
  \end{document}
 
 
-So, I start with ReST, and that can auto-convert into LaTeX.  This LaTeX will produce PDF's such as this
-
-
-
-.. img: /root/foo/foo.pdf
+OK, we can take a simple piece of text, run it into LaTeX, run the LaTeX into PDF.  But can we make it look, well, more corporatey.  
 
 
 Syling
 ------
-Now that works, but frankly only a PhD dissertation committee could love it.  It is just not, well, jazzy enough these days.  A lot of LaTeX purists (who also happen to be leading experts in typesetting and information presentation but what do they know),  feel that the over-styling of modern documents tends to lose the content being discussed.  This is probably true but if you have a corporate style, you have trouble fighting it so go with the flow.
+Frankly only a PhD dissertation committee could love that output.  It is just not, well, jazzy enough these days.  A lot of LaTeX purists (who also happen to be leading experts in typesetting and information presentation, but what do they know),  feel that the over-styling of modern documents tends to lose the content being discussed.  This is probably true but if you work in almost any business these days, they have a corporate style, and you will have no end of trouble fighting it so go with the flow.
 
 My company had requirements for 12pt arial, title pages, headers and footers etc.  But I have this nice workflow that produces pdf outputs - how can I get the corporate styles I need without hand editing the LaTeX documents.  
+
+Stylesheets for LaTeX
+---------------------
 
 This is where .sty documents come in.  A .sty document is called a *Package* in LaTeX, but obviously has its roots in *style* (hence the .sty).  A LaTeX style file can be thought of like CSS for HTML.  Although .sty files also provide real functionality (the graphicx package is hugely complicated), for our purposes just getting to 12pt Arial is enough.
 
 
+So I need to include this line in my LaTeX document [#]_ ::
 
+  \usepackage{pbrian}
+
+and suddenly, with no other changes to the LaTeX, the document looks much better
+
+
+.. figure:: ../img/file2-0.jpg
+   :class: screenshot
+   :width: 178px
+   :height: 240px
+
+   
+   A screen shot of the same LaTeX, but with stylesheet.
+
+
+.. figure:: ../img/file2-1.jpg
+   :class: screenshot
+   :width: 178px
+   :height: 240px
+
+   Page 2 of above
 
 
 
@@ -222,3 +236,4 @@ http://www.cl.cam.ac.uk/~mgk25/unicode.html
 
 .. [#]  MS Word can of course be used to do this.  But why? for long works it really starts to grow a pain, and it is only feasible to handle Word if you use "styles" - that is instead of marking "my Heading" as Bold and Underline, you mark it as Style header2, which you can apply
 
+.. [#] rst2latex also has an include stylesheet option which means there is no after the call manual editing of the LaTeX.  But that clutters up the point I am trying to make here.  
