@@ -104,6 +104,40 @@ from lib import  kill_pdf_odds, create_pdf, publish_this_file, getdirpath, get_h
 import config
 
 
+def make_frontpage(chosen_articles=["thebook/Attitude/ibmadverts.chp",]):
+    """ Put on the front page 3 articles that reflect the latest on the site """
+
+    for article in chosen_articles:
+        try:
+            rst_txt = unicode(open(article).read(),'utf8') #i should save all my files as utf8 anyway
+            page_info = get_html_from_rst(rst_txt) #now have html plus meta data
+        except Exception, e:
+            raise e  
+
+    destination = os.path.join(config.HTML_DIR, "index.html")
+
+    #write out tmpl to destination
+    tmpl_txt = open("main.tmpl").read()                
+
+    d = get_tmpl_dict()
+    d["title"] = page_info['title']
+    d["maintext"] =  page_info['html_body'][:120]
+    d["rhs"] = config.rhs_text
+    d['subtitle'] = page_info['subtitle']
+
+    outstr = tmpl_txt % d
+    fo = open(destination, 'w')
+    fo.write(outstr)
+    fo.close()
+
+#    page_info["src"] = article
+#    page_info["dest"] = destination
+#    page_info["errors"] = errors_converting_page
+
+    return page_info
+
+    
+
 
 def create_html(source, destination, dry_run=False):
     """
@@ -248,5 +282,6 @@ if __name__ == '__main__':
     ### main loop
     check_environment()
     main(index_list)
+    make_frontpage()
     deploylive()
 

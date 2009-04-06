@@ -1,0 +1,8 @@
+===========
+Image Magic
+===========
+
+How to convert a pdf file into per page images::
+
+  convert -density 96x96 -trim file.pdf file.jpeg
+

@@ -1,3 +1,14 @@
+#!/usr/local/bin/python
+#! -*- coding: utf-8 -*-
+
+"""
+pbrian
+
+Library functions to support web site from ReSt creation.
+
+
+"""
+
 import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
@@ -116,21 +127,20 @@ def deploylive():
 
     shutil.copytree(config.HTML_DIR, config.HTML_DEPLOY_DIR)
 
-#    for file in glob.glob(config.HTML_DIR + "/*.html"):
-#         shutil.copy(file, config.HTML_DEPLOY_DIR)
-#         print os.path.basename(file),   
-
-
     subprocess.check_call(['cp','-r','css', config.HTML_DEPLOY_DIR ])
     subprocess.check_call(['cp','-r','img', config.HTML_DEPLOY_DIR ])
-    shutil.copy(os.path.join(config.HTML_DEPLOY_DIR, "Introduction/WhatsGoingOnHere.html"), 
-                os.path.join(config.HTML_DEPLOY_DIR, "index.html")) 
+
+    shutil.copy(os.path.join(config.HTML_DEPLOY_DIR, "index.html"), 
+                os.path.join(config.HTML_DEPLOY_DIR, "contents.html")) 
 
 
     print "deploy done"
 
 
-
+def make_site_index():
+    """I Want a different index page
+   
+     """
 
 
 
@@ -174,19 +184,11 @@ def getdirpath(html_pdf, root):
     
 
     if html_pdf == 'html':
-#        print '************'
-#        print 'given this dir %s, and a dest \
-#root of %s return ' % (root, config.HTML_DIR)
         
         path_from_docroot = root.replace(config.chapters_dir, '')
         if path_from_docroot.find("/") == 0:
             path_from_docroot = path_from_docroot[1:]
-#        print ">>", path_from_docroot
-#        print "joingin", config.HTML_DIR, path_from_docroot, os.getcwd()
-#        print os.path.abspath(os.path.join(config.HTML_DIR, path_from_docroot))
         dst = os.path.join(config.HTML_DIR, path_from_docroot)
-#        print "--", dst
-#        print '+++++++'
         return dst
     else:
         return os.path.join(config.latex_dir, root)

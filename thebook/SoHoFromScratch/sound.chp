@@ -32,7 +32,9 @@ burncd, a freebsd userland utility, can burn iso direct to ATAPI
 
 sysutils/cdrtools has mkisofs so is useful
 
+example burning from ISO
 
+$ burncd -f /dev/acd0 -e data /usr/local/tmp/7.1.iso
 
 biblio
 ------
@@ -116,3 +118,8 @@ esd was not running - does mixer replace esd?
 
 STUN
 http://cnscenter.future.co.kr/resource/ietf/ind-draft/draft-takeda-symmetric-nat-traversal-00.txt
+
+
+
+burncd
+

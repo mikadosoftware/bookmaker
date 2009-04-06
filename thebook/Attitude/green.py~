@@ -1,0 +1,30 @@
+
+"""
+A Joule is the international unit of energy.
+A watt is the international unit of power.
+A watt is a measure of energy *flow*. That is a watt is a flow of energy 
+(lets say out of the wall socket, into your lamp) of 1 Joule per second.
+
+One joule is approximately 1% of a peanut. This is a tiny amount.  Honestly. A more useful and commonly used amount of energy is the kilowatt-hour.
+
+
+A kilowatt is a thousand Joules per second.
+So a Kilowatt hour, is a thousand Joules per second flowing out of a wall socket over the course of an hour. Into our big bag of energy would come 
+
+  1000 x 60 x 60 
+
+  or
+
+  3,600,000 Joules
+
+
+
+A more useful amount is the energy a human can output over the course of a day 
+- much more understandable.
+
+A human working hard 
+
+
+So a kilowatt-hour is *not* a thousand watts per hour, or any other measure of flow. A kilowatt-hour is a bag of energy that is about the amount of work you could do in a day, and feel knackered at the end.
+
+"""

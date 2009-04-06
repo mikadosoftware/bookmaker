@@ -1,0 +1,75 @@
+=====
+LaTeX
+=====
+
+
+LaTeX is an immensely powerful typesetting package. It is not a word processor, and is in many ways superior to any word processing package, except for one thing. It is hard to get started.
+
+I am going to discuss two ways to make that getting started easier
+
+- how to build your own LaTeX class to style reports as you would like them
+- how to generate LaTeX documents (and pdfs) straight from text files.
+
+Classes
+-------
+LaTeX looks like this
+
+::
+
+  \documentclass{article}
+  \begin{document}
+  Hello World
+  \end{document}
+
+Then discuss packages, classes, making pdfs etc.
+
+
+Getting hold of LaTeX
+---------------------
+
+
+Writing Own class
+-----------------
+There are two types of file that contain user-defined style information - classes (*.cls) and packages (*.sty).
+A package can be included with any kind of class (article, book) and it will work sensibly. It usually includes things like author information.
+A class is much harder to work with other classes - a book class will work badly if it tries to coexist with a newsletter class. 
+
+We want a business-report class, that we shall use to define how all the memos and reports we send out to the business shall look. 
+It will try and mimic a Word document as corporate style usually gets defined like that.
+
+ 
+
+
+Notes
+-----
+difference between class and pacakge
+
+classes are in .cls files, and only do one *type* of document (ie newsletter)
+packages are in .sty files and have functions that can affect any *type* of document, such as graphics package.
+
+There is a report class defined in /usr/local/texlive/2008/texmf-dist/tex/latex/base, and as I am trying to create my own class that will be used for my internal reports, that is where we start
+
+
+
+
+
+
+
+http://www.how2s.org/index.php/Howto_use_Arial_Font_in_LaTeX
+
+
+starting
+http://www.ling.upenn.edu/advice/latex.html
+http://www.ccrnp.ncifcrf.gov/~toms/latexforbeginners.html
+http://heather.cs.ucdavis.edu/~matloff/LaTeX/LookHereFirst.html
+
+texlive
+
+http://www.tex.ac.uk/cgi-bin/texfaq2html?label=dvips-pdf
+http://www-h.eng.cam.ac.uk/help/tpl/textprocessing/
+http://online.redwoods.cc.ca.us/instruct/darnold/StaffDev/Index.htm
+http://www.ling.upenn.edu/advice/latex.html
+understanding fonts
+
+http://www.cl.cam.ac.uk/~mgk25/unicode.html
+

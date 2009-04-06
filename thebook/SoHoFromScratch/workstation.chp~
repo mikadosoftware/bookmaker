@@ -1,0 +1,39 @@
+===========
+Workstation
+===========
+
+==============================
+Tuning your PC to be "Just So"
+==============================
+
+This might start to get a little nerd-like.  Oh hell, a lot nerd-like but I spend the majority of my working life in front of my PC, so it had better act like I want it to act.
+
+We *knowledge workers* (no laughing at the back there) use computers everyday, but how we use them is a mark of our effectiveness *as* knowledge workers.  I reckon there are four levels 
+
+
+- Dumb terminal
+- Gadgets and knobs
+- Tool use
+- Tool creation
+
+
+
+
+
+
+
+There is some sort of principle here, one that harks back to my original thesis of programming as the be all and end all of computing.  Basically
+
+
+Gadgets, knobs, application tuning
+Tool use,
+tool creation
+
+
+First and foremost, I should be able to extend my PC - by that I mean I should be able
+
+
+Dumb terminal
+=============
+I think I am one of my own worst offenders here.  Giving "users" dumb terminals is probably the simplest and easiest forms of IT management around.  It is cheap(er), easy to implement and reduces the variables people have to play around with, thus reducing my headaches.  But I am supposed to be championing the use of programming as a fundamental skill in the 21st Century.  So I do this by taking away from people's personal computing.  I am not entirely clear I have resolved this, but I make programming available on the terminals, mostly SQL query browser, so I can assuage my guilt.
+

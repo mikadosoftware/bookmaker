@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Printing</title>
+  
+  <link rel="stylesheet" href="/root/foo/css/cookbook.css" type="text/css" />
+
+
+</head>
+
+<body>
+
+<div id="header">
+
+<img src="/root/foo/img/tour_tonbridge.jpg" 
+         style="width:100%; position:relative; top:-10px;"
+         alt="itmanagerscookbook.com"
+         title="IT Manager's CookBook"
+         />
+
+   <ul style="width:50%;">
+     <li><a href="/root/foo/Introduction/WhatsGoingOnHere.html">What's all this?</a></li>
+     <li><a href="/root/foo/Introduction/introduction.html">Introduction</a></li>
+     <li><a href="/root/foo/contents.html">Contents</a></li>
+
+   </ul>
+</div>
+
+<div class="colmask rightmenu">
+    <div class="colleft">
+        <div class="col1wrap">
+            <div class="col1">
+                <!-- Column 1 start -->
+<div class="document" id="printing">
+<h1 class="title">Printing</h1>
+<div class="section" id="cups">
+<h2>CUPS</h2>
+<p>A short history.</p>
+<div class="section" id="overview">
+<h3>Overview</h3>
+<p><a class="reference external" href="http://www.cups.org/documentation.php/overview.html">http://www.cups.org/documentation.php/overview.html</a>
+<a class="reference external" href="http://www.linuxfoundation.org/en/OpenPrinting/Database/CUPSDocumentation">http://www.linuxfoundation.org/en/OpenPrinting/Database/CUPSDocumentation</a></p>
+</div>
+<div class="section" id="installation-and-setup">
+<h3>Installation and setup</h3>
+<p>use ports
+run cupsd
+<a class="reference external" href="http://localhost:631/admin">http://localhost:631/admin</a></p>
+<p>OK, some of the worst systems administration problems, the most frustrating times come fromt
+trying to get ink onto paper.</p>
+<p>We shall install CUPS on a USB conected printer. THen on a network enabled printer.
+discuss the diffeences, and the secruity implicatons.</p>
+</div>
+</div>
+<div class="section" id="ppd-file">
+<h2>PPD file</h2>
+<p>I am using a Brother HL-5270DN printer, it is ethernet enabled and fast.
+If I look up the PPD file at I find the entry easily and it says it works &quot;perfectly&quot;</p>
+<p>so a PPD file looks like</p>
+<pre class="literal-block">
+*PPD-Adobe: &quot;4.3&quot;
+*% This program is free software; you can redistribute it and/or modify it
+*% under the terms of the GNU General Public License as published by the Free
+...
+*%================================================
+*%  Copyright(C) 2005 Brother Industries, Ltd.
+*%  &quot;Brother HL-5270DN BR-Script3&quot;
+*%================================================
+
+*%==== General Information Keywords ========================
+*FormatVersion: &quot;4.3&quot;
+*FileVersion: &quot;1.03&quot;
+*LanguageEncoding: ISOLatin1
+*LanguageVersion: English
+*Manufacturer: &quot;Brother&quot;
+...
+</pre>
+</div>
+<div class="section" id="where-do-i-get-my-ppd-file-from">
+<h2>Where do i get my PPD file from?</h2>
+<p>There is a list, maintained by volunteers of PPD files and the printers they work with (and how well they work) at
+<a class="reference external" href="http://www.linuxprinting.org/printer_list.cgi">http://www.linuxprinting.org/printer_list.cgi</a></p>
+<div class="section" id="using-command-line-printing">
+<h3>Using command line printing</h3>
+<p>This should work</p>
+<blockquote>
+$ lpr -P Brother_HL_5270DN mytestfile.txt</blockquote>
+<p>however there may be problems. The most common is that the old non CUPS printing software
+is also named lp or lpr. and that they sit higher up $PATH than the stuff CUPS installs</p>
+<blockquote>
+$ /usr/local/bin/lpr -P Brother_HL_5270DN resolv.conf</blockquote>
+<p>if that works you just have a path problem.  It can be fixed on install of CUPS by XXX
+Or you can move /usr/local/bin <em>before</em> /usr/bin in your $PATH <a class="footnote-reference" href="#id2" id="id1">[1]</a>
+Or force a replace of the old with a softlink to the new</p>
+<blockquote>
+$ ln -s /usr/local/bin/lpr /usr/bin/lpr</blockquote>
+</div>
+<div class="section" id="trouble-shooting">
+<h3>trouble shooting</h3>
+<ol class="arabic simple">
+<li>Unable to open device file &quot;/dev/ulpt0&quot;: Permission denied</li>
+</ol>
+<p>solution 1</p>
+<p><a class="reference external" href="http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html">http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html</a></p>
+<p>crw-------  1 root  wheel       0,  78 May 19 19:07 ttyvf
+crw-r--r--  1 root  operator    0,  80 May 19 19:19 ulpt0
+crw-r--r--  1 root  operator    0,  81 May 19 19:07 unlpt0
+lrwxr-xr-x  1 root  wheel            6 May 19 19:07 urandom -&gt; random</p>
+<p>solution 1</p>
+<p><a class="reference external" href="http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html">http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html</a></p>
+<p>The printer is a HL-1430 connected to USB and the error I got was: 'Unable to open USB device &quot;usb:/dev/unlpt0&quot; Permission Denied.'
+Now I don't know if this is relevant in any way. After trying all kinds of solutions I finally decided to simply do &quot;chmod 777 /dev/unlpt0&quot;, and that solved the problem.</p>
+<p>results 1
+Nope, it dod not complain, bt still sat there and did nothing</p>
+<p>put the setup back
+&gt; chmod 0644 ulpt0</p>
+<p>solutuon 2
+Be sensible</p>
+<p>The model number shows this is
+HP LaserJet 1000W printer       Q1342A - end of life</p>
+<p>Linuxprinting.org
+<a class="reference external" href="http://www.openprinting.org/show_printer.cgi?recnum=HP-LaserJet_1000">http://www.openprinting.org/show_printer.cgi?recnum=HP-LaserJet_1000</a></p>
+<p>OK, This printer requires the foo2zjs printer driver.
+This needs firmware loading up each boot.
+This is going to get complicated</p>
+<p><a class="reference external" href="http://foo2zjs.rkkda.com/">http://foo2zjs.rkkda.com/</a></p>
+<p>OK - we download from there. (note on paypal request)
+This asks us to run make (on freebsd we need gmake - its easy to tell - make fails horribly)</p>
+<p>then reading INSTALL we need to get some more firmware files</p>
+<p>it seems I need
+<a class="reference external" href="http://foo2zjs.rkkda.com/firmware/sihp1000.tar.gz">http://foo2zjs.rkkda.com/firmware/sihp1000.tar.gz</a></p>
+<p>but the code assumes I have wget. It seemed easier to pkg_add wget than check the code -
+it seems to just untar it but...</p>
+<p>OK</p>
+</div>
+<div class="section" id="hp-laserjet-1000-1005-1018-1020-p1005-p1006-p1505-notes">
+<h3>HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1505 NOTES</h3>
+<blockquote>
+<p>These printers need their firmware downloaded to them every time they
+are powered up.</p>
+<blockquote>
+<dl class="docutils">
+<dt>On Linux with USB connected printer:</dt>
+<dd><p class="first">If you are running Linux and the printer is connected via USB, you
+can arrange for the firmware to be automatically downloaded to the
+printer by performing one more installation step:</p>
+<p># make install-hotplug</p>
+<p class="last">Unplug and re-plug the USB printer.</p>
+</dd>
+</dl>
+<p>On another OS or with a parallel port connected printer:</p>
+<blockquote>
+You must send a firmware file to the printer each time you power it
+up.  If you downloaded the extra files for the HP above, a typical
+command line to load the firmware would be ONE of these:</blockquote>
+</blockquote>
+</blockquote>
+<dl class="docutils">
+<dt>===&gt;            cat /usr/share/foo2zjs/firmware/sihp1000.dl &gt; /dev/usb/lp0</dt>
+<dd>cat /usr/share/foo2zjs/firmware/sihp1005.dl &gt; /dev/usb/lp0
+cat /usr/share/foo2zjs/firmware/sihp1018.dl &gt; /dev/usb/lp0
+cat /usr/share/foo2zjs/firmware/sihp1020.dl &gt; /dev/usb/lp0
+cat /usr/share/foo2xqx/firmware/sihpP1005.dl &gt; /dev/usb/lp0</dd>
+</dl>
+<p>problem 3
+manhattan# cat /usr/share/foo2zjs/firmware/sihp1000.dl &gt; /dev/ulpt0
+cat: stdout: Input/output error</p>
+<p>OK -
+<a class="reference external" href="http://foo2zjs.rkkda.com/forum/read.php?12,605,605">http://foo2zjs.rkkda.com/forum/read.php?12,605,605</a></p>
+<p>first you should build the kernel without ulpt driver.
+then you should get foo2zjs and follow the instructions in the readme file. if you'll have any questions - report me!</p>
+<p>ok - rebuild the kernel
+in /usr/src/sys/i386/conf is GENERIC a file telng make how to build the kernel and what to leave ut. Comment out ulpt
+rebuid</p>
+<p>OK -
+cat /usr/share/foo2zjs/firmware/sihp1000.dl &gt; /dev/ugen0.1</p>
+<p>that actually did something - it wrote and the printer got excited.
+However... cups does not see it...</p>
+<p>OK - I give up - buy a parallel to ethernet adaptor</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>From <a class="reference external" href="http://www.freebsddiary.org/cups.php">http://www.freebsddiary.org/cups.php</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+				<!-- Column 1 end -->
+            </div>
+        </div>
+        <div class="col2">
+            <!-- Column 2 start -->
+Hello. Do come in. Please take a seat and have a look around.
+My name is Paul Brian and this is my online home.
+Some <a href="">more about me</a>
+
+<h2>Whats all this?</h2>
+This site is a guide to running an IT department or team.  It about the stuff that you should obviously know, (but can't quite get) like setting up spam filters on mail servers.  Its also about the opinions and attitudes you need, why project management is hard, and why you must read code.  And its about other people in the industry, interviews and feedback.
+<p>The examples are all aimed at FreeBSD servers, a solid, dependable OS that can be found in many high end server farms.
+
+
+<h2><a href="/Introduction/introduction.html">IT matters</a></h2>
+It is a cliche but, computing is going to change the world. And it will take skilled and determined people at the highest reaches of companies and institutions to make that change create better, more human and more interesting places to live and work.  I call those people <em>IT Managers</em>.   
+
+<h2><a href="/SoHoFromScratch/index.html">SoHo From Scratch</a></h2>
+<em>Every</em> IT manager <em>should</em> be able to build and run a complete Small Office or Home Office Network, in the same way every chef should be able to prepare a 3 course meal.  The fact that many people called IT managers cannot is one of the reasons I have written this site.  This area is the more traditional "how to" - a collection of recipies if you will.
+
+
+<h2><a href="/Attitude/index.html">Beyond Recipies</a></h2>
+Not everything is about configuring systems. Most of the job is configuring people, and the <em>trade secrets</em> of IT management.  I give my opinions on everything from project management to out-greening the competition. The youngsters round 'ere think I am a dinosaur.  
+
+
+<h2><a href="/OtherPoV/index.html">Other Points of View</a></h2>
+A collection of interviews and commentaries from other IT Managers, trying to capture the essence of this craft, and hopefully a funny story or two.
+
+
+
+
+
+			<!-- Column 2 end -->
+
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+    The IT Managers CookBook
+
+</div>
+
+<!-- google analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7095038-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>

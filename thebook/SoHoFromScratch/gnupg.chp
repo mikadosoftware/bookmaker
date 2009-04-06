@@ -1,0 +1,10 @@
+==================
+GnuPG - encryption
+==================
+
+::
+
+  cd /usr/ports/security/gnupg
+  make install clean
+
+

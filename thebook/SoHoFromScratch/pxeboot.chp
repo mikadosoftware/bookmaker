@@ -1,0 +1,12 @@
+pxe boot
+========
+
+great idea.
+
+gpxe project enables normal pxerom to download gpxe from tftp
+then run gpxe from http so can pull down large files to boot up.
+
+
+
+http://etherboot.org/wiki/pxechaining
+http://etherboot.org/wiki/httpboot

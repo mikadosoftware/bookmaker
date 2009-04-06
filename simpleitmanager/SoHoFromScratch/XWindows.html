@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>X Windows</title>
+  
+  <link rel="stylesheet" href="/root/foo/css/cookbook.css" type="text/css" />
+
+
+</head>
+
+<body>
+
+<div id="header">
+
+<img src="/root/foo/img/tour_tonbridge.jpg" 
+         style="width:100%; position:relative; top:-10px;"
+         alt="itmanagerscookbook.com"
+         title="IT Manager's CookBook"
+         />
+
+   <ul style="width:50%;">
+     <li><a href="/root/foo/Introduction/WhatsGoingOnHere.html">What's all this?</a></li>
+     <li><a href="/root/foo/Introduction/introduction.html">Introduction</a></li>
+     <li><a href="/root/foo/contents.html">Contents</a></li>
+
+   </ul>
+</div>
+
+<div class="colmask rightmenu">
+    <div class="colleft">
+        <div class="col1wrap">
+            <div class="col1">
+                <!-- Column 1 start -->
+<div class="document" id="x-windows">
+<h1 class="title">X Windows</h1>
+<div class="section" id="show-me-the-windows">
+<h2>Show me the windows</h2>
+<p>X-Windows, otherwise known as just <em>X</em>, is the Unix version of the well-known Windows/Mouse Graphical User Interface.
+First developed at Parc-Xerox <a class="footnote-reference" href="#id4" id="id1">[1]</a> the concept of using
+overlapping windows, and a 'mouse' is often seen as the <em>only</em> way to interact with a computer.</p>
+<p>Of course the Unix tradition is for a command line interface - and I can happily attest that typing in commands to a shell is a more powerful way to control a computer in almost all cases. <a class="footnote-reference" href="#id5" id="id2">[2]</a> . However, if you want to &quot;use&quot; a computer, for web surfing, graphics, and simple everyday actually not going mad usage, you need a GUI.</p>
+<div class="section" id="installing">
+<h3>Installing</h3>
+<p>There is a meta-port for X windows.</p>
+<pre class="literal-block">
+x11/xorg
+</pre>
+<p>Simply install this - takes about 6 hours.  Yes. Six. On a decent 3 year old machine.  Firefox will take 3. Almost anything graphical takes forever to compile.  Just accept it.</p>
+<p>Anyway,  if you just left it at <em>X</em> then you would only ever get a true 1980's experience of sawtooth background and poor looking windows.  This is because X is designed not to look good, but to provide the functionality other programs on top can use.  These programs are called <em>Windows Managers</em>.  The best known in the X world are KDE and GNOME.  Installing either can be a 12 hour compile easily, and they have a bewildering array of options.  I suggest using a simple but effective WM called xfce4:</p>
+<pre class="literal-block">
+x11-wm/xfce4
+</pre>
+<p>Anyway, we have X installed, and a window manager to make things look good / not awful...</p>
+<p>We are still at the command line when we boot our machine, and after logging in I still only have the prompt. On a machine that has X installed, we can type</p>
+<pre class="literal-block">
+startx
+</pre>
+<p>and up comes the GUI. (to get out of the GUI, use <em>ctl-alt-backspace</em>. This will stop the current X session)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">sidebar:</th><td class="field-body">Enabling the mouse daemon.
+You should have the mouse daemon enabled in /etc/rc.conf
+moused_enable=&quot;YES&quot;
+Otherwise, X will try and use /dev/sysmouse and nothing much will happen when you move the (non-serial) mouse.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="initial-configuation">
+<h3>Initial Configuation.</h3>
+<p>I am assuming we are only using one video card and one monitor.
+More complex arrangements can come later.
+(See chapter 5 of Handbook for more details)</p>
+<p>After we have successfully got the meta port above installed we want to configure the X settings. This is fairly complex, but also pretty well automated. All the settings are controlled from one file, xorg.conf, which is usually found in*/usr/local/etc/X11/xorg.conf*.  Except that right now there is no such file there.  We create it by, as root, getting Xorg to do the hard work:</p>
+<pre class="literal-block">
+$ Xorg -configure
+</pre>
+<p>This will automatically scan your hardware and put a config file in /root called xorg.config.new</p>
+<p>Try it out - you never know !:</p>
+<pre class="literal-block">
+$ Xorg -config /root/xorg.config.new
+</pre>
+<p>You will see a sawtooth background with a X cross in the middle. Try moving the mouse. If the cross moves too, good.  If not, you probably need to enable the mouse daemon. (see sidebar)</p>
+<p>More than likely you will have a sawtooth pattern that has lines &quot;scanning&quot; through it wildly.  You'll know what scanning means when you see it.  This is because the scan and refresh rates that X-Windows is trying to use are out of whack with the ones the monitor uses.</p>
+<p>Don't forget - you can &quot;kill&quot; off the X display using ctl-alt-backspace</p>
+<p>Now we come to the hard part of X windows installation, otherwise known as &quot;somehow finding what on Earth our monitors specs are&quot;.  For some reason these are always hard to get hold of.  Really. Its as if there is a global conspiracy design to not tell you what the Vertical Refresh rate for your own monitor actually is.</p>
+<pre class="literal-block">
+&quot;No Mr. President, the NSA considers it effectively imposssible to prevent
+International Terrorists from accessing military grade encryption on the
+Internet.  But Plan Omega ensures that when they do, their screens will
+look funny and their eyes will slowly become really sore and irritating...
+BwaHahahahahahahahahaha&quot;
+</pre>
+</div>
+<div class="section" id="monitor-specs">
+<h3>Monitor specs</h3>
+<p>Before we can finish the configuration of X, we need to know the basic specifications of the Monitor we are using, in other words the Horizontal Sync rate and Vertical refresh rate (think of these as how long it takes to start at top left pixel and repaint the whole screen down to bottom right.)</p>
+<p>A (fair) bit of googleing with the product ID from the back of my unbranded monitor, gets me</p>
+<pre class="literal-block">
+EDID Name : CAL L15CX
+Minimum HorizSync : 30.000 kHz
+Maximum HorizSync : 60.000 kHz
+Minimum VertRefresh : 56 Hz
+Maximum VertRefresh : 75 Hz
+Maximum PixelClock : 80.000 MHz
+Maximum Width : 1024 pixels
+Maximum Height : 768 pixels
+Preferred Width : 1024 pixels
+Preferred Height : 768 pixels
+Preferred VertRefresh : 75 Hz
+Physical Width : 300 mm
+Physical Height : 230 mm
+</pre>
+<p>So I want to enter the following</p>
+<pre class="literal-block">
+HorizSync    30-60
+VertRefresh  56-75
+</pre>
+<p>I try it - and hey presto, it looks worse and the sawtooth is still flickering.
+So I play around with the settings a bit.[#]_
+Now the lines are rolling up the screen, which looks pretty for 5 seconds and nauseau-inducing thereafter.  Anyway, I guess it is the vertical refresh rate that is wrong, and so I constrain the vertical refresh rate, 69-75, then 74-75, and then I decide to drop the max and try 70-70. Hey, Google is not so useful after all - the maximum Vertical Refresh rate I found was too high. dropping it down to 70HZ gives me a clear fixed sawtooth.   As the manufacturer's website has broken links on it so I fear that unless you buy top quality monitors this sort of problem is always going to be with you.  It has been getting better recently though.</p>
+<p>Please note however, that just typing startx often just works with good enough defaults. The whole thing was usable before I played around.  I just like it perfect.:</p>
+<pre class="literal-block">
+HorizSync    50-60
+VertRefresh  56-70
+</pre>
+<p>Also I found that if I dropped the horizontal sync, the vert refresh goes out of whack. <a class="footnote-reference" href="#id6" id="id3">[3]</a></p>
+</div>
+<div class="section" id="more-monitor-stuff">
+<h3>More Monitor stuff</h3>
+<dl class="docutils">
+<dt>::</dt>
+<dd><dl class="first docutils">
+<dt>Section &quot;Screen&quot;</dt>
+<dd><p class="first">Identifier &quot;Screen0&quot;
+Device     &quot;Card0&quot;
+Monitor    &quot;Monitor0&quot;
+DefaultDepth 24
+SubSection &quot;Display&quot;</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">&lt;string&gt;</tt>, line 126)</p>
+Unexpected indentation.</div>
+<blockquote>
+Viewport  0 0
+Depth     24
+Modes     &quot;1024x768&quot;</blockquote>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">&lt;string&gt;</tt>, line 129)</p>
+Block quote ends without a blank line; unexpected unindent.</div>
+<p class="last">EndSubSection</p>
+</dd>
+</dl>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">&lt;string&gt;</tt>, line 130)</p>
+Definition list ends without a blank line; unexpected unindent.</div>
+<p class="last">EndSection</p>
+</dd>
+</dl>
+<p>in short we want the mode line to have number of pixels supported, and the defaultdepth to link to that
+level</p>
+</div>
+<div class="section" id="keyboard-layout">
+<h3>Keyboard layout</h3>
+<p>Looking elsewhere in xorg.conf we find</p>
+<pre class="literal-block">
+Section &quot;InputDevice&quot;
+  Identifier  &quot;Keyboard0&quot;
+  Driver      &quot;kbd&quot;
+</pre>
+<p>Even though typing on the command line before we run X I can use my keyboard and the characters I expect
+appear OK, this is because the OS is reading the line in /etc/rc.conf that says <em>keymap=uk.iso</em>.
+Unfortunately X will ignore this and default to some American setting. Which means that <em>&quot;</em> is in the wrong place as is a fair number of other characters.
+This is annoying, but luckily we know that here, in xorg.conf are the settings that X will use.</p>
+<p>We can see the various options in /usr/local/share/X11/xkb/rules/org.lst
+UK is gb.
+(Now actually Great Britain is not the same as United Kingdom, and this is one of those internationalisation
+problems, that the real world is a lot more complicated than one poor programmer can be bothered to deal with)</p>
+<p>Now this file is in the Xkb directory and if you grep for ^!
+! model
+! layout
+! variant
+! option</p>
+<p>so I want:</p>
+<pre class="literal-block">
+Option &quot;XkbLayout&quot; &quot;gb&quot;
+</pre>
+<p>If I wanted to give a command about a variant it is:</p>
+<pre class="literal-block">
+Option &quot;XkbVariant&quot; &quot;xxxx&quot;
+</pre>
+</div>
+<div class="section" id="turn-off-capslock">
+<h3>Turn off Capslock</h3>
+<p>Oh dear god yes.
+Have a look in /usr/local/share/X11/xkb/rules/org.lst - do you see it. Oh wonder of wonders. A way to
+turn off the capslock key, the useless appendix of the typewriter, out-evolved and just laying there waiting for an
+unwary thumb to catch it an ruin a line of text.</p>
+<p>under !option  I find ctrl:nocaps</p>
+<p>Option &quot;XkbOptions&quot; &quot;ctrl:nocaps&quot;</p>
+<p>(OK, its Options with an s. Nothing is quite perfect, just accept it for now. A little bit of handwaving.)</p>
+</div>
+<div class="section" id="fix-the-config-file-in-the-right-place">
+<h3>Fix the config file in the right place</h3>
+<p># cp xorg.conf.new /etc/X11/xorg.conf
+OR
+# cp xorg.conf.new /usr/local/etc/X11/xorg.conf</p>
+<p>Now try startx - and horray I can type shft-2 and see &quot; and if I press capslock, it ignores it (well it treats it as
+a second ctl key. This is very very good. Wait till the section on emacs for a full explanation, but really dropping
+caps lock for an extra control key is great)</p>
+</div>
+<div class="section" id="fonts">
+<h3>Fonts</h3>
+</div>
+</div>
+<div class="section" id="x11">
+<h2>X11</h2>
+<pre class="literal-block">
+/usr/ports/x11-fonts/ttmkfdir
+
+fonts
+C:\WINDOWS\Fonts
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x-fonts.html
+pscp *.ttf root&#64;192.168.1.11:/usr/local/lib/X11/fonts/TrueType/
+add line to xorg.conf
+FontPath &quot;/usr/X11R6/lib/X11/fonts/URW&quot;
+type 1 fonts make
+</pre>
+<p>x11/rxvt-unicode is a highly recommended text editor (see reddit thread
+<a class="reference external" href="http://www.reddit.com/comments/6wn5w/ask_proggit_whats_your_favorite_terminal_emulator/">http://www.reddit.com/comments/6wn5w/ask_proggit_whats_your_favorite_terminal_emulator/</a>)</p>
+<div class="section" id="xdm">
+<h3>XDM</h3>
+<p>For testing purposes, we just want the XDM to run as a normal process not a daemon.
+so we call it as</p>
+<pre class="literal-block">
+#xdm -nodaemon
+</pre>
+<p>(if you get stuck, simply ctl-alt-f1 to tty and kill the daemon xdm. You should understand how to do that by now)</p>
+<p>now, normally</p>
+<pre class="literal-block">
+% echo &quot;/usr/local/bin/startxfce4&quot; &gt; ~/.xinitrc
+</pre>
+<p>will ensure that when I type 'startx' xfce will run.
+However if I use xdm, it does not use my .xinitrc file.</p>
+<p>xdm uses files found in ' usr/local/lib/X11/xdm' for configuration.
+SO I can use a ~/.xsession or the global xsession file</p>
+<p>% echo &quot;/usr/local/bin/startxfce4&quot; &gt; ~/.xsession</p>
+<p>so
+1. .xinitrc file with startxfce4 works only with startx, not with xdm
+2. .xsession file with startxfce4 works with xdm</p>
+</div>
+<div class="section" id="now-how-to-run-xdm-every-boot">
+<h3>Now how to run xdm every boot</h3>
+<p>can be set as a tty - in /etc/ttys this line is off by default.:</p>
+<pre class="literal-block">
+ttyv8   &quot;/usr/local/bin/xdm -nodaemon&quot;  xterm   off secure
+</pre>
+<p>setting it to on will ensure each boot gets you a graphical login.</p>
+<p><a class="reference external" href="http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x11-wm.html">http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/x11-wm.html</a>
+# cd /usr/ports/x11-wm/xfce4
+# make install clean</p>
+</div>
+<div class="section" id="swapping-between-vitrual-terminals">
+<h3>Swapping between vitrual terminals</h3>
+<p>X runs on a virtual terminal (alt-F1 alt-F2 etc)
+If in X you can go to the other tty using ctl-alt-F1 for example.
+Then get back using alt-F9 (usually there are 8 tty set up in /etc/ttys - so X snaffles the 9th)</p>
+</div>
+<div class="section" id="splash-screens-and-xmodmap">
+<h3>SPlash screens and xmodmap</h3>
+<p><a class="reference external" href="http://www.freebsd.org/doc/en/books/faq/x.html#XDM-BOOT">http://www.freebsd.org/doc/en/books/faq/x.html#XDM-BOOT</a></p>
+</div>
+</div>
+<div class="section" id="more-than-one-card-monitor">
+<h2>More than one card / monitor</h2>
+<p>Cards are 'Device' in the config file - you can tell which is labelled which by looking at the Device secion(s)
+It will tell you the Identifier (Card0) and which driver is being used (nv for nvidia) the board name and PCI ids
+Really all you want to know is the identifiers</p>
+<hr class="docutils" />
+<div class="section" id="phone-line">
+<h3>Phone Line</h3>
+<p>Phone Line - ADSL Filter - DSL Modem - Ethernet Out - Own FIrewall/router - WIFI?</p>
+<p><a class="reference external" href="http://www.broadbandbuyer.co.uk/Shop/ShopDetail.asp?ProductID=4122">http://www.broadbandbuyer.co.uk/Shop/ShopDetail.asp?ProductID=4122</a></p>
+</div>
+</div>
+<div class="section" id="dns">
+<h2>DNS</h2>
+<p>BIND8 is installed by default
+named_enable=&quot;YES&quot;</p>
+</div>
+<div class="section" id="ntp">
+<h2>NTP</h2>
+</div>
+<div class="section" id="ftp">
+<h2>FTP</h2>
+</div>
+<div class="section" id="nfs">
+<h2>NFS</h2>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>(and the history of that development and how Apple and Microsoft subsequently took the concepts to the mainstream is fascinating and can be found at .)</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>This harks back to my main thesis - that programming is to the 21C what literacy was to the 16C.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>some background, which applies to Cathode Ray style monitors, but the same principle applies to LCD-style screens too.
+<a class="reference external" href="http://www.monitorworld.com/faq_pages/q10_page.html">http://www.monitorworld.com/faq_pages/q10_page.html</a>::
+A monitor's maximum vertical refresh rate is limited by how fast it can direct the electron beam over all of the picture elements on the monitor. This involves moving the electron beam in the same manner as you would read the words in a book, left to right, top to bottom. It is limited by the maximum HSR, which determines the maximum horizontal pixel addressability the monitor can display and the number of scanlines (i.e. vertical addressability). For example, to display a screen with an addressability of 640 pixels horizontally and 480 vertically, a monitor with a HSR of 31.5kHz would take 480/31.5k = 15.2 ms to scan the entire screen once. In one second, this monitor could be refreshed 1000ms/15.2ms = 65.6 times.
+However, the vertical sync - movement of the electron gun to the upper left corner of the screen - requires some time, so the resulting vertical refresh rate is only 60 Hz.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[4]</td><td>OK, the manuals and help online generally tell you that &quot;playing around&quot; can be a bad idea - in theory you can burn out the cathode tube on your monitor.  Play around less, Google more might be a good idea, but what if the whole world did that, there would be nothing on Google left to find.  Then we would have to talk to each other, flirt, that sort of thing.  So play, play, its the only way the human race can survive.  I may be going off on a tangent.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[5]</td><td>I am convinced that some expert in X will explain to me how all that was wrong or unnecessary.  All it will take is for a X expert to read this.  As Googlebot has trouble finding my site, so I may wait a while.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+				<!-- Column 1 end -->
+            </div>
+        </div>
+        <div class="col2">
+            <!-- Column 2 start -->
+Hello. Do come in. Please take a seat and have a look around.
+My name is Paul Brian and this is my online home.
+Some <a href="">more about me</a>
+
+<h2>Whats all this?</h2>
+This site is a guide to running an IT department or team.  It about the stuff that you should obviously know, (but can't quite get) like setting up spam filters on mail servers.  Its also about the opinions and attitudes you need, why project management is hard, and why you must read code.  And its about other people in the industry, interviews and feedback.
+<p>The examples are all aimed at FreeBSD servers, a solid, dependable OS that can be found in many high end server farms.
+
+
+<h2><a href="/Introduction/introduction.html">IT matters</a></h2>
+It is a cliche but, computing is going to change the world. And it will take skilled and determined people at the highest reaches of companies and institutions to make that change create better, more human and more interesting places to live and work.  I call those people <em>IT Managers</em>.   
+
+<h2><a href="/SoHoFromScratch/index.html">SoHo From Scratch</a></h2>
+<em>Every</em> IT manager <em>should</em> be able to build and run a complete Small Office or Home Office Network, in the same way every chef should be able to prepare a 3 course meal.  The fact that many people called IT managers cannot is one of the reasons I have written this site.  This area is the more traditional "how to" - a collection of recipies if you will.
+
+
+<h2><a href="/Attitude/index.html">Beyond Recipies</a></h2>
+Not everything is about configuring systems. Most of the job is configuring people, and the <em>trade secrets</em> of IT management.  I give my opinions on everything from project management to out-greening the competition. The youngsters round 'ere think I am a dinosaur.  
+
+
+<h2><a href="/OtherPoV/index.html">Other Points of View</a></h2>
+A collection of interviews and commentaries from other IT Managers, trying to capture the essence of this craft, and hopefully a funny story or two.
+
+
+
+
+
+			<!-- Column 2 end -->
+
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+    The IT Managers CookBook
+
+</div>
+
+<!-- google analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7095038-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>

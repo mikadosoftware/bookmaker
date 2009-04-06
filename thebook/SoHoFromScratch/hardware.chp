@@ -1,6 +1,22 @@
 Hardware
 --------
 
+What should I buy as a server?
+------------------------------
+Depends
+
+http://www.soekris.com/
+- small form, firewalls routers etc. Freebsd compatible
+
+beagleboard
+- low power, single board computer.
+- hobbyist, aimed at wearable computers etc.
+http://arstechnica.com/open-source/news/2008/08/ti-launches-hackable-beagle-board-for-hobbyist-projects.ars
+
+
+
+
+
 How to determine what hardware is running?
 
 # sysctl -a | grep -i hw.model
