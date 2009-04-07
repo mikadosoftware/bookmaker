@@ -35,3 +35,9 @@ href="http://www.cyberciti.biz/tips/freebsd-how-to-start-restart-stop-network-se
 
 # /etc/rc.d/netif restart && /etc/rc.d/routing restart
 
+
+
+Temperature
+$  sysctl hw.acpi.thermal.tz0.temperature
+hw.acpi.thermal.tz0.temperature: 54.0C
+
