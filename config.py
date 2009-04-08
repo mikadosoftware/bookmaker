@@ -33,5 +33,5 @@ pdflatex_cmds = ['pdflatex', '--output-directory=%s' % latex_dir, '--interaction
 to_latex_cmds   = ['rst2latex.py']
 
 
-rhs_text = open('rhs.tmpl').read()
+rhs_text = open('rhs.tmpl').read() % {'HTML_ROOT': HTML_ROOT}
 
