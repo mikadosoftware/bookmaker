@@ -1,12 +1,13 @@
 import os.path
 
-HTMLROOT = "/root/foo"
+HTMLROOT = "/book"
 
 
 ### CONSTANTS 
 chapters_dir = '/root/thebook/thebook'
-HTML_DIR = '/root/thebook/simpleitmanager'
-HTML_DEPLOY_DIR = "/root/foo/"
+HTML_DIR = '/tmp/bookbuild'
+HTML_BUILD_DIR = HTML_DIR
+HTML_DEPLOY_DIR = "/usr/local/www/data/book"
 IMG_DIR = os.path.join("/root/thebook", "img")
 CSS_DIR = os.path.join("/root/thebook", "css")
 

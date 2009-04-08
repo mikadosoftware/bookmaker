@@ -42,7 +42,7 @@ def write_indexpage_to_disk(contents, section_path):
 
 
     ### write put page    
-    dest = os.path.join(os.path.join(config.HTML_DIR, section_path), 'index.html')
+    dest = os.path.join(os.path.join(config.HTML_BUILD_DIR, section_path), 'index.html')
 
     print "*** writing %s to %s\n" % (section_path, dest)
     fo = open(dest,'wb')
@@ -99,12 +99,10 @@ nb config.chapters_dir = '/root/thebook/thebook'
 
 
             ###  this is a bit confusing - I am planning to write an index page in each dir so only need basename?
-            dest_href = os.path.basename(page_info['dest'].replace(config.HTML_DIR + "/", ''))
+            dest_href = os.path.basename(page_info['dest'].replace(config.HTML_BUILD_DIR + "/", ''))
             
 
-            print "*** writing this src, %s to this html page %s then indexing as %s\n\n" % (page_info['src'], 
-                                                                                     page_info['dest'],
-                                                                                     dest_href)
+            print "*** writing this src, %s to this html page %s then indexing as %s\n\n" % (page_info['src'],  page_info['dest'], dest_href)
             
 	    this_section_contents += '''<li> <a href="%s">%s</a>
                            <span class="subtitle">(%s)</span>
@@ -121,11 +119,11 @@ def deploylive():
     """move from where html files create to the DocumentRoot """    
     import shutil, glob
  
-    print "start deploy from %s to %s." % (config.HTML_DIR, config.HTML_DEPLOY_DIR)
+    print "start deploy from %s to %s." % (config.HTML_BUILD_DIR, config.HTML_DEPLOY_DIR)
 
-    shutil.rmtree(config.HTML_DEPLOY_DIR)
+    #shutil.rmtree(config.HTML_DEPLOY_DIR)
 
-    shutil.copytree(config.HTML_DIR, config.HTML_DEPLOY_DIR)
+    shutil.copytree(config.HTML_BUILD_DIR, config.HTML_DEPLOY_DIR)
 
     subprocess.check_call(['cp','-r','css', config.HTML_DEPLOY_DIR ])
     subprocess.check_call(['cp','-r','img', config.HTML_DEPLOY_DIR ])
@@ -188,7 +186,7 @@ def getdirpath(html_pdf, root):
         path_from_docroot = root.replace(config.chapters_dir, '')
         if path_from_docroot.find("/") == 0:
             path_from_docroot = path_from_docroot[1:]
-        dst = os.path.join(config.HTML_DIR, path_from_docroot)
+        dst = os.path.join(config.HTML_BUILD_DIR, path_from_docroot)
         return dst
     else:
         return os.path.join(config.latex_dir, root)
@@ -197,7 +195,7 @@ def getdirpath(html_pdf, root):
 def get_tmpl_dict():
     """ returns a dictionary that holds appropriate defaults for the main.tmpl"""
     d = {"html_root":config.HTMLROOT,
-         "HTML_DIR":config.HTML_DIR, 
+         "HTML_BUILD_DIR":config.HTML_BUILD_DIR, 
          "title":"",
          "maintext":'',
          "rhs":''}
@@ -316,24 +314,23 @@ def check_environment():
     XXX - it might be simpler to have img dir in each level of chapter dir, 
      """
 
-    for expendable_dir in (config.HTML_DIR, config.HTML_DEPLOY_DIR):
+    for expendable_dir in (config.HTML_BUILD_DIR, config.HTML_DEPLOY_DIR): 
 
         if os.path.isdir(expendable_dir):
             shutil.rmtree(expendable_dir)
-        os.mkdir(expendable_dir)
+        #os.mkdir(expendable_dir)
 
-
+    os.mkdir(config.HTML_BUILD_DIR)
     #kind of assumes its there ...
     shutil.rmtree(os.path.join(config.chapters_dir, "img"))
     shutil.copytree(config.IMG_DIR, os.path.join(config.chapters_dir, "img"))
     ### make destination OK
-    shutil.copytree(config.IMG_DIR, os.path.join(config.HTML_DIR, "img"))
-    shutil.copytree(config.CSS_DIR, os.path.join(config.HTML_DIR, "css"))
+    shutil.copytree(config.IMG_DIR, os.path.join(config.HTML_BUILD_DIR, "img"))
+    shutil.copytree(config.CSS_DIR, os.path.join(config.HTML_BUILD_DIR, "css"))
     
 
 class page(object):
     """represents what we know about a (html) page
-
 
     really this is a convenient way to store metadata about a file
     """

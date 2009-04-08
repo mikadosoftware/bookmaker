@@ -50,14 +50,11 @@ Process
 -------
 
 main() runs an os.walk over chapters_dir, passing the details of each dir to loopthrudir()
+
 loopthrudir() defines the dest directories, and for each file in src_dir 
-  checks if it should be published, creates dest paths, asks create_html() to rst-html and write to disk,
-  stores a dict of data about that page in index_list (dict by section)
+  checks if it should be published, creates dest paths, asks create_html() to rst-html and write to disk,  stores a dict of data about that page in index_list (dict by section)
 
-create_html() calls rst to get the html of the page, then grabs the main.tmpl and passes in html and other data 
-writes that file to the dest location.
-
-
+create_html() calls rst to get the html of the page, then grabs the main.tmpl and passes in html and other data writes that file to the dest location.
 
 
 
@@ -114,7 +111,7 @@ def make_frontpage(chosen_articles=["thebook/Attitude/ibmadverts.chp",]):
         except Exception, e:
             raise e  
 
-    destination = os.path.join(config.HTML_DIR, "index.html")
+    destination = os.path.join(config.HTML_BUILD_DIR, "index.html")
 
     #write out tmpl to destination
     tmpl_txt = open("main.tmpl").read()                
