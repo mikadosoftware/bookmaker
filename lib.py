@@ -23,12 +23,14 @@ import shutil
 #>>> help(core.publish_parts)
 
     
-def write_indexpage_to_disk(contents, section_path):
+def write_indexpage_to_disk(contents, section_path, isMainContents=False):
     '''cleaning up write_index, use this to actually write to disk
 
     section_path is the bit of this folder after chapters_dir,
     so for example '/root/thebook/thebook/SoHoFromScratch/foo' > 'SoHoFromScratch/foo'
     
+
+    isMainContents - I want to have the main content section written to a diff location
     ''' 
 
     ### now we have a formatted page of contents, put it in the main site tmpl
@@ -42,9 +44,12 @@ def write_indexpage_to_disk(contents, section_path):
 
 
     ### write put page    
-    dest = os.path.join(os.path.join(config.HTML_BUILD_DIR, section_path), 'index.html')
+    
+    dest = os.path.join(os.path.join(config.HTML_BUILD_DIR, section_path), 'contents.html')
+#    if isMainContents:
+#        dest = os.path.join(os.path.join(config.HTML_BUILD_DIR, section_path), 'contents.html')
 
-    print "*** writing %s to %s\n" % (section_path, dest)
+    print "===*** writing %s to %s\n" % (section_path, dest)
     fo = open(dest,'wb')
     fo.write(tmpl_txt % d)
     fo.close()
@@ -82,7 +87,7 @@ nb config.chapters_dir = '/root/thebook/thebook'
  
     for section in sorted(index_list.keys()):
         this_section_contents = ''' '''
-        this_section_path = section.replace(config.chapters_dir, '')
+        this_section_path = section.replace(config.chapters_dir, '') 
         if  this_section_path.find("/") == 0: 
             this_section_path = this_section_path[1:]
 
@@ -97,10 +102,9 @@ nb config.chapters_dir = '/root/thebook/thebook'
             else:
                 page_title = page_info["title"] 
 
-
             ###  this is a bit confusing - I am planning to write an index page in each dir so only need basename?
-            dest_href = os.path.basename(page_info['dest'].replace(config.HTML_BUILD_DIR + "/", ''))
-            
+            dest_href = page_info['dest'].replace(config.HTML_BUILD_DIR, config.HTMLROOT)
+
 
             print "*** writing this src, %s to this html page %s then indexing as %s\n\n" % (page_info['src'],  page_info['dest'], dest_href)
             
@@ -112,7 +116,7 @@ nb config.chapters_dir = '/root/thebook/thebook'
         write_indexpage_to_disk(this_section_contents, this_section_path)
         all_contents += this_section_contents
 
-    write_indexpage_to_disk(all_contents, '')
+    write_indexpage_to_disk(all_contents, '', True)
 
 
 def deploylive():
@@ -128,8 +132,8 @@ def deploylive():
     subprocess.check_call(['cp','-r','css', config.HTML_DEPLOY_DIR ])
     subprocess.check_call(['cp','-r','img', config.HTML_DEPLOY_DIR ])
 
-    shutil.copy(os.path.join(config.HTML_DEPLOY_DIR, "index.html"), 
-                os.path.join(config.HTML_DEPLOY_DIR, "contents.html")) 
+    #shutil.copy(os.path.join(config.HTML_DEPLOY_DIR, "index.html"), 
+    #            os.path.join(config.HTML_DEPLOY_DIR, "contents.html")) 
 
 
     print "deploy done"
@@ -139,10 +143,11 @@ def make_site_index():
     """I Want a different index page
    
      """
+    pass
 
 
 
-def get_html_from_rst(uStr):
+def get_html_from_rst(uStr, src=None):
     ''' THis uses ReSt to get some HTML from just text in text area. It is a bit funny - I force                            
     the title and body to be joined before it beocmes UStr, then I return title and body seperate.                          
     Seems to work as long as css is ok.
@@ -154,6 +159,8 @@ def get_html_from_rst(uStr):
       ['subtitle', 'version', 'encoding', 'html_prolog', 'header', 'meta', 'html_title', 'title', 'stylesheet', 'html_subtitle', 'html_body', 'body', 'head', 'body_suffix', 'fragment', 'docinfo', 'html_head', 'head_prefix', 'body_prefix', 'footer', 'body_pre_docinfo', 'whole']
 
     examples,py in docutils.core is used    
+
+
     '''
 
 
@@ -161,6 +168,7 @@ def get_html_from_rst(uStr):
         overrides = {'input_encoding': "unicode",
                  'initial_header_level': 2}
         p = core.publish_parts(uStr, writer_name="html", settings_overrides=overrides)
+        p['source']=src
         return p
 
     except Exception, e:

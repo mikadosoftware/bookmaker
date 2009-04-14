@@ -6,46 +6,53 @@ Strategy Thoughts
 What is strategy and other impossible questions
 ===============================================
 
-Strategy is like genius. Its an overused word applied to people and things that quite simply are neither.
+Everyone talks about strategy.  Some people like talking about it so much they actually make up new words, like, *strategising*.  Just so they can talk about strategy more.  I think it makes people feel safe.  
 
-I am a little bit cynical, yes.
+But the modern day IT Manager needs to be involved in, and influencing company strategy.  Honest I read it in *The Economist*.  So the only problem is, how do you spot a strategy when you see one.
 
-Strategy is such an overused word that I have a little inward groan each time I hear it at work.  It means I will have to work out what the person meant while they sit there thinking that Harvard Business School needs teaching a thing or two.
+Strategy is everywhere.  Help.
+------------------------------
+Strategy is such an overused word that I have a little inward groan each time I hear it at work.  It means I will have to wade through molasses to understand what the person meant while they sit there thinking that Harvard Business School needs teaching a thing or two.  Every sales person wants to know my IT strategy, my printer strategy.  They have got a doodah that will help.
 
 But by the bye, I have worked some nuggets of gold from the crowded mine.
 
 Do you mean the verb or the noun?
 ---------------------------------
-Strategy can be two things - a verb, an action word as I was taught at school. What we are going to do. WHat action will we take. This is strategy as a *planned approach*.
-
-"what is our printer strategy?" 
-Well its fairly obvious that how we *approach* printing, our printing philosophy if you will, is not going to get front page billing in the annual report to shareholders just under the Chairmans comments.  So the word used here is really the "elevator pitch" - tell me in simple terms whay I am going to have a printer on every desk. Or not.  Are we going to turn them off at night, or record who prints what?
+Strategy can be two things - a verb or a noun.  Verbs are an action word (as I was taught at school).  This is strategy as a *planned approach*.  SO for example we hear our accountant asking "what is our printer strategy?".   What they mean is what is your plan.  If you can say something like "Well we shall never buy a printer with a toner / print ratio of more than 0.05%" or "we shall charge the buggers 5p a sheet" then you already know too much about the printer landscape to need a strategy.
 
 
-Or strategy can be a noun - a name for who we are.  We are a search company, we are going to put a computer on every desktop.  In my view the clearest example of strategy (and mission statements which are just the Proper Noun) is that of ICI [#]_
-well into the 1980's ICI's aim was to be ::
+Plans are what you make when you have a map.  
 
-  the world's leading chemical company, serving companies internationally through the innovative and responsible application of chemistry and related science.  Through achievement of this aim, we will enhance the wealth and wellbeing of our shareholders, our employees, our customers and the communities which we serve and in which we operate
+If you know how much printers will cost and can estimate the usage patterns, you need a plan.  You might not want to spend time actually making a plan, so you come up with some principles and call it a strategy and hope no-one will notice.
 
-Of course that is a name that one can identify with.  As a chemist you can change the world. Want a job?
+Generally it works.
+
+Plans have rules, character has values. (theres the self help bit)
+
+If you have a map, you or someone else has done this before, and most of the big unknowns are taken care of.  If the East India Company strategy was to "sail back to that port and merchants we got the spices from last time and fill our boots" then plans is what they want.  If the strategy is "Take over spice production, throughout India, even in ports we have never heard of", then its not planning we want.  Its character.
+
+Strategy can be a noun - a name for who we are.  We are a search company, we are going to put a computer on every desktop.  This, bigger and better form of strategy represents a companies "character" - its values and its philosophy [*]_ 
+Mission statements become the Proper Noun of strategy, trying to express in a few words the character we so care about.  It is surprisingly hard to do well - imagine putting your own character into 2 sentences.  
+
+In my view the clearest example of strategy and mission statements is that of the British Chemical conglomerate ICI [#]_.  It was formed post-WWII and became a global innovative powerhouse, then sometime after 1980's it began a decline sadly familiar to watchers of large UK industry. ICI's original aim was to be ::
+
+  The world's leading chemical company, serving companies internationally 
+  through the innovative and responsible application of chemistry and related 
+  science.  Through achievement of this aim, we will enhance the wealth and 
+  wellbeing of our shareholders, our employees, our customers and the 
+  communities which we serve and in which we operate
+
+Communities which we serve. Responsible Application of science?  What madness is this, where is the synergy word?  And ICI grew, and the mission statement seemed to reflect the true character underneath - responsible chemistry, communities and customers.  Then, well, things changed. 
 
 Now the mission statement looks different::
 
-  creating complex mixtures that deliver the effects valued by consumers and customers
+  creating complex mixtures that deliver the effects valued by consumers and 
+  customers
 
-  building a portfolio of businesses ... bringing together understanding, outstanding knowledge of customer needs, and lead edge technology platforms
+  building a portfolio of businesses ... bringing together understanding, 
+  outstanding knowledge of customer needs, and lead edge technology platforms
 
-Frankly the name no longer means anything. The commitment has gone.  It could mean or do or be anything.
-
-Commitment free is not quite all it is cracked up to be. Without commitment we humans are a poor lot.  
-
-Balancing up cost/benefit vs total commitment.
-total commitment wins
-
-
-
-What is the IT strategy
-OK, this probably is not under the CHairmans speech either, but it could be in the annual report.  but what does it mean?
+So they don't do chemistry now.  They run portfolios of businesses.  If you are a Nobel capable chemist, do you apply for a job? [#]_
 
 
 The negative view
@@ -55,17 +62,16 @@ Sometimes it is easier to make out shapes and importance by looking at the negat
 ::
 
 
-  If you realise it was a mistake, and you can get out of it in days or weeks,
-  it was *tactical*.  If it takes years to get out of it, it was *strategy.*
+  If it will take days or weeks to back out of this mess you are in, then it 
+  was a tactical mistake.  If its going to take years to get out of the mess,
+  it was a strategic mistake. 
 
-this I find a useful definition - it focuses us on what is essential about strategy - *commitment*.  It also focuses us on the importance of reducing our commitments down to the ones we really really want to make.
-
-IT can deliver what every man wants - freedom from commitment. OK, it may not be entirely PC (or true) but every business wants to be able to back out of situations cleanly.
+This I find a useful definition - it focuses us on what is essential about strategy - *commitment*.  It also focuses us on the importance of reducing our commitments down to the ones we really really want to make.
 
 Commitment
 ----------
 The origin of a business as a legal entity is quite interesting, and a good guide to why things work [#]_
-However, the essence is that the corporation cam into existence as a means of funding ships to travel to and trade with India, China and America.  They were in all senses of the word, an *enterprise*.
+However, the essence is that the corporation came into existence as a means of funding ships to travel to and trade with India, China and America.  They were in all senses of the word, an *enterprise*.
 
 The sole purpose was to raise cash, build ships, bring back outrageously priced spices, flog them and give back the cash.
 
@@ -75,6 +81,17 @@ It had a strategy.  Go to India, come back rich.  That was all it was todo.
 It was easy to decide if it was making a strategic mistake. If it was not getting our ships closer to the spice, it was a mistake.
 
 
+COnclusion
+----------
+Strategy is over-used.  The first, most common use is as a plan or an approach. Like having a printer strategy or a fuel strategy.  Nice and useful, but it requires a map of the environment. 
+
+THe second more important form is a definition of character.  What you are committed to and what you are not.  
+
+
+.. [*] The problem with discussing strategy is after a while you start to sound like a self-help book.  
+
 .. [#] 1844 the most significant little known date in modern history - the Joint Stock Act
 
 .. [#] www.guardian.co.uk/business/2007/jun/24/manufacturing.observerbusiness
+
+.. [#] To me the big one is commitment.  The first mission statement committed ICI to certain things.  The second is an attempt to be commitment free. But without commitment we humans are a poor lot.  Love has evolved to teach us that - whilst some species balanced up the pros and cons of mating and commitment, love just triggered all out total commitment, and produced stable marriages.

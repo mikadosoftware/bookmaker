@@ -96,40 +96,51 @@ import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
 from lib import  kill_pdf_odds, create_pdf, publish_this_file, getdirpath, get_html_from_rst, write_index, deploylive, get_tmpl_dict, check_environment
-#getting lazy...
-#from config import *
 import config
 
 
-def make_frontpage(chosen_articles=["thebook/Attitude/ibmadverts.chp",]):
+def first_sentences(txt, ct=5):
+    """Given some text return first 5 sentences """
+    sentences = txt.split(". ")
+    return ". ".join(sentences[:ct])
+
+def make_frontpage(chosen_articles):
     """ Put on the front page 3 articles that reflect the latest on the site """
 
+    print "start frontpage"
+    pages = []
     for article in chosen_articles:
         try:
-            rst_txt = unicode(open(article).read(),'utf8') #i should save all my files as utf8 anyway
-            page_info = get_html_from_rst(rst_txt) #now have html plus meta data
+            rst_txt = unicode(open(os.path.join(config.chapters_dir,article)).read(),'utf8')
+            rst_txt = first_sentences(rst_txt) 
+            page_info = get_html_from_rst(rst_txt, article)
+            pages.append(page_info) 
         except Exception, e:
             raise e  
 
     destination = os.path.join(config.HTML_BUILD_DIR, "index.html")
 
+    fullstr = ''
+    for p in pages:
+        fullstr += p['html_body']
+        fullstr += '<a href="%s">more...</a>' % os.path.join(config.HTMLROOT, 
+                                                p['source'].replace(".chp", ".html"))
+ 
+        fullstr += '<hr/>'
+
     #write out tmpl to destination
     tmpl_txt = open("main.tmpl").read()                
-
+    
     d = get_tmpl_dict()
-    d["title"] = page_info['title']
-    d["maintext"] =  page_info['html_body'][:120]
+    d["title"] = 'Frontpage'
+    d["maintext"] =  fullstr
     d["rhs"] = config.rhs_text
-    d['subtitle'] = page_info['subtitle']
+    d['subtitle'] = 'Frontpage subtitle'
 
     outstr = tmpl_txt % d
     fo = open(destination, 'w')
     fo.write(outstr)
     fo.close()
-
-#    page_info["src"] = article
-#    page_info["dest"] = destination
-#    page_info["errors"] = errors_converting_page
 
     return page_info
 
@@ -153,7 +164,7 @@ def create_html(source, destination, dry_run=False):
     print "---> convert %s to %s" % (source, destination) 
     try:
         rst_txt = unicode(open(source).read(),'utf8') #i should save all my files as utf8 anyway
-        page_info = get_html_from_rst(rst_txt) #now have html plus meta data
+        page_info = get_html_from_rst(rst_txt, source) #now have html plus meta data
 
     #problems getting rst to html - if it is severe, well do not publish it!!   
     except Exception, e:
@@ -279,6 +290,6 @@ if __name__ == '__main__':
     ### main loop
     check_environment()
     main(index_list)
-    make_frontpage()
+    make_frontpage(["Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp"])
     deploylive()
 

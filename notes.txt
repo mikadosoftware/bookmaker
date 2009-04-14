@@ -1,6 +1,26 @@
 NOtes
 =====
 
+april 09
+--------
+Develop the book site production process.
+I want to convert rst to HTML, and return a page object, containing the various parts.
+
+Having done that we produce HTML pages for each section, and an index.
+I think it is worth having an object tracking where each page is being put / created
+
+So this means having a root concept
+
+/path/to/rst/
+/path/to/rst/subsection/foo.chp
+
+I want to store everything with ref to .../subsection etc
+
+get git working with paul-brian as master/origin
+
+
+
+
 - panda-py
 - fabforce5
 - thebook
