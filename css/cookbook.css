@@ -10,15 +10,21 @@ body {
         background:#fff;
         min-width:600px;    
 	font-size:90%;
+        font-family:Arial; 
     }
+
 a {
     	color:#369;
+        line-height:1em; 
 	}
+
 a:hover {
 		color:#fff;
 		background:#369;
 		text-decoration:none;
+                line-height:1em;
 	}
+
 h1, h2, h3 {
         margin:.8em 0 .2em 0;
         padding:0;

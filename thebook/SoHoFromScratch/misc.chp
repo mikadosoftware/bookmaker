@@ -38,6 +38,34 @@ href="http://www.cyberciti.biz/tips/freebsd-how-to-start-restart-stop-network-se
 
 
 Temperature
+-----------
 $  sysctl hw.acpi.thermal.tz0.temperature
 hw.acpi.thermal.tz0.temperature: 54.0C
+
+
+scp
+---
+Very useful in all respects but wildcards are a bugger 
+
+$ scp *.txt myremotesvr:/tmp/misc
+
+will copy all txt file in local dir to remote server
+
+however
+
+$ scp myremotesvr:/tmp/misc/*.txt ./
+
+fails.  With *.txt not found.  Thats because the shell *expands* the commands you give it *before* 
+it passes the commands to the program.  Normally thats good (in other words the shell took
+*.txt and actually sent the scp program 
+
+$ scp a.txt b.txt c.txt myremotesvr:/tmp/misc
+
+
+So to solve the problem, escape the wildcard, the shell will not expand it but will 'unescape' and pass it to the program as we want
+
+$ scp myremotesvr:/tmp/misc/\*.txt ./
+
+http://books.google.co.uk/books?id=3XzIFG3w8-YC&pg=PA316&lpg=PA316&dq=scp+wildcard+match&source=bl&ots=oEjO3_aptE&sig=-YFh37YI4hLdFX8hWasA9N0NEOs&hl=en&ei=E5bnSe74CpG1-Qb02LjoBQ&sa=X&oi=book_result&ct=result&resnum=3http://books.google.co.uk/books?id=3XzIFG3w8-YC&pg=PA316&lpg=PA316&dq=scp+wildcard+match&source=bl&ots=oEjO3_aptE&sig=-YFh37YI4hLdFX8hWasA9N0NEOs&hl=en&ei=E5bnSe74CpG1-Qb02LjoBQ&sa=X&oi=book_result&ct=result&resnum=3
+
 

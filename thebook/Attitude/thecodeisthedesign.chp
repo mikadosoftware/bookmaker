@@ -6,20 +6,32 @@ What is never understood about programming
 ------------------------------------------
 ::
 
- The code is the design
+ The code is the design.
+
+This is a deceptively simple sentence.  Within it is held the secrets of our profession, the ultimate explanation of why programming is hard and getting the results you want never as simple as it looks.
+
+Its not my idea of course.
 
 It has always been sitting there at the back of my mind. And now, having someone else write it with clarity and force, I can see it is true.
 
-Of course I am nearly two decades behind the times, but better late than never.
-Jack Reeves in 1992 published an essay (1) and followed up 13 years later with a commentary. (2)
+I am nearly two decades behind the times, but better late than never.
+Jack Reeves in 1992 published an essay [#]_ and followed up 13 years later with a commentary. [#]_
 
 Go read them.
 
 No - you cheated. Go read them.
 
-Ok,  I'll give you the precis.
+Ok,  I'll give you the precis then.
 
-Source code is the final design for a software project. The spec is not it, the screenshots, the careful word processed documents are not the design. The source code is the design, the blueprints, the final defintion.
+All the things that are usually thought of as "the design" of a piece of software are not.  The Specificiation is not it, the screenshots, the carefully word-processed documents are not the design.  Reeves defines *the* design as the set of documents from which one can mechanistically produce the final product.  FOr software, this is the *source code*.  
+
+So if the source code is the final design, then writing the source code is *designing*.  Apparently lots of people get upset at this.  Non-programmers think that they are designing a piece of software by drawing a screenshot.  Being told its an "artists impression" people seem to find is taking away control from them. [#]_
+
+How does this compare to *real* architecture?
+---------------------------------------------
+People often compare the "building" of software to the "building" of houses and bridges and architecture.  Its close but there are some important differences.  Reeves uses a much more accurate but less understood comparison of industrial goods manufacture.  But I like sticking with well known analogies.
+
+So, where is the actual final design for a house.  It clearly is not the artists impression drwaing, but the architect draws up detailed plans inclusing weights and material specifications.  But can the house be built mechanistically from those plans.  Well frankly no.  Imagine we build a robot that can squirt concrete or lay bricks. 
 
 Well, the actual building of a piece of software is compiling - often called the build process by a happy coincidence. Nowoften people comapre software engineering process to physical engineering. The actual physical manufacturing of, say, a house, is long and hard but it is based on detailed architectural plans that should (in theory) be followed to the letter and all will be well. In theory we could replace the builders, brickies and carpenters with robots, and save a fortune.
 
@@ -40,7 +52,10 @@ Well, here it is, not nanotechnology but "inkjet" printing of concrete. And I ha
 
 
 
-(1)http://www.bleading-edge.com/Publications/C++Journal/Cpjour2.htm
-(2) http://www.developerdotstar.com/printable/mag/articles/reeves_13yearslater.html
+.. [#] http://www.bleading-edge.com/Publications/C++Journal/Cpjour2.htm
+.. [#] http://www.developerdotstar.com/printable/mag/articles/reeves_13yearslater.html
+.. [#] A quick story might help here.  Working for a large ISP we were re-launching our ADSL service, and there were problems - the workflow was a mess, and it would take days for a service to be setup by us, minutes for our competitors.  As a corporate guerilla act I wrote a simple workflow that solved a number of problems (for the best part of a year the multi-million pound service ran through an old PC sitting on my desk. Unofficially.)  
+  I found out we were planning to replace the whole workflow with a 1/4 million pound third party system, (that would not replace the core systems, just transfer work messages) and being a naive boy back then, I pointed out that extending the workflow that existed to meet the new needs would barely cost thousands and even hiring two programmers full time would save money.  It seemed a cut and dry case - but there is an issue of control and trust.  The system was sold on the ability for the non-programming head of the department to be able to alter the workflow graphically.  Without this capability he did not feel he had control.  Despite the idea that he would be telling the programmers what to do (ie controlling them) we went ahead and bought the system.  It worked I think (I left shortly afterwards, guerillas of any stripe become unwelcome eventually). 
+  Anyway, imagine how much control issues the head of a Monastery Scriptorium would have if he was illiterate and he was in charge of a bunch of youngsters who were writing out the Bible.  No, this is not complaining about *that* guy in the ISP.  This is just another pointer towards my thesis that everyone is going to need to program just as everyone needs to be literate.  There is only one way for the head of a scriptorium to make good decisions regularly - thats to be able to read and write the output of his charges.
 
 

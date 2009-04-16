@@ -23,7 +23,7 @@ But deeper than that was the realisation that every profession or craft has thes
 And running a company's IT is no different - there are technical skills, and there is tradecraft. The attitude, approach and organisation that is the difference between talented amateur and professional.
 
 Jamie Oliver did not mention it first time because he was aiming his book at people who will cook at home for their friends.
-The writers of most IT books are similarly aimed - not at the IT manager who has to work out how to fit all this in, but at the much more numerous "professional programmer".  Just as Jamie Oliver's book will teach you to cook but not how to be a chef, most books on IT will teach you to write a unittest, but not how to organise the writing of 1,000 tests *at the same time* as having to replace that old email system.
+The writers of most IT books are similarly aimed - not at the IT manager who has to work out how to fit all this in, but at the much more numerous "professional programmer".  Just as Jamie Oliver's book will teach you to cook but not how to run a restaurant, most books on IT will teach you to write a unittest, but not how to organise the writing of 1,000 tests *at the same time* as having to replace that old email system.
 
 Most IT managers are thrown in at the deep end - and it is amazing more IT projects do not fail under those circumstances. [1]_. 
 
@@ -33,16 +33,16 @@ IT Matters
 
 And I believe that these things matter.  Computers and programming have given the world [2]_  the most flexible human tool ever, and one that is and will continue to change our world.  
 
-That changing world will need guiding and humanising by people at or near the top of organisations and instituions - in other words, us, IT managers.  And we are needed - badly done, automation can dehumanise the workplace, killing productivity as well as our souls.
+That changing world will need guiding and importantly, humanising, by people at or near the top of organisations and institutions - in other words, us, IT managers.  And we are needed - badly done, automation can dehumanise the workplace, killing productivity as well as our souls.
 
-So I wanted to write a something, book, site, blog containing the tricks of the trade.
+So I wanted to write a something, book, site, blog, *thing* containing the tricks of the trade.
 
 
-- *SoHo From Scratch*, which is closest to a traditional "how-to".  I strongly belive you cannot "manage" a job you cannot do, and so every IT manager should be able to program a computer with a "real" language, and administer a simple SoHo network.
+- `SoHo From Scratch </book/SoHoFromScratch/contents.html>`_, which is closest to a traditional "how-to".  I strongly belive you cannot "manage" a job you cannot do, and so every IT manager should be able to program a computer with a "real" language, and administer a simple SoHo network.
 
-- *Trade Secrets*, which is supposed to be the insights I have gleaned from years in the trenches, and probably will look like wild-eyed ranting to everyone else, and 
+- `Trade Secrets <book/Attitude/contents.html>`_ which is supposed to be the insights I have gleaned from years in the trenches, and probably will look like wild-eyed ranting to everyone else, and 
 
-- *Other Points of View*, which I am hoping to expand slowly with interviews and thoughts from other IT managers in the industry, providing a rounded view on my ranting. Or possibly just other people ranting.  
+- `Other Points of View </book/OtherPoV/contents.html>`_ which I am hoping to expand slowly with interviews and thoughts from other IT managers in the industry, providing a rounded view on my ranting. Or possibly just other people ranting.  
 
 Anyway, dip in and enjoy, I hope you find some of the views you find here interesting, perhaps even stimulating. 
 

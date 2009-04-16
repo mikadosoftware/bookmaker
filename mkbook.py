@@ -290,6 +290,6 @@ if __name__ == '__main__':
     ### main loop
     check_environment()
     main(index_list)
-    make_frontpage(["Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp"])
+    make_frontpage(["Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp", "Attitude/business_case.chp"])
     deploylive()
 
