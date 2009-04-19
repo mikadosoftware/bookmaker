@@ -87,3 +87,8 @@ understanding fonts
 
 http://www.cl.cam.ac.uk/~mgk25/unicode.html
 
+
+I spend 90%+ of my time on urxvt/screen/emacs/irssi. If I can get a email client that integrates nicely into this, it'd be ideal. What I think I really want is something that allows me to FUSE mount my email directory. So I can cd into my directories, ls to see new messages, write messages in a directory, and move them into ~/Mailbox/send/ ... to have them sent, etc ...
+
+http://news.ycombinator.com/item?id=567667
+

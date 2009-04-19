@@ -94,6 +94,42 @@ I kind of hope that only investing in businesses that cannot be proven to be los
 
 
 
+Jason Schulz
+
+So you're the PM, and you've just sat through the eighth implementation meeting for the project with sixteen representatives from the areas of the business affected by your software. You understand design, in fact you can explain Fitt's Law in two dimensions without resorting to diagrams, but getting these guys think about what would be good for everyone instead of just themselves is hard.
+
+The name of the game is compromise.
+
+Two of those reps are happy to rework their entire departments' workflow to make the most of your software. Nine of them are indifferent, and five are hostile - they did all of this nine months ago, and so have no budget left, even if every thing promised comes to pass.
+
+The name of the game is compromise.
+
+So there are seven interfaces to other apps to implement, and as a 'cost cutting' move the GIS interface has gone from real time to daily, as the GIS app people are annoyed that you accrued part of their projected headcount savings in your project justification to finance dept, preventing the GIS people from using the headcount saving to do something they wanted to do.
+
+The name of the game is compromise.
+
+Your workflow modelling shows that most of your workload is at 11:30am and 4pm, as the users sign off on their work before they go to lunch or go home. You expected this, but the GIS slowdown means your end to end SLA exceptions rate blows out from an allowable 9 percent to 38 percent. 12 percent would be OK, maybe even 15, but 38 means no stage two implementation. Definitely.
+
+The name of the game is compromise.
+
+Three of your hostile reps have discovered RSS and think that it would be fantastic for keeping the userbase current with their work as it moves between the other groups. They'll even pickup the tab on the stage two feasibility study if they can have RSS in this version. The DBA has said that everything in the database is timestamped for the audit trail, so he's not worried. The BA is freaking out though, and says that if there's RSS admin & user stuff coming in, then something else has to give.
+
+The name of the game is compromise.
+
+The BA spoke with one of the lead programmers, and they've cooked up something with AJAX for the RSS, which will only blow three of the mid project milestones. The problem is, the programmers who'd implement the AJAX are off until next quarter doing a special side project for the GIS people, so you can have a real time interface back instead of the daily one.
+
+The name of the game is compromise.
+
+So you get the engineering manager to schedule the interns to build the RSS implementation with fixed user mappings (in short, the RSS you have when you don't have RSS). Basically the feature will suck, since you can't let the rest of the project team support the interns without blowing their own milestones.
+
+So now everyone is happy, except for your designer. The interns were meant to be working for him, since you know, design is important.
+
+And the name of the game is compromise. 
+Jason Schulz
+http://www.subtraction.com/2007/10/19/if-it-looks-
+
+
+
 
 
 [#] (ie you want to bring in 100 million in the first year, from small businesses, at a rough spend of 10/month.  So thats pretty much every business in the UK, will sign up for your service in 12 months.  Hmmm, perhaps we can look at the average launch figures for these well known services ...). Seriously the number of bad ideas floating round the average large company is legendary.
