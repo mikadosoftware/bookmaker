@@ -215,16 +215,15 @@ def get_tmpl_dict():
 def publish_this_file(root, f):
     """given a file basename, decide if we want to publish it
     
-    At the moment the only criteria is ends in .chp, but clearly can extend 
-    so define which artilces to publish (or not)
+    All files to publish must end .chp
 
     I have created a file .ppp_include 
     which looks like 
 
-include = ['ibmadverts.chp',]
-exclude = []
+exclude = ['ibmadverts.chp',]
 
-    if a file is listed in include we include it, if it is in exclude we do not
+
+    if a file is listed in exclude we do not publish
     if the .ppp_include file is missing include all
     XXX - todo - raise a warning if filelisted but not in dir
  
@@ -264,10 +263,8 @@ exclude = []
 
     #logic for publishing
     if f in files_to_exclude : 
-        valid_flag = False
-        print "-- %s to be excluded." % os.path.basename(f) 
-        #succeed once
-        return valid_flag 
+        #this file is in exclude, so return false
+        valid_flag = False 
     else:
         valid_flag = True
    

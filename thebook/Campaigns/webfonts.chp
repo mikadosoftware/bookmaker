@@ -1,0 +1,36 @@
+=========
+Web fonts
+=========
+
+An interesting conundrum, and one that has not (yet) got a neat technical solution
+
+The hakon solution (each foundry holds a web page listing which domains are allowed to use a font) is frankly unworkable.
+
+Imagine if helvetica was licensed this way - every web page more or less.  Every time a browser visited a new domain it would need to download a very big file from a foundry website (there are how many domains? What does a ten million line file cost to download on a mobile?).  And what about the ttl for that list, make it a week and every browser around the world needs to download it all again.  Even google would sag under that kind of load.
+
+The first idea is to just replace the root table with a y/n call - here is my webpage, here is the font name, can i use it.  This does not really solve the problem - it reduces traffic sure, but the issue is that if i visit domain x i automatically need to visit another domain.  Its inelegant, its inefficient and its insecure.  The web would effectively 'not work' if a big foundry said 'no to all'.  And that is a big ransom demand to put in anyones hands.  And i strongly suspect there is a really powerful cross-site scripting vulnerability sitting in there.
+
+It also works against the foundries - the solution decides the licensing.  There is just one kind of license - per domain.  No sophistication, no negotiation. What if only want to license your font for my mobile readers.  What if you want to license it for the first 100,000 views for free as a taster, then stick it to me.  What if everyone hosted on rackspace servers gets it.  The technology should limit the business options as little as possible.
+
+Ok, what do you suggest ?
+
+I prefer a slightly more network-friendly solution.  There are not that many foundries (certainly orders of magnitude less than  domains) so it is quite feasible for them all to put public root certificates in browsers, or at worst run shared CAs.  The technology is already there for ssl.  Then each website who wants to license a .wtf (great name) file pays their money and gets a signed (hashed) license file which sits next to robots.txt.  The browser downloads the web page, the font and then decrypts the license file with the known public key.
+
+The license file is then located where it should be, on the site with the font, and we can trust the license file is genuine.  If its out of date thats the webmasters problem.
+
+The license file could hold
+
+- domains allowed
+- servers / ips allowed
+- license type
+- an extensible other data section.
+
+The license type would need to be pre-agreed with the browsers, the first obvious one is per domain.  But any number of types (lets say one byte or 255) could be invented as the browser manufacturers and foundries talk.
+
+This solution has a lot more going for it.
+We avoid the horrors of mass file downloads, of out of date caches causing havoc and of finding that we put the entire web under the control of one small group of font designers.(i am sure they are lovely people each and every one, in fact thats why i dont want to do it. Imagine the stress of avoiding that temptation, lets not put them through it)
+
+It also follows the same approach as has been proven to work with ssl for a dozen years, and reuses technology instead of inventing it.
+
+- http://news.ycombinator.com/item?id=573713
+- http://talleming.com/2009/04/21/web-fonts/
