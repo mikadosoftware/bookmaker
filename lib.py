@@ -108,9 +108,13 @@ nb config.chapters_dir = '/root/thebook/thebook'
 
             print "*** writing this src, %s to this html page %s then indexing as %s\n\n" % (page_info['src'],  page_info['dest'], dest_href)
             
+            if page_info["subtitle"] == '':
+                subtitle = ''
+            else:
+                subtitle = "(" + page_info["subtitle"] + ")"
 	    this_section_contents += '''<li> <a href="%s">%s</a>
-                           <span class="subtitle">(%s)</span>
-                           </li> \n''' % (dest_href, page_title, page_info["subtitle"])
+                           <span class="subtitle">%s</span>
+                           </li> \n''' % (dest_href, page_title, subtitle)
              
         this_section_contents += '</ul>'
         write_indexpage_to_disk(this_section_contents, this_section_path)

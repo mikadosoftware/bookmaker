@@ -9,8 +9,9 @@ body {
         width:100%;
         background:#fff;
         min-width:600px;    
-	font-size:90%;
-        font-family:Arial; 
+	font-size:80%;
+        font-family:Arial, sans serif; 
+
     }
 
 a {

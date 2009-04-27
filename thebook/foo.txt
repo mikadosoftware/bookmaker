@@ -1,2 +1,0 @@
-ftp://ftp.uni-kl.de/pub/linux/knoppix/
-
