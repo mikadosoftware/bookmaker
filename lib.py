@@ -257,22 +257,22 @@ exclude = ['ibmadverts.chp',]
     c.read(include_file)
 
     #[('include', 'ibmadverts.chp pov.chp')] -> {include:'ibmadverts.chp, ...
-    items = dict(c.items('exclude'))
+    items = dict(c.items('include'))
 
     try:
-        files_to_exclude = items["exclude"].split() #assumes no spaces in filename        
+        files_to_include = items["include"].split() #assumes no spaces in filename        
     except Exception, e:
-       files_to_exclude = []
+       files_to_include = []
 
 
     #logic for publishing
-    if f in files_to_exclude : 
-        #this file is in exclude, so return false
-        valid_flag = False 
+    if f in files_to_include : 
+        #this file is in include, so return True, we want to publish
+        return True
     else:
-        valid_flag = True
+        valid_flag = False
    
-    # if not excluded, publish. 
+    # if not include, no publish. 
     return valid_flag
 
 

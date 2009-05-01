@@ -1,2 +1,2 @@
-[exclude]
-exclude: suggested_chapters.chp SoHo1.chp 
+[include]
+include:  WhatsGoingOnHere.chp introduction.chp suggested_chapters.chp programmatic_access.chp define_it_manager.chp likelawyers.chp what_is_it_mgr.chp notwrong.chp

@@ -1,2 +1,2 @@
-[exclude]
-exclude:
+[include]
+include:  time.chp cabling_hardware.chp apache.chp sohosolointro.chp SoHo1.chp mysql.chp hardware.chp printing.chp cvsup-mirror.chp sysadminscripting.chp sound.chp samba.chp XWindows.chp LaTeX.chp corefile_debugging.chp digital_photography.chp scmandgit.chp subversion.chp template.chp usbdisk.chp email.chp misc.chp unix_commands.chp basebuild.chp unicode.chp pxeboot.chp gnupg.chp imagemagick.chp jails.chp workstation.chp routes.chp suggested.chp sed_sort.chp filesharing.chp

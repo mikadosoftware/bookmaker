@@ -9,8 +9,15 @@ body {
         width:100%;
         background:#fff;
         min-width:600px;    
-	font-size:80%;
-        font-family:Arial, sans serif; 
+/*	font-size:80%;
+        font-family:Arial, Tahoma; 
+*/
+
+
+    font-family: Georgia,Serif;
+    margin-bottom: 1em;
+    margin-top: 0;
+    line-height: 130%;
 
     }
 
@@ -27,7 +34,7 @@ a:hover {
 	}
 
 h1, h2, h3 {
-        margin:.8em 0 .2em 0;
+        margin:.8em 3em .2em 3em;
         padding:0;
     }
 p {
@@ -161,16 +168,18 @@ color:#369;
 }
 
 div.col1 p,div.col1 ul,div.col1 ol {
-font-family:Georgia,Serif;
+font-family:Georgia, Serif;
 font-size:1.1em;
 margin-bottom:1em;
 margin-top:0;
+margin-left:3em;
+margin-right:3em;
 line-height:140%;
 }
 
 div.col2, div.col3
 {
-    font-family: Helvetica,Arial,Sans-Serif;
+    font-family: Helvetica, Sans-Serif;
     font-size: 0.9em;
     line-height: 120%;
 }
@@ -189,5 +198,14 @@ h1.title {
 .screenshot{
 
    border: 2px solid black;
+
+}
+
+.pull-quote {
+
+  font-family: times-roman, Serif;
+  font-size:  120%;
+  font-weight: bold;
+  
 
 }

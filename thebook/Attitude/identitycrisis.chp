@@ -8,125 +8,128 @@ Identity, Security and ID Cards
 
 You are unique, a one-off, there is no-one quite like you in the world. Honestly.
 
-It sounds like a nice compliment, and of course I meant it like that.  However, its probably less of a compliment than most of us would first assume, for the rather simple reason that a statement of your uniqueness is blindingly obvious. 
+It sounds like a nice compliment, and of course I meant it like that.  I love your work, dahling. 
+ 
+However, its probably less of a compliment than most of us would first think, because its rather an obvious statement.
 
 That you are a single, unique person, that you *have* identity is after all kind of obvious.
-No other human being stands exctly where you are or has lived exactly the same life.  There is a singleness about you, one and only one, a uniqueness, or to dip into neology, an *identity-ness*.
 
-That we are not teribly  different from others is the fipside of the compliment.  There are millions of people who are as (or more!) intelligent, good-looking and generous.  To stand out from the crowd can reinforce your identity-ness, and is probably why fame is so sort after.
+No other human being stands exactly where you are or has lived exactly the same life.  There is a singleness about you, one and only one, a uniqueness, or to dip into neology, an *identity-ness*.
 
-So if i am different from everyone else in the world (although maybe not by much) what is all the fuss about.  Give us all a card, problem solved.
+That we are not terribly different from others is the fipside of the compliment.  There are millions of people who are just as (or, horror of horrors, more) intelligent, good-looking and generous.  To stand out from the crowd can reinforce your identity-ness, and is probably why fame is so sort after.
 
-You have identity, therefore you must have an identity.
+So if I am different from everyone else in the world (although maybe not by much) what is all the fuss about.  Give us all a card, problem solved, surely?
 
-The problem is which one?
 
-Imagine a kafka-esque situation for a moment. You wake up one morning and say hello to your husband who demands to know what you are doing in his house.  Your kids do not recognise you, your boss and collegues say "who are you".  The world has gone mad.  Its the beginning of an exciting movie or a fantastically dull book.
+Authentication and Authorisation
+--------------------------------
+Just because you have identity, it is not a simple problem to translate that into an effective security system.
 
-But look at things from the point of view of the rest of the world.  They remeber a different, possibly better looking person called Susan. They laughed and spent time with her.  Now you turn up and say "Hi I am Susan".  
+Security is, at root, knowing who, and how much, to trust another human being.  To achieve this you, or any security system 
+need to make two decisions.  Firstly, *which* identity, out of all the others, is this human being.  And having decided that, how much access/trust should you give that identity. 
 
-The world has two choices - to think that the entire country has undergone some parallel universe swap / mass hypnosis event, *or* that you are mad, or just lying.
+Both those decisions have gradations - that is we can be 90% sure this person is Fred Bloggs, and we trust Fred with only 50% access to our secrets.
 
-I suspect there are cruel examples of someone suffering total amnesia, and then being told they are someone else entirely.  How would an amnesiac know if they were being lied to?
+That first decision is Authentication - a human claims to be a given identity, can we verify that?  
 
-So you do have an identity, but *which* identity depends on everyone else. 
+The second decision is Authorisation - how much access do we give to a person whom we believe has a given identity?
+
+Identity is not Authentication, nor is it Authorisation.
+
+Identity, and this is important, identity is a *public* thing. I am Paul Brian.  But for security to work well there need to be secrets, usually secrets *shared* between the secure system and the person wanting access.
+
+For example, using a persons identity to Authenticate their identity is circular and foolish.  It is the basic mistake made by pretty much any I.D. Card scheme [#]_.  My bank will not let someone walk in, announce in a loud voice "I am Paul Brian" and withdraw my cash.  However bio-metrics are leading us down this dangerous path.  Oh, I do mean dangerous.  
+
+In 2005 [#]_ the Mercedes S-class had fingerprint recognition on the handle.  Very swish.  Till robbers in Malaysia cut off a man's fingers and stole his car.  The car makers had confused a public (and publicly available) statement (the owner's identity) with Authentication - a corroboration of the identity (i.e. knowing a pin number to get in the car).  This was not Identity theft.  It was theft of his car keys.
+
+
+Web of trust
+------------
+Imagine a Kafka-esque situation for a moment. You wake up one morning and say hello to your husband who demands to know what you are doing in his house.  Your kids do not recognise you, your boss and colleagues say "where is Susan?".  The world has gone mad.  It's the beginning of an exciting movie or a fantastically dull book.
+
+But look at things from the point of view of the rest of the world.  They remember a different, possibly better-looking person called Susan.  They laughed and spent time with her.  Now you turn up and say "Hi, I am Susan".  
+
+The world has two choices - to think that the entire country has undergone some parallel universe swap / mass hypnosis event, *or* that you are mad or lying.  Guess which they will take?
+
+OK, now imagine the inverse of this.  A person awakes with total amnesia.  He has no idea who he is.  Again, an exciting movie beckons.  The doctor smiles and says "Hello, George".  His wife walks in and kisses him, his friends all assure him he is George and they remember him.  He must assume he actually *is* George.  (the secret piece of paper found in his pocket saying "they are lying.  Your name is Fred, get out now" will wait till after the credits).
+
+How would an amnesiac know if they were being lied to about who they are?
+
+Your identity depends on the rest of the world.  Your identity also *varies* with the rest of the world.  Perhaps your wife knows you better than you know yourself, but the Amazon marketing department barely knows customer 12345678 at all.  
+
+You do have *an* identity, but *which* identity depends on everyone else agreeing.
+
 The crypto-blokes have a term for this - web of trust.
 
-Essentially it means that the only way to know if you can "trust" person X is to trust the judgement of someone else who also trusts person X. 
-How you arrive at the decision to trust that first someone else is of course up to you.  Oh, yes, and *how much* you trust them is also up to you, but probably a factor of how much you trust the first person.
+Essentially it means that the only way to know if you can "trust" person X is to trust the judgment of someone else who also trusts person X. 
+
+This web provides the source of our uncertainty.  If you are relying on other people to tell you what a persons identity is and how much you can trust a person with that identity, then you can never be 100% sure.
+
+And so a computer security system starts off like our amnesiac, and needs to be told who to trust, in order to start their web of trust.  [#]_
+
+Governments want to keep the web of trust *short*.  The "government" trusted the post office clerk, the post office clerk saw my passport and issued me a ID card.  Therefore my ID card is valid.  
+
+However, 
 
 
+Better Bio-metrics
+------------------
+It seems bio-metrics is misunderstood.  By the U.K. Government as much as Mercedes.  My bio-metrics do not "prove" I am who I claim to be.  They *are* who I claim to be.  The most widely used biometric is the human face.  Everyday hundreds of people walk past you publically displaying their identity.  Its as if everyone walked around flashing their passports.
 
-Public v Private
-----------------
-Identity, and this is important, identity is a *public* thing. I am Paul Brian.
-Thats fairly public. And of course you would not believe just anyone walking around saying "I'm Paul Brian".  Well, the important part is that some people have - there is a terrible example [#]_ of a car maker who opened the car door based on fingerprint recognition on the handle.  Very swish. Till robbers in malaysia cut off a mans fingers and stole his car.  The car makers had confused a public (and publically available) statement (who we are) with a corroboration of the identity (ie knowing a pin number to get in the car)
+I would like to suggest a different approach to all this.  I simply take a recent photo of myself, and I take my NHS number or drivers license number, and I produce a SHA-1 hash.  I put this on the web, say on paulbrian.bigbrother.gov.uk.
+Lets call it my electronic face.
 
+Get everyone else in the country to do the same.  See a cottage industry spring up to support it. It will be self funding, and cost a lot less than letting the government try.
 
-Secret corroborates your identity in a hard to repudiate manner, and is to all intents and purposes a hash of all the trust the *link person* has converted into a proxy.
+Now my wife hashes *her* e-face and mine together.  Anyone who wants to can now see that my wife is willing to say that the photo and the NHS number on my face are mine.  
 
-It could be a password, it could be recieving an email from someone at itmanagerscookbook.com, but there is 
+Now lets move on a bit.  I vist the ID card counter (post office I suspect).  The nice man behind the counter (trained in all the arts of counter terrorism and anti-fraud) looks at my passport (or whatever system government will invent to make ID cards less laughable) and looks at my face, then hashes the e-face with his e-face.
 
+Now what has this achieved.
 
-identity corroboration
-- hard to repudiate, hard to fake
-- shared secret, 
- 
+Firstly the government does not own or control copies of Identity.  I do. 
 
-Identity
-Corroboration that passes my trust level
-aim to remove fraudulent (ie harmful to me) transactions.
-SOmetimes that is done by passing on the risk. see Dick Fuld
+Secondly we have moved the security focus away from how can the government grab my bio metric to how can the government assure itself my bio metric matches up with their internal ref numbers
 
+then we can sensibly worry about authorisation.  WHich is where the fuss should be.  It does not matter if xxx had had a valid ID card that demonstrated he was a british citizen.  the problem was he had a bomb on his back.
 
 
-woman who was refused credit because of woman with same name and birthday living next door.
+What is the point of an ID card.
+It protects nothing
+
+It makes collecting taxes easier.
+Well thats not the point. And anyway 50% of the fortune 500 paid no income tax last year.  I can give you their registered addresses if you want.  
 
 
-
-
-Authentication
-authorisation
-
-
-
-
-
-
-
-
-So your identity is made up of 
-
-- the fact that you obviously do *have* an identity
-- which identity (out of six billion) you are is the disputed part.
-- we can best do this by questioning those whom I trust and who have had dealings with the identity you claim to be in the past. The greater the trust level each 3rd party has (both ways) the greater the amount of trust I can put in you being your claimed identity.
-If they corroborate your identity claim, 
-
-
-is it trying to verify that you are the claimed identity 
-
-
-More corroborations, the better.
-However the corroboration needs to be qualified with depth of interaction with the claimed identity.
-
-
-Lets go back to our example of an amnesiac. I can remember no-one - but over time I have learnt to trust my mother.
-When she corroborates your claim to be my brother, I might be willing to lend you a thousand pounds on the strentgh of that
-However if I went to a party and 50 people told me "yeah hes your brother, I am sure someone told me just now", I do not think you will get the cash.
-
-In the end our poor amnesiac has a serious problem - ultimately there is no-one he can trust because he cannot remember who he has had deep trust forming relationships, so he cannot trust the judgement of anyone.
-
-
-
-SO whats to be done?
+So whats to be done?
+--------------------
 
 Firstly, we accept that a specific identity is not something we have, or are. It is something other people give to us through their interactions with us. 
-Then we realise that authenticating identity is not the point - we need to authenticate our web of trust - the six degrees of seperation f you will.
 
-That biometrics is not really the point - its how much can we trust an ID card.
+Then we realise that authenticating identity is not the point - we need to authenticate our web of trust - the six degrees of separation f you will.
+
+How good are biometrics is not really the point - its how much can we trust an ID card.
+
 The biometrics are not an authentication - they are an identity. a public declaration. (cf username)
 so what does a ID card *really* say - not much actually. it just links one public identity (my retina scan/ face)
-to another (social security number). Well frankly thats not a lot of help, and it does not need a hundred million pounds.
+to another (social security number). Well frankly that's not a lot of help, and it does not need a hundred million pounds.
 
-imagine I take aphoto of myself, turn it into a TIFF file, and then create a hash of it, and say my social security number.
+imagine I take a photo of myself, turn it into a TIFF file, and then create a hash of it, and say my social security number.
 that hash cryptographically links my photo to my social security file.  (the chances of a collision? dunno)
 
 I can then publish this, and anyone can download the hash, and the two parts. Now the person at the social security desk can then hash the photo again, 
 
-WHat is needed is a way to trust that the hash you downloaded from the internet 
-It should be simple - there should only be one unique publically available social security number up on google. THe minute there are two I can be informed, lets face it a search of 60m social security numbers even on a modern laptop is less than a second.
+What is needed is a way to trust that the hash you downloaded from the Internet 
+It should be simple - there should only be one unique publicly available social security number up on Google. The minute there are two I can be informed, lets face it a search of 60m social security numbers even on a modern laptop is less than a second.
 
 The problem of authentication is then placed where it should be - with human beings looking at other human beings and going - huh?
 
-The govt does not need to run an ID card system - it needs to run a dispute resolution system, and a large publically available social security and hash photo repository.
+The govt does not need to run an ID card system - it needs to run a dispute resolution system, and a large publicly available social security and hash photo repository.
 
-Can it fail - well yes, but as the data needed to commit impersonation successfully is publically stored, the chances of a poisoning of the data being discovered in a timely fashion is orders of magnitude higher.
-
-
-so 
+Can it fail - well yes, but as the data needed to commit impersonation successfully is publicly stored, the chances of a poisoning of the data being discovered in a timely fashion is orders of magnitude higher.
 
 do not confuse identity and authentication, certainly not if you value your fingers.
-there is no authenticaiton only levels of trust 
+there is no authentication only levels of trust 
 
 
 
@@ -139,7 +142,7 @@ Even if we authenticate you, we are back to levels of trust.
 We authenticate you as being 
 
 tying too much into one identity token is dangerous.
-If I want to join SPecial brnach they basically go an tlak to all my friends and family. The more good trust links I get the better
+If I want to join Special Branch they basically go an talk to all my friends and family. The more good trust links I get the better
 
 
 
@@ -147,7 +150,7 @@ If I want to join SPecial brnach they basically go an tlak to all my friends and
 
 The original Identity / Authentication Two-step
 
-I got my first bank account when I was 14 years old - very exciting. Barclays had a "get 'em early" account if my Father would counter sign. No credit, just a savings account.  If I wanted to withdraw money, I had to go to the bank and sign a slip.
+I got my first bank account when I was 14 years old - very exciting. Barclay's had a "get 'em early" account if my Father would counter sign. No credit, just a savings account.  If I wanted to withdraw money, I had to go to the bank and sign a slip.
 
 Now here is the perfect example.  I would walk into the bank and announce that I was Paul Brian (14 and 3/4s).  The bank teller would not care whether that identity was correct or not.  They would just ask me to provide my shared secret - my signature. If my shared secret matched their shared secret, they would give me the cash.
 
@@ -159,23 +162,45 @@ How did they get the shared secret ?  They trusted another party (my father) to 
 Is a signature a biometric or a shared secret?
 
 
+
+Secrets corroborate your identity in a hard to repudiate manner, and is to all intents and purposes a hash of all the trust the *link person* has converted into a proxy.
+
+So we want secrets not identity to use for authentication
+
+identity corroboration
+- hard to repudiate, hard to fake
+- shared secret, 
+ 
+
+Identity
+Corroboration that passes my trust level
+aim to remove fraudulent (i.e. harmful to me) transactions.
+Sometimes that is done by passing on the risk. see Dick Fuld
+
+
+
+woman who was refused credit because of woman with same name and birthday living next door.
   
 
 
 (insert from mail)
-Because biometrics are usernames (ie public)  asswords (shared secret) they really do not need to be kept secret, or even particularly private
 
-The only times that biometrics other than a photo are useful are
+Weaknesses of ID card schemes
+-----------------------------
 
-- where extra hurdle of impersonation is worth it
-- where a human is not the authorisor (it is authority tht is the key too)
+The quality of the collection of intial bio-metric
 
-So since computers are nothibg like as good at
+The public identity proposal neatly side steps this.  The government is then not *giving me* my identity, but is using what ever process they choose to confirm that I am who I claim to be.  And let us not forget the government is not one entity.  MI5 will take a very different approach to handing out a swipe card to Thames House than nipping down the post office and showing the guy my passport.
 
-
-All biometrics are is a door key. It says nothing about who you are, just what u hold.
-
-
-.. [#]  (http://news.bbc.co.uk/2/hi/asia-pacific/4396831.stm). 
+privacy and data trails
+The ability to remove the data trail.  Bruce Schneir writes interestingly on this and compares our data pollution with the pllution of the early Industrial Age.  
 
 
++++
+
+.. [#]  (http://news.bbc.co.uk/2/hi/asia-pacific/4396831.stm). One thing to take away from this is biometrics are usernames (ie public declarations).  They really do not need to be kept secret, or even particularly private.  All biometrics are is a door key. It says nothing about who you are, just what you have or hold.  Mercedes effectively turned this mans fingers into his car keys.  The robbers just stole his car keys.
+
+.. [#] compared to all the other basic mistakes, like thinking somehow you can build a single database with everyones retina scans on it, and have it available to every civil servant, *and still keep it secret*.
+
+
+.. [#] When the robots take over the world, I want to be *that* guy.  Telling the Terminator who he cannot trust.  Bwahahahahaha....

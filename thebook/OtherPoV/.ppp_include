@@ -1,2 +1,2 @@
-[exclude]
-exclude:
+[include]
+include:  ideas.chp introduction.chp

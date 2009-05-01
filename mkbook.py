@@ -100,9 +100,19 @@ import config
 
 
 def first_sentences(txt, ct=5):
-    """Given some text return first 5 sentences """
+    """Given some text return first 5 sentences 
+    This is a problem.  If there is a call out in the first sentences, 
+    I get ugly warning signs...
+    However, cutting off HTML is worse and less predictatble
+
+    """
     sentences = txt.split(". ")
-    return ". ".join(sentences[:ct])
+    
+    final_txt = ". ".join(sentences[:ct])
+    delete_me = ['[#]_', '[*]_']
+    for d in delete_me:
+        final_txt = final_txt.replace(d, "")  #needs a lot more thought but for now...
+    return  final_txt
 
 def make_frontpage(chosen_articles):
     """ Put on the front page 3 articles that reflect the latest on the site """
@@ -290,6 +300,6 @@ if __name__ == '__main__':
     ### main loop
     check_environment()
     main(index_list)
-    make_frontpage(["Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp", "Attitude/business_case.chp"])
+    make_frontpage(["Introduction/WhatsGoingOnHere.chp", "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp", "Attitude/business_case.chp"])
     deploylive()
 
