@@ -9,17 +9,17 @@ body {
         width:100%;
         background:#fff;
         min-width:600px;    
-/*	font-size:80%;
-        font-family:Arial, Tahoma; 
-*/
+}
 
-
+.document{
     font-family: Georgia,Serif;
     margin-bottom: 1em;
     margin-top: 0;
-    line-height: 130%;
+    line-height: 140%;
+    margin-left:5em;
+    margin-right:5em;
+}    
 
-    }
 
 a {
     	color:#369;
@@ -34,13 +34,15 @@ a:hover {
 	}
 
 h1, h2, h3 {
-        margin:.8em 3em .2em 3em;
+        margin:.8em 0 .2em 0;
         padding:0;
     }
+
 p {
         margin:.4em 0 .8em 0;
         padding:0;
     }
+
 img {
 		margin:10px 0 5px;
 	}
@@ -172,9 +174,6 @@ font-family:Georgia, Serif;
 font-size:1.1em;
 margin-bottom:1em;
 margin-top:0;
-margin-left:3em;
-margin-right:3em;
-line-height:140%;
 }
 
 div.col2, div.col3
@@ -191,7 +190,7 @@ h1.title {
 
 /// experimental - hiding the subtitle as I use it for the table of contents
 .subtitle {
-
+    visible:no;
 }
 
 

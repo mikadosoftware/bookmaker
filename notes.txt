@@ -1,6 +1,10 @@
 NOtes
 =====
 
+good commit on d1d9d40d0839f8fad0a3381ada31a80eb6a9e671
+
+
+
 april 09
 --------
 Develop the book site production process.
