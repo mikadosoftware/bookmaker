@@ -2,11 +2,9 @@
 Writing code is designing
 =========================
 
-What is never understood about programming
-------------------------------------------
-::
+The code is the design.
+-----------------------
 
- The code is the design.
 
 This is a deceptively simple sentence.  Within it is held the secrets of our profession, the ultimate explanation of why programming is hard and getting the results you want never as simple as it looks.
 
@@ -17,7 +15,7 @@ Jack Reeves in 1992 published an essay [#]_ and followed up 13 years later with 
 
 Go read them.
 
-No - you cheated. Go read them.
+I'm waiting...
 
 Ok,  I'll give you the precis then.
 
@@ -29,9 +27,9 @@ So if the source code is the final design, then writing the source code is *desi
 
 How does this compare to *real* architecture?
 ---------------------------------------------
-People often compare the "building" of software to the "building" of houses and bridges and architecture.  Its close but there are some important differences.  Reeves uses a much more accurate but less understood comparison of industrial goods manufacture.  But I like sticking with well known analogies.
+People often compare the "building" of software to the "building" of houses and bridges and architecture.  It's close, but there are some important differences.
 
-So, where is the actual final design for a house.  It clearly is not the artists impression drawing, but the architect draws up detailed plans including weights and material specifications.  But can the house be built mechanistically from those plans.  Well frankly no.  
+Where is the actual final design for a house?  It clearly is not the artists impression drawing, but the architect draws up detailed plans including weights and material specifications.  But can the house be built mechanistically from those plans.  Well frankly no.  
 
 Imagine we build a robot that can squirt concrete or lay bricks. [#]_   For this robot, unlike Bob the Builder, the phrase, "build the south wall where the marks are laid out", is not going to work.  There will be a thousand IF statements, about weather, about leaving a hole for a window, all of which need to be catered for *before* the first concrete is squirted.  
 

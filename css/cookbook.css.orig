@@ -9,25 +9,40 @@ body {
         width:100%;
         background:#fff;
         min-width:600px;    
-	font-size:90%;
-        font-family:Arial; 
-    }
+}
+
+.document{
+    font-family: Georgia,Serif;
+    margin-bottom: 1em;
+    margin-top: 0;
+    line-height: 140%;
+    margin-left:8em;
+    margin-right:8em;
+}    
+
+
 a {
     	color:#369;
+        line-height:1em; 
 	}
+
 a:hover {
 		color:#fff;
 		background:#369;
 		text-decoration:none;
+                line-height:1em;
 	}
+
 h1, h2, h3 {
         margin:.8em 0 .2em 0;
         padding:0;
     }
+
 p {
         margin:.4em 0 .8em 0;
         padding:0;
     }
+
 img {
 		margin:10px 0 5px;
 	}
@@ -37,15 +52,18 @@ img {
         float:left;
         width:100%;
     }
+
 #header {
 		border-bottom:1px solid #000;
 	}
+
 #header p,
 #header h1,
 #header h2 {
         padding:.4em 15px 0 15px;
         margin:0;
 	}
+
 #header ul {
 	    clear:left;
 	    float:left;
@@ -54,12 +72,14 @@ img {
 	    margin:10px 0 0 0;
 	    padding:0;
 	}
+
 #header ul li {
 	    display:inline;
 	    list-style:none;
 	    margin:0;
 	    padding:0;
 	}
+
 #header ul li a {
 	    display:block;
 	    float:left;
@@ -86,6 +106,8 @@ img {
 #header ul li a span {
 	    display:block;
 	}
+
+
 	/* 'widths' sub menu */
 #layoutdims {
 		clear:both;
@@ -155,16 +177,15 @@ color:#369;
 }
 
 div.col1 p,div.col1 ul,div.col1 ol {
-font-family:Georgia,Serif;
+font-family:Georgia, Serif;
 font-size:1.1em;
 margin-bottom:1em;
 margin-top:0;
-line-height:140%;
 }
 
 div.col2, div.col3
 {
-    font-family: Helvetica,Arial,Sans-Serif;
+    font-family: Helvetica, Sans-Serif;
     font-size: 0.9em;
     line-height: 120%;
 }
@@ -176,12 +197,21 @@ h1.title {
 
 /// experimental - hiding the subtitle as I use it for the table of contents
 .subtitle {
-
+    visible:no;
 }
 
 
 .screenshot{
 
    border: 2px solid black;
+
+}
+
+.pull-quote {
+
+  font-family: times-roman, Serif;
+  font-size:  120%;
+  font-weight: bold;
+  
 
 }
