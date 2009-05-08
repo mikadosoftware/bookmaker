@@ -19,7 +19,7 @@ I'm waiting...
 
 Ok,  I'll give you the precis then.
 
-All the things that are usually thought of as "the design" of a piece of software are not.  The *specificiation* is not it, the *screenshots*, the carefully *word-processed documents* are **not the design**.  Reeves defines *the* design as the set of documents from which one can mechanistically produce the final product.  For software, this is the **source code**.  It is easier to see in manufacturing than elsewhere, because until someone gives the factory boss an exact set of instructions he cannot tool up the factory or produce it.  There is no creativity on an assembly line.  
+All the things that are usually thought of as "the design" of a piece of software are not.  The *specification* is not it, the *screenshots*, the carefully *word-processed documents* are **not the design**.  Reeves defines *the* design as the set of documents from which one can mechanistically produce the final product.  For software, this is the **source code**.  It is easier to see in manufacturing than elsewhere, because until someone gives the factory boss an exact set of instructions he cannot tool up the factory or produce it.  There is no creativity on an assembly line.  
 
 All the diagrams on backs of napkins, the screenshots and discussion, they are the *process* of designing.  But the actual, final design, that is mechanistically followed by the compiler, is source code.
 
@@ -33,7 +33,7 @@ Where is the actual final design for a house?  It clearly is not the artists imp
 
 Imagine we build a robot that can squirt concrete or lay bricks. [#]_   For this robot, unlike Bob the Builder, the phrase, "build the south wall where the marks are laid out", is not going to work.  There will be a thousand IF statements, about weather, about leaving a hole for a window, all of which need to be catered for *before* the first concrete is squirted.  
 
-So where is the final, full design for a house.  THe dirty secret is it never existed.  No-one ever wrote down precisely how to build a house.  Not in a mechanistic sense.  A house is built through an amazing ecosystem of inter-dependant professions and expertise.  But there is no written final design - the architects blueprints are close, but they are changed on the ground, to meet local conditions (within certain constraints) and the bill of materials, well that is working backwards...
+So where is the final, full design for a house.  The dirty secret is it never existed.  No-one ever wrote down precisely how to build a house.  Not in a mechanistic sense.  A house is built through an amazing ecosystem of inter-dependant professions and expertise.  But there is no written final design - the architects blueprints are close, but they are changed on the ground, to meet local conditions (within certain constraints) and the bill of materials, well that is working backwards...
 
 These are not things that Architects usually have to worry about.  The preserve of an architect is usually holding the clients hand (while they sign cheques) and checking that the infrastructure has enough strength.  
 
