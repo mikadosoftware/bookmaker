@@ -292,8 +292,16 @@ if __name__ == '__main__':
                       default=False, help="do not generate pdfs")
     parser.add_option("--dry-run", dest="dry_run", action="store_true",
                       default=False, help="do not generate HTML")
+    parser.add_option("--ignore-exclude", 
+                      dest="ignore_exclude", action="store_true",
+                      default=False, help="if set, ignore exclude files and publish everything")
 
     (opts, args) = parser.parse_args()
+    
+    if opts.ignore_exclude == True:    
+        print '>>>', opts.ignore_exclude
+        config.IGNORE_EXCLUDE = True
+
 
     index_list = {} 
 

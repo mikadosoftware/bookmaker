@@ -13,7 +13,7 @@ CSS_DIR = os.path.join("/root/thebook", "css")
 
 ###
 incl_file_name = '.ppp_include'
-
+IGNORE_EXCLUDE = False         # if true put every file into site.  This is set with argument flag to make simple for me to review site.
 
 latex_dir  = 'simpleITmanager_latex'
 

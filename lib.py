@@ -152,9 +152,7 @@ def make_site_index():
 
 
 def get_html_from_rst(uStr, src=None):
-    ''' THis uses ReSt to get some HTML from just text in text area. It is a bit funny - I force                            
-    the title and body to be joined before it beocmes UStr, then I return title and body seperate.                          
-    Seems to work as long as css is ok.
+    ''' 
 
     returns
     -------
@@ -253,6 +251,12 @@ exclude = ['ibmadverts.chp',]
 
     ### An include file exists.
 
+    ### DO we want to ignore exclude files (ie draft)
+    if config.IGNORE_EXCLUDE == True:
+        print '---->>>',f,config.IGNORE_EXCLUDE
+        return True
+
+
     c = ConfigParser.ConfigParser()
     c.read(include_file)
 
@@ -264,10 +268,11 @@ exclude = ['ibmadverts.chp',]
     except Exception, e:
        files_to_include = []
 
-
+    print '>>>',files_to_include
     #logic for publishing
     if f in files_to_include : 
         #this file is in include, so return True, we want to publish
+        print '>>>', f
         return True
     else:
         valid_flag = False
