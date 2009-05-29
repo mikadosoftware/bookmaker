@@ -1,0 +1,56 @@
+=====================
+The usability dilemma
+=====================
+
+
+iPhones are nice, so what!
+**************************
+
+iPhones are an amazing piece of kit, smooth looking, smooth feeling and very nice in general.  But their *usability* is only skin deep.  Imagine the greatest train service ever.  You waft up to the platform, beautiful people carry your bags onto the carriage, seat you in acres of space, offering drinks and canapes.  The journey is swift and smooth and the conductor never, ever checks your ticket.
+
+Its an iPhone of a train service.
+
+Now take a detour to visit that nice pub you are meeting your friends at.  Can the driver drop you off?  See the problem.  The usability has been built on top of pre-existing functionality (the tracks).  If you dont want to go where the tracks are you need to be able to travel on you own.  But the train is not designed to let you do that.  Perhaps if you had a car?
+
+We can think of the train as what is known in software circles as a *platform*.  (Yes that is a bit confusing, sorry it can't be helped.)  The iPhone is also a platform, allowing certain applications to run, as long as applications meet certain criteria.  
+
+There are millions and millions of the iPhones lying around, but they can only be taken to certain destinations.  
+
+
+
+Now, my arguement is that usability is not something that can be just plonked on top - it is deep in the structure - I believe Donald Norman calls it *affordance*.  If a piece of software will not perform a certain function, it's usability is zero, just as a luxury train service that does not go where you need is useless.
+
+
+A car is more usable than a train - it can go in more and different directions in the hands of a skilled user.  It has more utility, and less UI
+
+This seems fairly simple - for most tasks, a car has greater utility than a train.  However there is one caveat.  It takes skill and experience to drive a car.  And it takes skill and experience to program a computer.  See where I am going?
+
+Eric S Raymond, once the darling of the Open Source Sect, wrote a well-known rant on Linux usability, but was slowly taken to task for what is arguably his underlying assumption that usability can be 'sprayed on' - and that his Aunt Tillie should be able to install a network printer.  In brief, he could not work through the installation of a industry standard print engine (CUPS).  This is not uncommon, I have struggled with CUPS too.  It does not work the way you might expect it to.
+
+This is a good description of `Raymonds <http://daringfireball.net/2004/04/spray_on_usability>`_ travails.  THe debate centres around whether the computer program in mind should be simple enough for his Aunt Tillie to install, or if it should be simple enough for Raymond to install.
+
+My sympathies lie entirely with making it simple enough for Raymond, but not for Aunt Tillie.  Raymond can drive, and I am sure there have been times when he has gotten lost, with the road layout, the maps, the unfamiliar territory all contributing.  In such cases, ploughing a new road is rarely the right thing to do.  Well-thought out road signs, a map explaining the layout, judicious cutting down of a few trees to allow Eric the ability to see the landscape around and so get his bearings.  All these thing become usability. 
+
+
+I propose a spectrum of usability, 
+tyranny, Usability without choice, usability with choice, freedom, to starve.
+
+
+
+Clear division - public APIs should be used exclusively for 'helper' functions / UIs.  if there is a capability you want or need, add it to the public API, keep it as a simple command
+
+
+the basic argument is simple - things should be simple enough for an inteligent technical user to use and understand./
+Not for AUnt tillie, but for ESR
+
+Its to do with unfolding I think.
+A jopurney an intelligent programmer must take to get to usability and mastery 
+- no wrong directions. No if you di this for while but then we teach you something else
+- it must be transparent - the inner workings of a watch are clear - it has gears.  You do not need to know the fantastic complexity 
+but you also do not need to think its all done by swans.
+
+I agree with the basics - that functional software is one thing,
+but good UI, functional discoverable software is another order of magnitude.
+
+THis is the internal shoip dilemma - your users are going to be forced to use the software so good UI is worth less than creatring another piece of function
+
