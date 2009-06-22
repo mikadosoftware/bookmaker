@@ -50,3 +50,15 @@ SWAT
 ----
 uncomment inetd.conf line to run swat
 
+#!/bin/sh
+
+#smbclient  -U paul.brian -L \\ADC
+
+### mounting samba  
+mount_smbfs //nobody@samba/FILES /mnt/samba/FILES
+mount_smbfs //nobody@samba/PDOXDATA0 /mnt/samba/PDOXDATA0
+mount_smbfs //nobody@samba/PDOXDATA1 /mnt/samba/PDOXDATA1
+mount_smbfs //nobody@samba/IT /mnt/samba/IT
+
+mount_smbfs //paul.brian@ADC/Managers /mnt/ADC/Managers
+

@@ -3,11 +3,11 @@ Introduction
 ============
 
 A Tour Around the Main Ideas in the Site, with poor jokes.
-==========================================================
+**********************************************************
 
 
 Gadgets are wrong
------------------
+=================
 
 I remember drawing a picture when I was a kid. The picture was supposed to be what our ideal bedroom would be - I think there was a fireman's pole that took me down to the garage, a bed that flipped up into the wall and many, many buttons.
 Mostly buttons were easy to draw and they meant something, well, gadgety.
@@ -16,31 +16,31 @@ Gadgets seem easy when you are a kid.  Press a button, and well, magic.  The rob
 
 And there is the rub - how does it know?
 
-This vision of the future, of living my parents (1970's) life but with gadgets and machines doing the drudgery, is based on a misconception - that gadgets can replace tools - or rather that gadgets can replace the need for a human to understand and use their tools, skillfully and well. 
+This vision of the future, of living my parents (1970's) life but with gadgets and machines doing the drudgery, is based on a misconception - that gadgets can replace tools - or rather that gadgets can replace the need for a human to understand and use their tools, skillfully and well. [#]_
 
 Power tools
------------
+===========
 If a tool is a small or impotent, it will bend to meet what we want.  However the more powerful a tool is, the more we find that instead we need to change to meet the tool's own demands.  This can be a recursive issue - society has changed around the cell phone because it is a powerful tool.  However the layers on top of cell phones are weak tools, address books and poor MP3 players that chop and change daily.
 
 There are few more powerful tools in the modern day than the programmable computer.  I am not too sure what life was like for proto-humans before fire-making, but I know that society clearly changed to accomodate the benefits of fire.  The wheel enabled trade, roads created the Middle Ages, and the computer will force our Industrial Age society to change again. 
 
 Wrong decisions
----------------
+===============
 Some years ago the company I worked for decided to abandon a in-house billing system, and to buy the market-leading (but only two years old) system.  Unfortunately we had an unusual kink in our accounts - we billed our subscribers in advance, not arrears, a concept this system had no understanding of.  Instead of, say, living with a overdraft of 2 million for a year or two, the company set about with a will to modify the billing system(s), and the usual cost overruns, delays and mishaps and lost opportunites certainly came with a higher bill than the interest on the loan.
 
 I liken this to a factory that decides to invest in a steam stamp - basically a big hammer that falls down on steel sheets and bangs them into moulds.  The factory is unfortunately on one storey only, so there are two choices - to move premises, or to workout a way to lay the hammer on its side.  I am sure we can tell which is the "correct" choice - but in my career I have seen many companies invest a lot of clever engineering talent into working out how to make a hammer fall horizontally ("...maybe if we used rockets?").  That engineering talent could have been building new systems for emerging, profitable, markets.
 
 Making right decisions 
-----------------------
+======================
 To make the right decision requires someone who understands the technology of hammers (gravity, big weight), and the nature of organisations, and that they sit at the right level of influence in the company. 
 
-If you have not worked it out yet, I am saying that for society to use the computer well, we need people at the right levels in our organisations and institutions that both understand how to use computers (and by that I mean able to program) and how to program organisations, or have some basic political nouce.  Eventually, where our organisations and institutions go, our society will follow.
+If you have not worked it out yet, I am saying that for society to use the computer well, we need people at the right levels in our organisations and institutions that both understand how to use computers (and by that I mean able to program) [#]_  and how to program organisations, or have some basic political nouce.  Eventually, where our organisations and institutions go, our society will follow.
 
 *IT Managers*.  We need capes and underwear on the outside.
 
 
 Tools Good, Gadgets Bad
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 I do not believe that even if it could be done, letting gadgets take care of all our needs would make our lives better - for the simple reason that a gadget embodies its designers decisions about its use, and your life.
 
 Good or even great design will always win out, but no matter how good the design, it will always be someone else's choices.  Unless we can alter those choices to better suit us we are living a life to another's choice -  a life without freedom.
@@ -49,8 +49,8 @@ Yes I know I am getting portentous, and its mostly because I do not have an iPho
 
 
 General themes
---------------
-This would be a good point to layout the general themes I will be touching on.
+==============
+This would be a good time to layout the general themes I will be touching on.
 
 
 Chefs matter
@@ -112,11 +112,11 @@ We can use stories to provide feedback, shout out or triumphs, lay down warnings
 
 Modeller, monitor and mentor
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-At Boeing Aircraft there are one or two people, highly valued, who have in their heads a complete picture of how the aircraft works.  Not that they have memorised every single rivet and specs, (although they may be close), but who know how it all fits together, that because of their knowledge of Bernoullis principle and material deformation, that the wing rivets on the left *must* be of a shear strength of at least ...  
+At Boeing Aircraft there are one or two people, highly valued, who have in their heads a complete picture of how the aircraft works.  Not that they have memorised every single rivet and specs, (although they may be close), but who know how it all fits together, that because of their knowledge of Bernoulli's principle and material deformation, that the wing rivets on the left *must* be of a shear strength of at least ...  
 
-If we want to manage, or use, a complex system it **must** be understandable by one human brain.  That is the abstractions and the science must be combinable so that the whole is one model that fits in one (trained) persons head.  If there is some part that does not fit in someones head, we lose that control, that understanding, and the whole becomes, well a bit government like really.
+If we want to manage, or use, a complex system it **must** be understandable by one human brain.  That is the abstractions and the science must be combinable so that the whole is one model that fits in one (trained) person's head.  If there is some part that does not fit in someone's head, we lose that control, that understanding, and the whole becomes, well a bit government-like really.
 
-So the IT manager needs to have a complete model of how the systems (and the company they support) work, else he cannot proedict the effect of changes.  If it is too complex, make it simpler.  If it cannot be made simpler, you are lying, rewrite it.
+So the IT manager needs to have a complete model of how the systems (and the company they support) work, else he cannot predict the effect of changes. [#]_
 
 Once you have modelled it, you can monitor it at the important places.
 
@@ -129,30 +129,29 @@ Guiding principles and philosophy
 ---------------------------------
 There are several guiding principles
 
-- If you do not design, build or sell the product, I will do all in my power to automate you.
+- If you do not design, build or sell the product, I will do all in my power to automate you. [#]_
 - build from scratch, from scripts.
 - release well
 - everything can have programmatic access. Everything. 
-- Wrong and not wrong
-- everyone will be able to program, but not everyone will earn a living as a programmer. 
-  Just as everyone can write but not everyone will earn a living writing.
-  think lawyers not journalists.
+- Right, Wrong, Not Wrong, Not Even Wrong
+- Everyone will be able to program, but not everyone will earn a living as a programmer. Just as everyone uses writing to do their jobs, but not everyone will earn a living writing.
 
 
 
 
-.. [*] well, actually Gadgets can't replace tools for other reasons too. Mostly changing social mores.  Washing machines were supposed to be the great liberator for female-kind.  By releasing her from the drudgery of clothes washing, more leisure time or work time would open up.  Sadly whereas wearing the same shirt for 3-5 days running was OK in 1950, by 1970 a dirty shirt meant "she no longer loves him and is a *bad wife*".  So more washing, same amount of time and he still does not pick up his socks.
-
-.. [A] http://www.quotedb.com/quotes/1563
-
-.. [B] Socrates was forced to commit suicide by drinking Hemlock. http://en.wikipedia.org/wiki/Socrates#Trial_and_Death
+.. [#] well, actually Gadgets can't replace tools for other reasons too. Mostly changing social mores.  Washing machines were supposed to be the great liberator for female-kind.  By releasing her from the drudgery of clothes washing, more leisure time or work time would open up.  Sadly whereas wearing the same shirt for 3-5 days running was OK in 1930, by 1970 a dirty shirt meant "she no longer loves him and is a *bad wife*".  So more washing, same amount of time and he still does not pick up his socks.  (this may not however be true.  I have been looking at the time it takes to 'do a wash' and it is a lot smaller than a washing tin and a mangle.  However a lot of anecdotal evidence seems to show that women do more than their fair share of housework.  So they still do not get time saved for them as they work and then wash.)
 
 .. [#] "must be able to program" - I will return to this theme, honest.
-
-.. [#] Jack Reeves is good on this.
 
 
 .. [#] Emergent design-oid.  What?  Out of complex interacting systems, simpler patterns tend to emerge.  This it seems is a fundamental consequence of nature described in mathematics branch of complexity theory (Chaos).  And design-oid - well this is a Dawkinsism, used to describe things that look designed but really emerged from evolutionary pressure (an eye is design-oid, a watch is designed)
 
 
 .. [#] *pans narrans* as Ian stewart and Jack Cohen (and Terry Pratchett) have christened humans. The story telling chimp.
+
+
+.. [#]   If it is too complex, make it simpler.  If it cannot be made simpler, you are lying, rewrite it.  If it cannot be made simpler because the politics of the situation do not allow it, you have two choices.  One, be a better politician.  You have the right thing to do on your side, it can be a powerful ally. Find others.  Two. GIve up and let IT be a whipping boy.
+
+.. [#] http://www.quotedb.com/quotes/1563
+
+.. [B] Socrates was forced to commit suicide by drinking Hemlock. http://en.wikipedia.org/wiki/Socrates#Trial_and_Death
