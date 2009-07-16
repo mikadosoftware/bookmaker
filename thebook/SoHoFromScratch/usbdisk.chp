@@ -177,15 +177,19 @@ Second, the bsdlabel is good for calculating human-sized amounts
 
 so when I freshly create the bsdlabel and use -e I get to see a label like this
 
-# /dev/da0s1:
-8 partitions:
-#        size   offset    fstype   [fsize bsize bps/cpg]
-  a: 234436466       16    unused        0     0
-  c: 234436482        0    unused        0     0         # "raw" part, don't edit
+::
+ 
+    # /dev/da0s1:
+    8 partitions:
+    #        size   offset    fstype   [fsize bsize bps/cpg]
+      a: 234436466       16    unused        0     0
+      c: 234436482        0    unused        0     0         # "raw" part, don't edit
 
 The whole disk is taken up with the a partition which is OKish but not to convention.
 
 I simply edit it using vi as follows
+
+::
 
     # /dev/da0s1:
     8 partitions:
@@ -228,18 +232,6 @@ however with the second where it is looking a bit like a system disk
    #swap needs no filesystem
    newfs -L USR /dev/da0s1e
   
-
-
-from manual
-
-The newfs utility is used to initialize and clear file systems before
-     first use.  Before running newfs the disk must be labeled using
-     bsdlabel(8).  The newfs utility builds a file system on the specified
-     special file.  (We often refer to the ``special file'' as the ``disk'',
-     although the special file need not be a physical disk.  In fact, it need
-     not even be special.)  Typically the defaults are reasonable, however
-     newfs has numerous options to allow the defaults to be selectively over-
-     ridden.
 
 
 Mount
