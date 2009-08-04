@@ -60,15 +60,16 @@ So let us have some fun::
 Ok, we can control what timezone the machine thinks it is in, but how do we get the time correct?
 The configuration file for ntp daemon is /etc/ntpd.conf
 
-put this into /etc/ntpd.conf::
+put this minimal file into /etc/ntpd.conf::
 
-  driftfile /var/lib/ntp/ntp.drift
 
-  server 0.pool.ntp.org
-  server 1.pool.ntp.org
-  server 2.pool.ntp.org
+  driftfile /var/db/ntp.drift
   server pool.ntp.org
+  restrict default ignore  #stops this machine being used by anyone else for ntp
 
+  ##also
+  touch /var/db/ntp.drift
+  
 (NB there is a diff between the location in freebsd handook and the ntp ssite for conf file
 ntpd.conf vs ntp.conf. ntp.conf is right - follow the handbook)
 

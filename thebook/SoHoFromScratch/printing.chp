@@ -1,51 +1,140 @@
-==============
-Printing      
-==============
+=======================
+Using CUPS for Printing
+=======================
 
 
 CUPS
 ====
-A short history.
+CUPS (Common Unix Printing System) is a 'printing system' that is a complete replacement for the older Unix printing tools.  It acts as a print server, able to accept print 'jobs' from local or remote computers, process from the incoming format into one suitable for the printer, and forward on to the appropriate printer.
 
-Overview
---------
-http://www.cups.org/documentation.php/overview.html
-http://www.linuxfoundation.org/en/OpenPrinting/Database/CUPSDocumentation
+CUPS is significantly simpler to administer than the older lpd-style tools, and is rapidly becoming the standard print server on Unix systems.  It has strong industry support from Apple Inc. which recently purchased the developer company Easy Software Products.  Apple have stated they intend CUPS to continue to be released under Open Source License.
+
+
+
+
+By the end of this chapter you should be able to 
+
+- Install and configure CUPS
+- Add a network printer to CUPS and print to it
+- Implement a simple policy for a printer
+- Keep and view page logs
+- Extend CUPS using python scripts
+
+Background
+-------------
+CUPs is most easily understood if the problems it evolved to solve are considered first.  They can be broadly categorised and simplified as follows
+
+
+The PostScript Problem
+----------------------
+Almost every program that 'prints' can and does output a PostScript file.  However a fairly limited number of printers on the market can accept and print a plain PostScript file (they are known as PostScript printers).  Simply put one needs to pay a premium for a PostScript printer.  This is due to a combination of market segmentation by manufacturers and genuine lack of processing power on low-end printers. This meant that workstations needed to have extra software and administration overhead just to print on cheaper hardware.
+
+Filters were written to convert from PostScript to raster but accessing even simple printer native commands like duplexing demanded extra configuration.
+
+configuration problem
+-------------------
+Printer manufacturers produce PostScript Printer Description (PPD) files.  These describe the capabilities of their PostScript Printers (e.g. the PPD will state the printer supports PostScript Level 2, it is colour, it has duplex capabilities).
+Importantly PPD files can contain instructions for configuring and accessing functions native to the printer (such as commands for duplexing or stapling).
+
+CUPS has extended the concept to use CUPS-PPD files, which describe the capabilities and commands necessary to use them even for non-PostScript printers.
+
+If you can find a PPD written specifically for your printer CUPS will configure itself for you.  There are thousands of PPDs in open repositories.
+
+foomatic
+By taking a PPD and a Postscript file, the GNU foomatic project is able to work out the (minimal) printer native commands needed to print the postscript file onto a printer that the PPD file represents - it is in short a on the fly device driver builder for printers.  It can get almost all printers printing - but at minimal extra functionality.  It is recommended you use a manufacturer PPD first if available (try cups.org/ppd.php) then get a more generic PPD from linuxprinting.org/printer_list.cgi
+
+
+The Network Problem
+-------------------
+A centralised print *spool* will reduce the need to put spooling and other functions on individual workstations, however authentication and authorisation support has always been poor for unix printing.  Internet Printing Protocol (IPP) is a standards-based protocal that uses HTTP, so any HTTP aware application can send a file to a server and authenticate using normal methods mosodern print servers and huge numbers of clients support IPP.
+
+
+Now all the pieces are in place - it is possible to build a print server that can accept a standard input file (ie Postscript) eliminating the need for the printing program to 'know' what printer it is sending to, it is possible to attach almost any printer to the print server simply by providing a standards-based PPD file, which tells the print server how to access all the capabilities of the printer and the server itself can do the spooling and accounting.
+
 
 
 Installation and setup
 ----------------------
-use ports
-run cupsd
-http://localhost:631/admin
+Installation of CUPS can be run from ports easily as follows::
+
+  cd /usr/ports/print/cups
+  make config-recursive
+  #I recommend you choose 'With Python support', if you wish to 'extend' the CGI capabilities.
+  make install clean
 
 
 
-
-OK, some of the worst systems administration problems, the most frustrating times come fromt
-trying to get ink onto paper.
+This will make the current host a 'print server'.  Run /usr/local/sbin/cupsd (as root) on command line to start the server.  It can automatically start on boot with the following ::
 
 
-We shall install CUPS on a USB conected printer. THen on a network enabled printer.
-discuss the diffeences, and the secruity implicatons.
+  echo cupsd_enable="YES" >> /etc/rc.conf
 
-PPD file
-========
-I am using a Brother HL-5270DN printer, it is ethernet enabled and fast. 
-If I look up the PPD file at I find the entry easily and it says it works "perfectly"
+
+
+The  cupsd.conf  file  configures  the CUPS scheduler, cupsd(8).  It is
+       normally located in the /usr/local/etc/cups directory.
+
+
+
+Adding a network-printer
+------------------------
+Whenever a printer is "connected" to a CUPS server, CUPS creates a queue and a device for that printer.  The device might be a USB port, a network socket and can be viewed using lpinfo -v.  lpadmin configures those queues and devices.
+
+I have a new printer to setup, a Brother HL-5270DN, an ethernet capable B&W laser suitable for SOHO environments.  
+
+FIrstly I visit www.linuxprinting.org to find a suitable PPD file for my printer.  http://www.linuxprinting.org/show_printer.cgi gives me a link to a PPD file supplied by the manufacturer and says it works 'perfectly'.
+
+Now I need to create a device, a queue and configure them with the PPD device.
+
+I have already configured my printer manually with IP address of 10.0.1.1
+
+::
+  
+  /usr/sbin/lpadmin -p <name_of_queue> -E -v <device_uri> -P <ppd file>
+
+::
+ 
+ /usr/sbin/lpadmin -p bwbrother -E -v socket://10.0.1.1 -P /tmp/BR5270_2_GPL.ppd
+
+
+Now I can visit http://localhost:631, and view the *printers* tab, and the printer is available - a quick test page and all is well.
+
+It is also possible to add a printer through the web interface, but the essentials are still necessary - a manufacturer PPD file, the name of a queue and a device uri
+
+
+getting device uri
+
+lpinfo -v
+
+Installing a USB printer
+------------------------
+Diagnosis of USB problems are outside the scope of this article, however 
+
+lpinfo -v 
+
+will give you a output of form 
+
+xxx
+
+if cups can find and identify. if so proceed as above but using the device uri shown instead of socket based uri.
+
+
+
+ppds stored at /usr/local/share/cups/model
+
+
+There is a list, maintained by volunteers of PPD files and the printers they work with (and how well they work) at
+http://www.linuxprinting.org/printer_list.cgi
+
+Others exist but this is probably the most complete resource available.  It is highly recommended you check here *before* purchasing your printers.
 
 so a PPD file looks like ::
 
     *PPD-Adobe: "4.3"
-    *% This program is free software; you can redistribute it and/or modify it
-    *% under the terms of the GNU General Public License as published by the Free
-    ...
-    *%================================================
+        ...
     *%	Copyright(C) 2005 Brother Industries, Ltd.
     *%	"Brother HL-5270DN BR-Script3"
-    *%================================================
-
-    *%==== General Information Keywords ========================
+   ...
     *FormatVersion: "4.3"
     *FileVersion: "1.03"
     *LanguageEncoding: ISOLatin1
@@ -54,10 +143,17 @@ so a PPD file looks like ::
     ...
 
 
-Where do i get my PPD file from?
-================================
-There is a list, maintained by volunteers of PPD files and the printers they work with (and how well they work) at
-http://www.linuxprinting.org/printer_list.cgi
+Printer name
+Environment variable
+
+Auto-discovery
+xxx
+Where is the printer
+Xxx
+
+
+USB printers
+xxx
 
 
 Using command line printing
@@ -79,119 +175,67 @@ Or force a replace of the old with a softlink to the new
 
 
 
+/usr/local/bin/lpr -P brother3 xorg.conf.new
+
+setenv PRINTER brother3
 
 
+
+So we are now able to print to a printer from our local machine
+
+
+Sharing the printer
+-------------------
+
+
+Controlling policies
+--------------------
+/usr/local/etc/cups/cupsd.conf
 
 
  
 
 
 
-
-trouble shooting
-----------------
-1. Unable to open device file "/dev/ulpt0": Permission denied
-
-solution 1
-
-http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html
-
-crw-------  1 root  wheel       0,  78 May 19 19:07 ttyvf
-crw-r--r--  1 root  operator    0,  80 May 19 19:19 ulpt0
-crw-r--r--  1 root  operator    0,  81 May 19 19:07 unlpt0
-lrwxr-xr-x  1 root  wheel            6 May 19 19:07 urandom -> random
-
-solution 1
-
-http://lists.freebsd.org/pipermail/freebsd-questions/2006-July/126232.html
-
-The printer is a HL-1430 connected to USB and the error I got was: 'Unable to open USB device "usb:/dev/unlpt0" Permission Denied.'
-Now I don't know if this is relevant in any way. After trying all kinds of solutions I finally decided to simply do "chmod 777 /dev/unlpt0", and that solved the problem.
-
-results 1
-Nope, it dod not complain, bt still sat there and did nothing
-
-put the setup back 
-> chmod 0644 ulpt0
-
-solutuon 2
-Be sensible
-
-The model number shows this is
-HP LaserJet 1000W printer  	Q1342A - end of life
-
-Linuxprinting.org
-http://www.openprinting.org/show_printer.cgi?recnum=HP-LaserJet_1000
-
-OK, This printer requires the foo2zjs printer driver.
-This needs firmware loading up each boot.
-This is going to get complicated
-
-http://foo2zjs.rkkda.com/
-
-OK - we download from there. (note on paypal request)
-This asks us to run make (on freebsd we need gmake - its easy to tell - make fails horribly)
-
-then reading INSTALL we need to get some more firmware files
-
-it seems I need 
-http://foo2zjs.rkkda.com/firmware/sihp1000.tar.gz
-
-but the code assumes I have wget. It seemed easier to pkg_add wget than check the code - 
-it seems to just untar it but...
-
-OK 
-
-HP LASERJET 1000/1005/1018/1020, P1005/P1006/P1505 NOTES
---------------------------------------------------------
-    These printers need their firmware downloaded to them every time they
-    are powered up.
-
-        On Linux with USB connected printer:
-            If you are running Linux and the printer is connected via USB, you
-            can arrange for the firmware to be automatically downloaded to the
-            printer by performing one more installation step:
-
-            # make install-hotplug
-
-            Unplug and re-plug the USB printer.
-
-        On another OS or with a parallel port connected printer:
-
-            You must send a firmware file to the printer each time you power it
-            up.  If you downloaded the extra files for the HP above, a typical
-            command line to load the firmware would be ONE of these:
-
-===>            cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/usb/lp0
-                cat /usr/share/foo2zjs/firmware/sihp1005.dl > /dev/usb/lp0
-                cat /usr/share/foo2zjs/firmware/sihp1018.dl > /dev/usb/lp0
-                cat /usr/share/foo2zjs/firmware/sihp1020.dl > /dev/usb/lp0
-                cat /usr/share/foo2xqx/firmware/sihpP1005.dl > /dev/usb/lp0
-
-problem 3
-manhattan# cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/ulpt0
-cat: stdout: Input/output error
+Printing from Windows
+---------------------
+CUPS acts then as a plain postscript printer to the postscript driver / filter.
+Access to printer functions is limited.
 
 
-OK - 
-http://foo2zjs.rkkda.com/forum/read.php?12,605,605
 
-first you should build the kernel without ulpt driver.
-then you should get foo2zjs and follow the instructions in the readme file. if you'll have any questions - report me! 
-
-ok - rebuild the kernel
-in /usr/src/sys/i386/conf is GENERIC a file telng make how to build the kernel and what to leave ut. Comment out ulpt
-rebuid
-
-OK - 
-cat /usr/share/foo2zjs/firmware/sihp1000.dl > /dev/ugen0.1
-
-that actually did something - it wrote and the printer got excited.
-However... cups does not see it...
-
-
-OK - I give up - buy a parallel to ethernet adaptor
-
-
-.. [1] From http://www.freebsddiary.org/cups.php
+..... [1] From http://www.freebsddiary.org/cups.php
  
+
+
+
+What is IPP?
+http://www.networkworld.com/news/2000/0710ipp.html
+
+accounting
+http://localhost:631/help/accounting.html?TOPIC=Getting+Started&QUERY=
+
+http://www.cups.org/documentation.php/ref-cupsd-conf.html
+search for pagelogformat
+
+cgi extensions
+http://localhost:631/help/cgi.html?TOPIC=Getting+Started&QUERY=
+
+view own config
+http://localhost:631/help/standard.html?TOPIC=Getting+Started&QUERY=
+
+
+foomatic
+http://en.wikipedia.org/wiki/Foomatic
+
+installing
+http://www.linuxprinting.org/kpfeifle/LinuxKongress2002/Tutorial/II.Foomatic-User/II.tutorial-handout-foomatic-user.html
+
+Open letter from 2000
+http://www.linuxfoundation.org/en/OpenPrinting/Database/LPDMustDie
+
+http://www.openprinting.org/kpfeifle/LinuxKongress2002/Tutorial/VII.cups-help/VII.cups-help.html
+
+
+http://www.cups.org/documentation.php/overview.html
+http://www.linuxfoundation.org/en/OpenPrinting/Database/CUPSDocumentation
