@@ -1,15 +1,21 @@
 import os.path
 
-HTMLROOT = "/book"
-
 
 ### CONSTANTS 
+HTMLROOT = "/book"
 chapters_dir = '/root/thebook/thebook'
 HTML_DIR = '/tmp/bookbuild'
-HTML_BUILD_DIR = HTML_DIR
 HTML_DEPLOY_DIR = "/usr/local/www/data/book"
 IMG_DIR = os.path.join("/root/thebook", "img")
 CSS_DIR = os.path.join("/root/thebook", "css")
+
+## new config
+SOURCE_RST_ROOT = chapters_dir
+HTML_BUILD_DIR = HTML_DIR
+PATH_FROM_DOCROOT = HTMLROOT
+DEPLOY_HTML_ROOT = HTML_DEPLOY_DIR
+
+
 
 ###
 incl_file_name = '.ppp_include'

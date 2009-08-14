@@ -1,6 +1,29 @@
+Todo
+====
+Enable a form of production where there can be any number of depth folders - so I can rganise more easily.
+start an erlang part -
+ - things needed to be competant in a language 
+   - its idioms
+   - debugging procedure
+   - unit testing
+   - patches
+   
+Why erlang
+- of the main language types its only one I do not have some fluency with (OOP, declarative, procedural, functional)
+
+
+
+
+
 
 Structure
 =========
+
+
+
+
+
+
 
 Starting theme - we are entering an era characterised by industrial processes transforming into more traditional knowledge management - industrial knoweldge management - where heavy lifting will still be done by machines.  More knowledge can be processed than before in one brain
 

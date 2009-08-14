@@ -6,6 +6,32 @@ pbrian
 
 Library functions to support web site from ReSt creation.
 
+General Description
+-------------------
+I want to write a whole site using ReSt, making my life easier.
+The structure of the site will remain the same, with just the .rst files being replaced by .html, the creation of appropriate index.html files.
+Images will be held in img/ dir in each directory
+
+I have no idea how to link inbetween in rst...
+
+
+How it works
+------------
+config file is set up - firstly it contains the 
+
+SOURCE_RST_ROOT = root folder where rst files can be found
+HTML_BUILD_DIR = temp folder to build HTML files
+PATH_FROM_DOCROOT = working ala apache, what is path from the server documentroot to the final deployed HTML files.  Expected to be / 
+DEPLOY_HTML_ROOT = the docroot
+IMG_DIR = location of source IMG files
+CSS_DIR = location of source CSS files
+
+
+
+TODO:
+- really passing around this dict then playing with it is poor - use an object.
+- some tests!!!
+
 
 """
 
@@ -188,6 +214,11 @@ def getdirpath(html_pdf, root):
      and /foo/bar/MyImportantSection as a sub dir
      and we want to put the html stage into /wibble/wobble
      we want to see a dest of /wibble/wobble and /wibble/wobble/MyImptSubDir
+    
+     >>> getdirpath('html', '/foo/bar/subdir')
+     >>> x = config.HTML_BUILD_DIR
+     x
+
      '''
     
 
