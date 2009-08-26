@@ -1,6 +1,16 @@
+===============
+Digital cameras
+===============
+
+Taking photos is not really an area I can cover.  Try looking at some
+of Cartier-Bressons work, however, once your masterpiece is on your
+camera - how do you get it onto your laptop for final cropping and
+that all important Desktop background?
 
 
-Almost every digital camera these days has a USB interface, and more importantly it should support a *umass* standard - that is it should preten  to be a large hard drive. THe FreeBSD umas driver deals with such things quite well, and you can mount a camera as another harddrive.
+Almost every digital camera these days has a USB interface, and more
+importantly it should support a *umass* standard - that is it should
+pretend  to be a large hard drive.  The FreeBSD umas driver deals with such things quite well, and you can mount a camera as another harddrive.
 
 My camera of course does not, so i compiled graphics/gphoto2 from ports.
 
@@ -14,7 +24,7 @@ My camera of course does not, so i compiled graphics/gphoto2 from ports.
 
 
 
-TO use gphoto2
+To use gphoto2
 
 1. Can I talk with it::
 
