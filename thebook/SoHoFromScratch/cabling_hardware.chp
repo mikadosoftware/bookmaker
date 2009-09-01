@@ -1,18 +1,21 @@
 Cabling and other hardware
 ==========================
 
-cablesdirect.co.uk
-Credit account etc
 
 Power, Cooling and network hardware
 ===================================
+At some point a small company will move from having a few laptops, to
+having a *server*.[#]_  And at some point after that they get another
+one, and an IT manager, and soon they have to think hardware.
 
-OK, I have a set of servers running in my office, they throw out a great deal of heat
-(a Pentium 4 CPU can run at upto 90C, although it obviously does not last long). So in essence we are running
-and office full of bar heaters.
+A Pentium4 CPU can hit 90C, and stay there under heavy load.  The fans
+and other noise are designed to throw that heat away from the CPU.
+One of the most common causes of computer failure is overheating in
+summer. [#]_
 
-We therefore want to run the servers, and then take the excess heat and throw it outside the office
-(environment, schemvironment !)
+So in essence we are running an office full of bar heaters.
+
+
 
 So, firstly how much electricity do i need
 Then how much cooling
@@ -66,6 +69,7 @@ deliveirng peak power.
 
 http://en.wikipedia.org/wiki/Ground_and_neutral
 
+cablesdirect.co.uk
 
 Measure it - buy a plug in kill-a-watt meter
 http://michaelbluejay.com/electricity/measure.html  ??
@@ -73,3 +77,13 @@ http://michaelbluejay.com/electricity/measure.html  ??
 Cabling
 =======
 
+.. [#] Admittedly that point gets further off as years pass - web
+based services really do offer a small business a real benefit if they
+are willing to risk hosting.
+
+.. [#] Curiously tropical and desert failures due to heat seem to be
+less commonly reported.  My assumption is that in the UK most of the
+year it is cold enough to get away with no (or insufficient) dedicated
+cooling.  When summer hits, the servers pay the price.  In a hot
+climate, that is an ever present threat and is factored in from the
+start.
