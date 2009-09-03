@@ -183,7 +183,10 @@ def run_dirs():
 def prepare_index(dir_list):
     """
     given a dict keyed on local_root, holding list of 
+   
+    dir_list = {
     """
+    pass
 
 def main():
     """ """
@@ -192,7 +195,7 @@ def main():
     ### main loop
     check_environment()
     dir_list = run_dirs()
-    TOC XXX
+#    TOC XXX
 #    make_frontpage(["Introduction/WhatsGoingOnHere.chp",
 #    "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
 #    "Attitude/business_case.chp"])

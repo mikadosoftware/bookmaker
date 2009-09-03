@@ -295,9 +295,7 @@ def getdestpath(html_pdf, local_full, src_full_path):
 
     """
 
-    local_src_path = src_full_path.replace(config.FULLROOTPATH, '')
-    if local_src_path.find("/") == 0:
-        local_src_path = local_src_path[1:]
+    local_src_path = dir_identity(src_full_path)
 
     if local_full == 'full':
         dst = os.path.join(config.HTML_BUILD_DIR, local_src_path)
@@ -514,7 +512,11 @@ def dir_identity(fullpath):
     returns: path as string
       
     """
-    return fullpath.replace(config.FULLROOTPATH, '')
+    local_src_path = fullpath.replace(config.FULLROOTPATH, '')
+    if local_src_path.find("/") == 0:
+        local_src_path = local_src_path[1:]
+
+    return local_src_path
 
 def applog(msg):
     """
