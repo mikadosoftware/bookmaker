@@ -1,0 +1,98 @@
+Samba File and Print Server
+===========================
+http://us1.samba.org/samba/docs/using_samba/toc.html
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-samba.html
+http://www.samba.org/samba/docs/man/Samba-HOWTO-Collection/
+
+
+
+
+
+
+Example::
+    
+    [global]
+        workgroup = PIRC
+        server string = NAGIOS SMB Server
+        security = share
+        log file = /var/log/samba/log.%m
+        max log size = 50
+        dns proxy = no
+        guest account = guest
+        unix extensions = off
+
+    [install]
+        comment  = Unattended
+        writable = yes
+        locking  = no
+        path     = /usr/local/PIRC/w32install/install
+        guest ok = yes
+
+
+Troubleshooting
+---------------
+1. The above file has
+
+          guest account = guest
+
+But that account (guest) did not exist on my Box so I got
+
+ tail /var/log/samba/log.smbd
+
+[2008/01/13 22:56:38, 0] smbd/server.c:main(1059)
+  ERROR: failed to setup guest info.
+
+Interestingly I want to view the source itself  so
+/usr/ports/distfiles holds all the tarballs, expand and have a look
+
+
+SWAT
+----
+uncomment inetd.conf line to run swat
+
+#!/bin/sh
+
+#smbclient  -U paul.brian -L \\ADC
+
+### mounting samba  
+mount_smbfs //nobody@samba/FILES /mnt/samba/FILES
+mount_smbfs //nobody@samba/PDOXDATA0 /mnt/samba/PDOXDATA0
+mount_smbfs //nobody@samba/PDOXDATA1 /mnt/samba/PDOXDATA1
+mount_smbfs //nobody@samba/IT /mnt/samba/IT
+
+mount_smbfs //paul.brian@ADC/Managers /mnt/ADC/Managers
+
+
+------------
+
+::
+
+
+def get_smbuser_add_cmd(username, passwd):
+    """returns command needed to *add* a smbuser, assuming
+       such username already in /etc/passwd
+    """
+    cmd = "(echo %s; echo %s) | smbpasswd -a -s %s" % (passwd,passwd,username)
+    return cmd
+
+def get_unix_add_cmd(username,password):
+    cmds = []
+    cmds.append("pw adduser %s" % username)
+    cmds.append("mkdir -p /home/%s" % username)
+    cmds.append("chown %(u)s:%(u)s /home/%(u)s" % {'u':username})
+    cmds.append("mkdir -p /DATA/_SMB_/profiles/%s" % username)
+    cmds.append("chown %(u)s:%(u)s /DATA/_SMB_/profiles/%(u)s" % {'u':username})
+
+    return cmds
+
+def getsmbusername(fn, sn):
+    """given a first second name, return a smb suitable username"""
+
+    smbusername = fn + "." + sn
+
+    if len(smbusername) > 15:
+        smbusername = fn[:1] + "." + sn
+    if len(smbusername) > 15:
+        raise "This produces a smbusername > 15 characters. Must be 15 or less. %s" % smbusername
+
+    return smbusername

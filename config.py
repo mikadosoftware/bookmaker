@@ -4,18 +4,26 @@ import os.path
 ### CONSTANTS 
 HTMLROOT = "/book"
 chapters_dir = '/root/thebook/thebook'
+FULLROOTPATH = '/root/thebook'
+
+BINARYPATH = os.path.abspath('./')
+
 HTML_DIR = '/tmp/bookbuild'
 HTML_DEPLOY_DIR = "/usr/local/www/data/book"
-IMG_DIR = os.path.join("/root/thebook", "img")
-CSS_DIR = os.path.join("/root/thebook", "css")
+IMG_DIR = os.path.join(FULLROOTPATH, "img")
+CSS_DIR = os.path.join(FULLROOTPATH, "css")
+
+
+
 
 ## new config
 SOURCE_RST_ROOT = chapters_dir
-HTML_BUILD_DIR = HTML_DIR
+HTML_BUILD_DIR = os.path.join(HTML_DIR, 'html')
 PATH_FROM_DOCROOT = HTMLROOT
 DEPLOY_HTML_ROOT = HTML_DEPLOY_DIR
 
 
+logfilepath = os.path.join(FULLROOTPATH, 'log.log')
 
 ###
 incl_file_name = '.ppp_include'

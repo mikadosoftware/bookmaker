@@ -49,12 +49,23 @@ So the basics of operation are
 Process
 -------
 
-main() runs an os.walk over chapters_dir, passing the details of each dir to loopthrudir()
+main() -- runs an os.walk over chapters_dir, passing the details of
+each dir to loopthrudir(), and holds the site_dict
 
-loopthrudir() defines the dest directories, and for each file in src_dir 
-  checks if it should be published, creates dest paths, asks create_html() to rst-html and write to disk,  stores a dict of data about that page in index_list (dict by section)
+site_dict -- keyed to hold a rst2htmlpage obj for each chp in a dir,
+within a dir dict
+::
 
-create_html() calls rst to get the html of the page, then grabs the main.tmpl and passes in html and other data writes that file to the dest location.
+    site_obj =    metadata ....
+                  contents = {'path/from/root/foodir': 
+                               {'mychp': <pageobj>, ...
+
+loopthrudir() -- for each file in src_dir 
+  checks if it should be published,  asks create_html() to rst->html
+  and stores in site_obj,   
+  
+write_index -- given site_obj, create a TOC page and a subTOC for each
+dir.
 
 
 
@@ -64,6 +75,18 @@ This is very similar to Sphinx (www.?) - but sphinx I could not quite get to sui
 I certainly realised I was stealing their include file idea after I wrote my own (however one can either include or exclude files in this one - I found that a bonus)
 
 Docutils - I happily recommend this - it is fast becoming standard documentation method for Python.
+
+
+
+CSS
+---
+Jan 09
+found, from joel spolsky
+
+http://matthewjamestaylor.com/blog/ultimate-3-column-blog-style-pixels.htm
+
+This looks a very effective solution to a problem I have long had - I just want to write simple HTML and have CSS take care of looking good (or in this case OK)
+
 
 
 
@@ -78,14 +101,14 @@ Usage
 
 Default is to only look for files called .chp
 
-CSS
----
-Jan 09
-found, from joel spolsky
 
-http://matthewjamestaylor.com/blog/ultimate-3-column-blog-style-pixels.htm
+testings
 
-This looks a very effective solution to a problem I have long had - I just want to write simple HTML and have CSS take care of looking good (or in this case OK)
+    >>> p = create_html('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp')
+    >>> p.title
+    u'Domain name system' 
+
+
 
 '''
 
@@ -95,191 +118,86 @@ from optparse import OptionParser
 import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
-from lib import  kill_pdf_odds, create_pdf, publish_this_file, getdirpath, get_html_from_rst, write_index, deploylive, get_tmpl_dict, check_environment
+from lib import  publish_this_file,\
+getdestpath, get_html_from_rst, write_index, deploylive, \
+get_tmpl_dict, check_environment, applog, dir_identity
+import lib
+
+
 import config
 
 
-def first_sentences(txt, ct=5):
-    """Given some text return first 5 sentences 
-    This is a problem.  If there is a call out in the first sentences, 
-    I get ugly warning signs...
-    However, cutting off HTML is worse and less predictatble
 
-    """
-    sentences = txt.split(". ")
-    
-    final_txt = ". ".join(sentences[:ct])
-    delete_me = ['[#]_', '[*]_']
-    for d in delete_me:
-        final_txt = final_txt.replace(d, "")  #needs a lot more thought but for now...
-    return  final_txt
-
-def make_frontpage(chosen_articles):
-    """ Put on the front page 3 articles that reflect the latest on the site """
-
-    print "start frontpage"
-    pages = []
-    for article in chosen_articles:
-        try:
-            rst_txt = unicode(open(os.path.join(config.chapters_dir,article)).read(),'utf8')
-            rst_txt = first_sentences(rst_txt) 
-            page_info = get_html_from_rst(rst_txt, article)
-            pages.append(page_info) 
-        except Exception, e:
-            raise e  
-
-    destination = os.path.join(config.HTML_BUILD_DIR, "index.html")
-
-    fullstr = ''
-    for p in pages:
-        fullstr += p['html_body']
-        fullstr += '<a href="%s">more...</a>' % os.path.join(config.HTMLROOT, 
-                                                p['source'].replace(".chp", ".html"))
- 
-        fullstr += '<hr/>'
-
-    #write out tmpl to destination
-    tmpl_txt = open("main.tmpl").read()                
-    
-    d = get_tmpl_dict()
-    d["title"] = 'Frontpage'
-    d["maintext"] =  fullstr
-    d["rhs"] = config.rhs_text
-    d['subtitle'] = 'Frontpage subtitle'
-
-    outstr = tmpl_txt % d
-    fo = open(destination, 'w')
-    fo.write(outstr)
-    fo.close()
-
-    return page_info
-
-    
-
-
-def create_html(source, destination, dry_run=False):
-    """
-    given source path and dest path, convert rst into html in dest 
-
-    returns
-    -------
-    a dictionary representing the returns from rst conversion and 
-    src, dest, errors in conversion
-
-    """
-    #dry run test
-    if dry_run == True: return ""
-    errors_converting_page = []
-    
-    print "---> convert %s to %s" % (source, destination) 
-    try:
-        rst_txt = unicode(open(source).read(),'utf8') #i should save all my files as utf8 anyway
-        page_info = get_html_from_rst(rst_txt, source) #now have html plus meta data
-
-    #problems getting rst to html - if it is severe, well do not publish it!!   
-    except Exception, e:
-        raise e  
-
-
-
-    #write out tmpl to destination
-    tmpl_txt = open("main.tmpl").read()                
-
-    d = get_tmpl_dict()
-    d["title"] = page_info['title']
-    d["maintext"] =  page_info['html_body']
-    d["rhs"] = config.rhs_text
-    d['subtitle'] = page_info['subtitle']
-
-    outstr = tmpl_txt % d
-    fo = open(destination, 'w')
-    fo.write(outstr)
-    fo.close()
-
-    page_info["src"] = source
-    page_info["dest"] = destination
-    page_info["errors"] = errors_converting_page
-
-    return page_info
-
-
- 
-     
-   
-def loopthrudir(root, dirs, files):
+def loopthrudir(full_current_root, dirs, files):
     """This does the meat of the work. 
     Go through all files in a dir, 
     pdf, or htmlise them, and return their meta data (title etc)
    
+
+    Note on local/full
+    ------------------
+    I am using a tree strucutre that roots from same arbitrary point
+    in a real disk tree.  So the strucutre I care about starts from
+    thebook but on disk that is /foo/bar/thebook.  thebook/ is my
+    local root, /foo/bar/thebook is my fullroot, but if I delve
+    deeper, thebook/chapter1/ is my local_current_root
+    
     Returns
     -------
     a list of all "pages" in this directory, as page-like objects.
-   
+
+    >>> 1
+  
+
     """
-
+    
     thisdirlist = []
-    # '''given the root of where the walk is, decide what the html path is bit 
-    #we do this cos the html destimation is emtpy and we need to mirror it
-    src_dir     = root
-    dest_htmldir = getdirpath("html", src_dir) 
-    dest_pdfdir  = getdirpath("pdf", src_dir) 
 
-
-    #### bit weak
-    try:
-        os.mkdir(dest_htmldir)
-        os.mkdir(dest_pdfdir)
-    except:
-        pass
-
+    ### remove files we dont want to publish
+    files = [f for f in files if publish_this_file(full_current_root, f)]
 
     for f in files:
-        print "-- %s" % os.path.basename(f)
-        #check if want to publish
-        if not publish_this_file(root, f):
-            continue
-
-
+        applog("-- %s" % os.path.basename(f))
         #decide on source and destimation. src_dir is told to us and is not really "this"
-        source = os.path.join(src_dir, f)
-        newhtml = f.replace('.chp','.html')
-        destination = os.path.join(dest_htmldir, newhtml)
-
-        
-        #create HTML, return a dict that understand what the page is, holds titles etc
-        page_info = create_html(source, destination, opts.dry_run)
-        thisdirlist.append(page_info)
-
-
-        if opts.no_pdf == False:          
-            #LaTeX
-            ltx_file = f.replace('.chp','.ltx') 
-            ltx_source = os.path.join(latex_dir, ltx_file)
-            create_pdf(source, ltx_source, errors)
+        thisdirlist.append(lib.create_html(full_current_root, f))
 
     return thisdirlist
 
 
-###main loop
-def main(index_list):
-    """ Go through the directory holding the .chp files, and run each file through 
-        the rst generator(s)"""
+
+def run_dirs():
+
+    """ Go through the directory holding the .chp files, and run each
+        file through the rst generator(s)"""
 
     ignore_dirs = ('.svn', '.git')
+    dir_list = {}
     
-
-    for root, dirs, files in os.walk(config.chapters_dir):
-        for d in ignore_dirs:
-            if root.find(d) != -1: 
-                continue
-            else:
-                index_list[root] = loopthrudir(root, dirs, files)    
-
-    ### write a contents file
-    write_index(index_list)
+    for root, dirs, files in os.walk(config.chapters_dir):         
+        dirs = [d for d in dirs if d not in ignore_dirs]
+        dir_list[dir_identity(root)] = loopthrudir(root, dirs, files)    
+         
+    return dir_list
 
 
+def prepare_index(dir_list):
+    """
+    given a dict keyed on local_root, holding list of 
+    """
 
+def main():
+    """ """
+
+
+    ### main loop
+    check_environment()
+    dir_list = run_dirs()
+    TOC XXX
+#    make_frontpage(["Introduction/WhatsGoingOnHere.chp",
+#    "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
+#    "Attitude/business_case.chp"])
+#    deploylive()
+    
 
 
 
@@ -290,8 +208,6 @@ if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("--no-pdf", dest="no_pdf", action="store_true",
                       default=False, help="do not generate pdfs")
-    parser.add_option("--dry-run", dest="dry_run", action="store_true",
-                      default=False, help="do not generate HTML")
     parser.add_option("--ignore-exclude", 
                       dest="ignore_exclude", action="store_true",
                       default=False, help="if set, ignore exclude files and publish everything")
@@ -303,11 +219,4 @@ if __name__ == '__main__':
         config.IGNORE_EXCLUDE = True
 
 
-    index_list = {} 
-
-    ### main loop
-    check_environment()
-    main(index_list)
-    make_frontpage(["Introduction/WhatsGoingOnHere.chp", "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp", "Attitude/business_case.chp"])
-    deploylive()
-
+    main()

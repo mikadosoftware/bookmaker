@@ -1,2 +1,2 @@
 [include]
-include:  vision.chp CIOtools.chp
+include:  vision.chp CIOtools.chp dns_tools.chp

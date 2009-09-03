@@ -1,0 +1,10 @@
+
+
+I am building a DNS helper, which will read and emit correct zone files
+I intend to use "simpleparse" which uses mxtexttools 
+
+http://simpleparse.sourceforge.net/
+
+http://www.ibm.com/developerworks/linux/library/l-simple.html
+
+

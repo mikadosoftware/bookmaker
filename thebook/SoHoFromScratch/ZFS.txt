@@ -1,0 +1,19 @@
+===
+ZFS
+===
+
+What is ZFS?
+============
+
+
+Initial Install
+===============
+
+
+
+bibiliography
+=============
+- https://www.ish.com.au/solutions/articles/freebsdzfs
+  v. interesting - I liked the trick to sparing the rest of the disk
+
+
