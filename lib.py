@@ -460,7 +460,7 @@ def deploylive():
  
     print "start deploy from %s to %s." % (config.HTML_BUILD_DIR, config.HTML_DEPLOY_DIR)
 
-    #shutil.rmtree(config.HTML_DEPLOY_DIR)
+    shutil.rmtree(config.HTML_DEPLOY_DIR)
 
     shutil.copytree(config.HTML_BUILD_DIR, config.HTML_DEPLOY_DIR)
 
@@ -488,7 +488,11 @@ def check_environment():
             shutil.rmtree(expendable_dir)
         #os.mkdir(expendable_dir)
 
-    os.mkdir(config.HTML_BUILD_DIR)
+
+    for dir in (config.HTML_DIR, config.HTML_DEPLOY_DIR):
+        if not os.path.isdir(dir):
+             os.makedirs(dir)
+
     #kind of assumes its there ...
     shutil.rmtree(os.path.join(config.chapters_dir, "img"))
     shutil.copytree(config.IMG_DIR, os.path.join(config.chapters_dir, "img"))
@@ -511,8 +515,13 @@ def dir_identity(fullpath):
 
     returns: path as string
       
+    # doctest
+    # I think that I want to have my paths rooted such that the top level dirs (soho etc) are at the top
+    # so I use chapters_dir as the mask
+
     """
-    local_src_path = fullpath.replace(config.FULLROOTPATH, '')
+    #eg I have /root/thebook/thebook/SoHo/dns.chp, I get back thebook/SoHo/dns.chp
+    local_src_path = fullpath.replace(config.chapters_dir, '')
     if local_src_path.find("/") == 0:
         local_src_path = local_src_path[1:]
 
@@ -542,11 +551,14 @@ class page(object):
     def get_dest_to_write_to(self):
         """given self knowledge return the location to write out to
 
-    local_current_root = dir_identity(full_current_root)
-    local_source = os.path.join(local_current_root, file)
+           local_current_root = dir_identity(full_current_root)
+           local_source = os.path.join(local_current_root, file)
+
+        
 
         """
-        return 'TBA'
+        destfile = dir_identity(self.src).replace(".chp", ".html")
+        return os.path.join(config.HTML_BUILD_DIR, destfile)
 
 
     def __repr__(self):

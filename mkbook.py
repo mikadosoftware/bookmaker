@@ -180,6 +180,20 @@ def run_dirs():
     return dir_list
 
 
+def write_to_disk(dirlist):
+    '''given a list of dir containing page classes write to disk'''
+    for dir in dirlist:
+        for pg in dirlist[dir]:
+            dest = pg.get_dest_to_write_to()
+            dest_dir = os.path.split(dest)[0]
+
+            if not os.path.isdir(dest_dir):
+                os.makedirs(dest_dir)
+
+            open(dest, 'wb').write(pg.whole)
+
+
+
 def prepare_index(dir_list):
     """
     given a dict keyed on local_root, holding list of 
@@ -188,6 +202,9 @@ def prepare_index(dir_list):
     """
     pass
 
+
+
+
 def main():
     """ """
 
@@ -195,11 +212,12 @@ def main():
     ### main loop
     check_environment()
     dir_list = run_dirs()
+    write_to_disk(dir_list)
 #    TOC XXX
 #    make_frontpage(["Introduction/WhatsGoingOnHere.chp",
 #    "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
 #    "Attitude/business_case.chp"])
-#    deploylive()
+    deploylive()
     
 
 
