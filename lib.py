@@ -146,21 +146,19 @@ def make_frontpage(chosen_articles):
     
 
 
-def create_html(full_current_root, file):
-    """
-    given source path and dest path, convert rst into html in dest 
+def rst_to_page(full_current_root, file):
+    """Convert rst file to page object
 
     returns
     -------
     an obj  representing the returns from rst conversion and 
     src, dest, errors in conversion
 
-    >>> p = create_html('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp')
+    >>> p = rst_to_page('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp')
     >>> p.title
     u'Domain name system'
 
     """
-    errors_converting_page = []
     source_path = os.path.join(full_current_root, file)
     try:
         rst_txt = unicode(open(source_path).read(),'utf8') 
@@ -168,10 +166,14 @@ def create_html(full_current_root, file):
         page_info = get_html_from_rst(rst_txt) 
     #problems getting rst to html - if it is severe, well do not publish it!!   
     except Exception, e:
-        raise e  
+        raise e
+        #error converting page - get out. let others handle that
+        ## TODO: a better error obj, incl src / error files
 
+    
     page_info["src"] = source_path
-    page_info["errors"] = errors_converting_page
+#    if e:
+#        page_info["errors"] = str(e)
 
            #convert to an object 
     return page(**page_info)
@@ -195,8 +197,6 @@ def get_html_from_rst(uStr):
     I think a decent object might be better here - a rst2htmlpage object
     
     """
-
-
     try:
         overrides = {'input_encoding': "unicode",
                  'initial_header_level': 2}
@@ -206,11 +206,11 @@ def get_html_from_rst(uStr):
 
     except Exception, e:
         applog("FAILED RST CONVERSION: %s" % str(e))
-        return 'rst2html failed: %s' % str(e)
+        raise e
 
 
-def publish_this_file(root, f):
-    """given a file basename, decide if we want to publish it
+def publish_this_file(page):
+    """given a file object, decide if we want to publish it
     
     All files to publish must end .chp
 
@@ -227,7 +227,7 @@ exclude = ['ibmadverts.chp',]
     """
 
     #must end .chp
-    junk, ext = os.path.splitext(f)
+    junk, ext = os.path.splitext(page.src)
     if ext in ('.chp',): 
         valid_flag = True
     else:
@@ -236,7 +236,7 @@ exclude = ['ibmadverts.chp',]
         return valid_flag
 
 
-
+    root, file = os.path.split(page.src)
     #test the user defined include/exclude
     include_file = os.path.join(root, config.incl_file_name) 
 
@@ -248,7 +248,7 @@ exclude = ['ibmadverts.chp',]
 
     ### DO we want to ignore exclude files (ie draft)
     if config.IGNORE_EXCLUDE == True:
-        print '---->>>',f,config.IGNORE_EXCLUDE
+        print '---->>>', page.src, config.IGNORE_EXCLUDE
         return True
 
 
@@ -265,7 +265,7 @@ exclude = ['ibmadverts.chp',]
 
 #    print '>>>',files_to_include
     #logic for publishing
-    if f in files_to_include : 
+    if os.path.basename(page.src) in files_to_include : 
         #this file is in include, so return True, we want to publish
 #        print '>>> include this', f
         return True

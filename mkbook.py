@@ -120,7 +120,7 @@ import pprint
 from docutils.examples import html_parts
 from lib import  publish_this_file,\
 getdestpath, get_html_from_rst, write_index, deploylive, \
-get_tmpl_dict, check_environment, applog, dir_identity
+get_tmpl_dict, check_environment, applog, dir_identity, rst_to_page
 import lib
 
 
@@ -153,15 +153,18 @@ def loopthrudir(full_current_root, dirs, files):
     
     thisdirlist = []
 
-    ### remove files we dont want to publish
-    files = [f for f in files if publish_this_file(full_current_root, f)]
-
     for f in files:
         applog("-- %s" % os.path.basename(f))
         #decide on source and destimation. src_dir is told to us and is not really "this"
-        thisdirlist.append(lib.create_html(full_current_root, f))
+        try:
+            thisdirlist.append(lib.rst_to_page(full_current_root, f))
+        except Exception, e:
+            pass # this is v bad. dont do it kids.
 
-    return thisdirlist
+    ### remove files we dont want to publish.  Done after the fact because I want to use page object
+    files = [page for page in thisdirlist if publish_this_file(page)]
+
+    return files
 
 
 
@@ -181,16 +184,24 @@ def run_dirs():
 
 
 def write_to_disk(dirlist):
-    '''given a list of dir containing page classes write to disk'''
+    '''given a list of dir containing page classes write to disk
+
+    - test if it is to be published
+    - put it in the tmpl form
+    '''
+    tmpl = config.maintmpl
     for dir in dirlist:
         for pg in dirlist[dir]:
             dest = pg.get_dest_to_write_to()
             dest_dir = os.path.split(dest)[0]
-
+            #
+            if not lib.publish_this_file(pg): continue
+          
             if not os.path.isdir(dest_dir):
                 os.makedirs(dest_dir)
-
-            open(dest, 'wb').write(pg.whole)
+            s = tmpl % {'maintext':pg.html_body, 'rhs':config.rhs_text,
+                        'title':pg.title, 'html_root':config.HTMLROOT}  
+            open(dest, 'wb').write(s)
 
 
 

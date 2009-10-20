@@ -38,7 +38,11 @@ latex_dir  = 'simpleITmanager_latex'
 #rst_options = ['--stylesheet-path=css/thebook.css', 
 #               '--initial-header-level=3',
 #               '--link-stylesheet']
-
+rst2html_overrides = { 'input_encoding': "unicode",
+                       'initial_header_level': 2,
+                       'styleheet-path':'css/thebook.css',
+                       'link-stylesheet':True
+                      }
 
 errors = []
 
@@ -46,6 +50,6 @@ errors = []
 pdflatex_cmds = ['pdflatex', '--output-directory=%s' % latex_dir, '--interaction=nonstopmode']
 to_latex_cmds   = ['rst2latex.py']
 
-
+maintmpl = open('main.tmpl').read()
 rhs_text = open('rhs.tmpl').read() % {'HTML_ROOT': HTMLROOT}
 
