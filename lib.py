@@ -110,24 +110,21 @@ def make_frontpage(chosen_articles):
     pages = []
     for article in chosen_articles:
         try:
-            rst_txt = unicode(open(os.path.join(config.chapters_dir,article)).read(),'utf8')
-            rst_txt = first_sentences(rst_txt) 
-            page_info = get_html_from_rst(rst_txt, article)
-            pages.append(page_info) 
+            articlepath = os.path.join(config.chapters_dir, article)
+            page = rst_to_page(articlepath)
+            pages.append(page) 
         except Exception, e:
-            raise e  
+            raise e 
 
     destination = os.path.join(config.HTML_BUILD_DIR, "index.html")
 
     fullstr = ''
     for p in pages:
-        fullstr += p['html_body']
-        fullstr += '<a href="%s">more...</a>' % os.path.join(config.HTMLROOT, 
-                                                p['source'].replace(".chp", ".html"))
- 
+        fullstr += p.teaser
+        fullstr += '<a href="%s">more...</a>' % os.path.join(p.dest_url) 
         fullstr += '<hr/>'
 
-    #write out tmpl to destination
+    #write out tmpl to destination - could seperate out here. 
     tmpl_txt = open("main.tmpl").read()                
     
     d = get_tmpl_dict()
@@ -141,12 +138,9 @@ def make_frontpage(chosen_articles):
     fo.write(outstr)
     fo.close()
 
-    return page_info
-
-    
 
 
-def rst_to_page(full_current_root, file):
+def rst_to_page(articlepath):
     """Convert rst file to page object
 
     returns
@@ -154,31 +148,32 @@ def rst_to_page(full_current_root, file):
     an obj  representing the returns from rst conversion and 
     src, dest, errors in conversion
 
-    >>> p = rst_to_page('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp')
+    teasr = first few sentences converted to HTML
+
+    >>> p = rst_to_page(os.path.join('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp'))
     >>> p.title
     u'Domain name system'
 
     """
-    source_path = os.path.join(full_current_root, file)
+    source_path = articlepath #os.path.join(full_current_root, file)
     try:
-        rst_txt = unicode(open(source_path).read(),'utf8') 
         #i should save all my files as utf8 anyway
+        rst_txt = unicode(open(source_path).read(),'utf8')
+        ## Grab the first few sentences, and make a taster 
+        rst_first_sentences = first_sentences(rst_txt) 
+        first_sentences_info = get_html_from_rst(rst_first_sentences)
         page_info = get_html_from_rst(rst_txt) 
+ 
     #problems getting rst to html - if it is severe, well do not publish it!!   
     except Exception, e:
         raise e
+
         #error converting page - get out. let others handle that
-        ## TODO: a better error obj, incl src / error files
 
-    
     page_info["src"] = source_path
-#    if e:
-#        page_info["errors"] = str(e)
-
-           #convert to an object 
+    page_info['teaser'] = first_sentences_info['html_body']
+    #convert to an object 
     return page(**page_info)
-
-
 
 
 
@@ -575,7 +570,15 @@ class page(object):
 
         return breadcrumbs
 
-
+    @property
+    def dest_url(self):
+        '''Return relative url that is this page '''
+        return self.ondisk_dest.replace(config.HTML_BUILD_DIR, config.HTMLROOT)
+        
+    @property
+    def ondisk_dest(self):
+        return self.get_dest_to_write_to()
+     
 def _test():
     import doctest
     doctest.testmod()

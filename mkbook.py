@@ -2,6 +2,8 @@
 #
 
 '''
+TODO:
+- need a obj for directory as well - complex to keep passing things around
 :author: pbrian
 
 ==============
@@ -109,6 +111,37 @@ testings
     u'Domain name system' 
 
 
+page object 
+-----------
+Is created from publish_parts in docutils, which gives back a variety of html
+when processed.
+attributes of page object:
+['body',
+ 'body_pre_docinfo',
+ 'body_prefix',
+ 'body_suffix',
+ 'breadcrumbs',
+ 'docinfo',
+ 'encoding',
+ 'footer',
+ 'fragment',
+ 'get_dest_to_write_to',
+ 'head',
+ 'head_prefix',
+ 'header',
+ 'html_body',
+ 'html_head',
+ 'html_prolog',
+ 'html_subtitle',
+ 'html_title',
+ 'meta',
+ 'src',
+ 'stylesheet',
+ 'subtitle',
+ 'title',
+ 'version',
+ 'whole']
+
 
 '''
 
@@ -157,7 +190,7 @@ def loopthrudir(full_current_root, dirs, files):
         applog("-- %s" % os.path.basename(f))
         #decide on source and destimation. src_dir is told to us and is not really "this"
         try:
-            thisdirlist.append(lib.rst_to_page(full_current_root, f))
+            thisdirlist.append(lib.rst_to_page(os.path.join(full_current_root, f)))
         except Exception, e:
             pass # this is v bad. dont do it kids.
 
@@ -191,6 +224,7 @@ def write_to_disk(dirlist):
     '''
     tmpl = config.maintmpl
     for dir in dirlist:
+        if len(dirlist[dir]) == 0: continue
         for pg in dirlist[dir]:
             dest = pg.get_dest_to_write_to()
             dest_dir = os.path.split(dest)[0]
@@ -202,17 +236,67 @@ def write_to_disk(dirlist):
             s = tmpl % {'maintext':pg.html_body, 'rhs':config.rhs_text,
                         'title':pg.title, 'html_root':config.HTMLROOT}  
             open(dest, 'wb').write(s)
+        indexhtml = prepare_index(dirlist[dir]) 
+        open(os.path.join(os.path.dirname(pg.ondisk_dest), 'index.html'), 'wb').write(indexhtml)
+    write_contents(dirlist)
+ 
+def write_contents(fulldirlist):
+    ''' '''
+    html = ''
+#    previousdir = ''
+    for dir in  sorted(fulldirlist.keys()):
+        singledirlist = fulldirlist[dir]
+        s, dirname = get_index_body(singledirlist)
+        #is this dir a subdir of previous?
+#        commonpre = os.path.commonprefix([dirname, previousdir]).replace(config.chapters_dir, '')
+#        print previousdir, dirname, commonpre
+#        if len(commonpre) < 2: html+='</ul>\n'
+        html += '</ul>\n\n<h3>%s</h3>\n' % dirname.replace(config.chapters_dir, '')
+        html += s
+#        previousdir = dirname
+    
+    maintmpl = config.maintmpl
+    fullhtml = maintmpl % {'maintext':html, 'rhs':config.rhs_text,
+                        'title': 'Contents', 'html_root':config.HTMLROOT}
+    open(os.path.join(config.HTML_BUILD_DIR, 'contents.html'), 'wb').write(fullhtml)
 
-
-
-def prepare_index(dir_list):
-    """
-    given a dict keyed on local_root, holding list of 
+def build_contents_link(page):
+    '''given a page return a html fragment that is li for content page '''
+    if page.title == '':
+        title = os.path.split(page.dest_url)[1].replace('.html','')
+    else:
+        title = page.title
    
-    dir_list = {
-    """
-    pass
+    if page.subtitle =='':
+        subtitle = ''
+    else:
+        subtitle =  page.subtitle 
 
+
+    s = '''<li><a href="%s">%s</a>
+                <span class="subtitle">%s</span></li>''' % (
+                       page.dest_url, title, subtitle)
+    return s
+   
+
+def get_index_body(singledirlist):
+    """Given a list of page objects, build an index html page
+   
+    """
+    tmpl = config.maintmpl
+    dirname = 'unknown directory'
+    s = """<ul> """
+    for pg in singledirlist:
+        dirname = os.path.dirname(pg.src)
+        s += build_contents_link(pg)
+    return (s, dirname)
+
+def prepare_index(singledirlist):
+    tmpl = config.maintmpl
+    s, dirname = get_index_body(singledirlist)
+    html = tmpl % {'maintext':s + "</ul>", 'rhs':config.rhs_text,
+                        'title':dirname, 'html_root':config.HTMLROOT}
+    return html
 
 
 
@@ -225,9 +309,9 @@ def main():
     dir_list = run_dirs()
     write_to_disk(dir_list)
 #    TOC XXX
-#    make_frontpage(["Introduction/WhatsGoingOnHere.chp",
-#    "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
-#    "Attitude/business_case.chp"])
+    lib.make_frontpage(["Introduction/WhatsGoingOnHere.chp",
+    "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
+    "Attitude/business_case.chp"])
     deploylive()
     
 
