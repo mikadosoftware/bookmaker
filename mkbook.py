@@ -4,6 +4,10 @@
 '''
 TODO:
 - need a obj for directory as well - complex to keep passing things around
+- this will solve issues with the breadcrumbs. like how to know what level to pass.
+  for now I am assuming first string passed in bredcrumb is at HTML_ROOT.  THis is a fine assumption.
+
+
 :author: pbrian
 
 ==============
@@ -185,9 +189,11 @@ def loopthrudir(full_current_root, dirs, files):
     """
     
     thisdirlist = []
+    files = [f for f in files if os.path.splitext(f)[1] in config.valid_exts]
+
 
     for f in files:
-        applog("-- %s" % os.path.basename(f))
+        applog("use: %s\n" % os.path.basename(f))
         #decide on source and destimation. src_dir is told to us and is not really "this"
         try:
             thisdirlist.append(lib.rst_to_page(os.path.join(full_current_root, f)))
@@ -196,7 +202,7 @@ def loopthrudir(full_current_root, dirs, files):
 
     ### remove files we dont want to publish.  Done after the fact because I want to use page object
     files = [page for page in thisdirlist if publish_this_file(page)]
-
+    applog('ignore: %s\n' % ' '.join([page.src_filename for page in thisdirlist if not publish_this_file(page)]))
     return files
 
 
@@ -234,7 +240,8 @@ def write_to_disk(dirlist):
             if not os.path.isdir(dest_dir):
                 os.makedirs(dest_dir)
             s = tmpl % {'maintext':pg.html_body, 'rhs':config.rhs_text,
-                        'title':pg.title, 'html_root':config.HTMLROOT}  
+                        'title':pg.title, 'html_root':config.HTMLROOT, 
+                        'breadcrumbs': lib.list_to_breadtrail(pg.breadcrumbs)}  
             open(dest, 'wb').write(s)
         indexhtml = prepare_index(dirlist[dir]) 
         open(os.path.join(os.path.dirname(pg.ondisk_dest), 'index.html'), 'wb').write(indexhtml)
@@ -257,7 +264,9 @@ def write_contents(fulldirlist):
     
     maintmpl = config.maintmpl
     fullhtml = maintmpl % {'maintext':html, 'rhs':config.rhs_text,
-                        'title': 'Contents', 'html_root':config.HTMLROOT}
+                        'title': 'Contents', 'html_root':config.HTMLROOT,
+                        'breadcrumbs': lib.list_to_breadtrail(['contents',])}
+
     open(os.path.join(config.HTML_BUILD_DIR, 'contents.html'), 'wb').write(fullhtml)
 
 def build_contents_link(page):
@@ -295,7 +304,8 @@ def prepare_index(singledirlist):
     tmpl = config.maintmpl
     s, dirname = get_index_body(singledirlist)
     html = tmpl % {'maintext':s + "</ul>", 'rhs':config.rhs_text,
-                        'title':dirname, 'html_root':config.HTMLROOT}
+                        'title':dirname, 'html_root':config.HTMLROOT,
+                  'breadcrumbs': lib.list_to_breadtrail([dirname,])}
     return html
 
 

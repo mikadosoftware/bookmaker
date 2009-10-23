@@ -14,6 +14,8 @@ IMG_DIR = os.path.join(FULLROOTPATH, "img")
 CSS_DIR = os.path.join(FULLROOTPATH, "css")
 
 
+### valid exts for files that are raw test
+valid_exts = ['.chp',]
 
 
 ## new config

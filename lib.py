@@ -66,6 +66,7 @@ Hello
 
 
 
+
 """
 
 import os, sys, subprocess
@@ -132,6 +133,7 @@ def make_frontpage(chosen_articles):
     d["maintext"] =  fullstr
     d["rhs"] = config.rhs_text
     d['subtitle'] = 'Frontpage subtitle'
+    d['breadcrumbs'] = 'frontispiece'
 
     outstr = tmpl_txt % d
     fo = open(destination, 'w')
@@ -223,7 +225,7 @@ exclude = ['ibmadverts.chp',]
 
     #must end .chp
     junk, ext = os.path.splitext(page.src)
-    if ext in ('.chp',): 
+    if ext in config.valid_exts: 
         valid_flag = True
     else:
         valid_flag = False
@@ -233,7 +235,7 @@ exclude = ['ibmadverts.chp',]
 
     root, file = os.path.split(page.src)
     #test the user defined include/exclude
-    include_file = os.path.join(root, config.incl_file_name) 
+    include_file = os.path.join(page.src_dir, config.incl_file_name) 
 
     #does it exist - if not we publish all files
     if not os.path.isfile(include_file):
@@ -258,11 +260,9 @@ exclude = ['ibmadverts.chp',]
     except Exception, e:
        files_to_include = []
 
-#    print '>>>',files_to_include
     #logic for publishing
     if os.path.basename(page.src) in files_to_include : 
         #this file is in include, so return True, we want to publish
-#        print '>>> include this', f
         return True
     else:
         valid_flag = False
@@ -322,7 +322,19 @@ def make_site_index():
     """
     pass
 
+####
+def list_to_breadtrail(breadlist):
+    '''convert a list of strings into a formatted breadcrumb trail.
 
+    Assumes that a list passed in starts from HTMLROOT'''
+    url = '''<a href="%s/%s" class="breadcrumb_url">%s</a>'''
+    s = ' / '
+    for crumb in breadlist:
+        idx = breadlist.index(crumb)
+        path = '/'.join(breadlist[:idx+1])
+        s += url % (config.HTMLROOT, path, crumb)
+
+    return ''
 
 ########### WRITE TO DISK FUNCTIONS
 
@@ -363,7 +375,7 @@ def write_indexpage_to_disk(contents, section_path, isMainContents=False):
     d["title"] = "Index for %s" % os.path.basename(section_path)
     d["maintext"] = contents
     d["rhs"] = config.rhs_text
-
+    d['breadcrumbs'] = list_to_breadtrail(['contents',])
     tmpl_txt = open("main.tmpl").read()
 
 
@@ -579,6 +591,16 @@ class page(object):
     def ondisk_dest(self):
         return self.get_dest_to_write_to()
      
+    @property
+    def src_filename(self):
+        return os.path.basename(self.src)
+
+    @property
+    def src_dir(self):
+        '''Directory that contains the source file for this page'''
+        return os.path.dirname(self.src)
+
+
 def _test():
     import doctest
     doctest.testmod()
