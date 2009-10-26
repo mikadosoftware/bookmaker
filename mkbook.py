@@ -7,12 +7,6 @@ TODO:
 - this will solve issues with the breadcrumbs. like how to know what level to pass.
   for now I am assuming first string passed in bredcrumb is at HTML_ROOT.  THis is a fine assumption.
 
-- split the text from the generator
-- make a beter HTML template, so that I can use breadcrumbs
-- see about releaseing this. sort of sphinx-nose
-  somewhere between sphinx and ruby jekyll
-
-
 
 :author: pbrian
 
@@ -203,8 +197,6 @@ def loopthrudir(full_current_root, dirs, files):
         #decide on source and destimation. src_dir is told to us and is not really "this"
         try:
             thisdirlist.append(lib.rst_to_page(os.path.join(full_current_root, f)))
-            ### to make command feel responsive
-            print '.',
         except Exception, e:
             pass # this is v bad. dont do it kids.
 
@@ -290,10 +282,8 @@ def build_contents_link(page):
         subtitle =  page.subtitle 
 
 
-    s = '''<li>
-           <a class="contentTitle" href="%s">%s</a>
-           <span class="contentSubtitle">%s</span>
-           </li>''' % (
+    s = '''<li><a href="%s">%s</a>
+                <span class="subtitle">%s</span></li>''' % (
                        page.dest_url, title, subtitle)
     return s
    

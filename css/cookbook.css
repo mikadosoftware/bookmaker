@@ -188,8 +188,9 @@ h1.title {
 }
 
 
-.contentSubtitle{
-    font-size: small;
+/// experimental - hiding the subtitle as I use it for the table of contents
+.subtitle {
+    visible:no;
 }
 
 
