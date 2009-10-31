@@ -449,9 +449,10 @@ nb config.chapters_dir = '/root/thebook/thebook'
                 subtitle = ''
             else:
                 subtitle = "(" + page_info["subtitle"] + ")"
-	    this_section_contents += '''<li> <a href="%s">%s</a>
-                           <span class="subtitle">%s</span>
-                           </li> \n''' % (dest_href, page_title, subtitle)
+	    this_section_contents += '''<li>
+                                        <a href="%s">%s</a>
+                                        <span class="content_subtitle">%s</span>
+                                      </li> \n''' % (dest_href, page_title, subtitle)
              
         this_section_contents += '</ul>'
         write_indexpage_to_disk(this_section_contents, this_section_path)
