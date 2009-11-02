@@ -1,0 +1,43 @@
+==============
+Virtualisation
+==============
+
+KQemu
+=====
+
+Qemu is a CPU emulator written by Fabrice Bellard.
+It is able to translate system calls from one OS, written for one CPU 
+to the binary equivalents for another OS or another CPU.  In short one can run 
+Windows OS on a FreeBSD host.
+
+Install
+-------
+emulators/kqemu-kmod
+emulators/qemu
+
+load kernel modules ???
+
+SOmewhere to put it:
+we need a 'virtual disk' - a file that is nothing but empty
+space for the img to run. its very own hard disk, as it were.
+
+qemu-img create /usr/local/DATA/ubuntu.disk 4G
+or
+dd of=/usr/local/DATA/ubuntu.disk bs=1024 seek=4194304 count=0
+
+
+Issues
+------
+Installing
+Getting an image
+networking
+
+
+
+
+
+bibliography:
+
+- https://help.ubuntu.com/community/Installation/QemuEmulator
+- https://help.ubuntu.com/community/WindowsXPUnderQemuHowTo
+- http://wiki.freebsd.org/qemu
