@@ -3,16 +3,25 @@
 Sound
 ============
 
+cf http://chelskov.org/?p=8
 
-http://chelskov.org/?p=8
+:: 
 
-$ kldload snd_driver
-$ cat /dev/sndstat
+ $ kldload snd_driver
+ $ cat /dev/sndstat
+
+ pbrian_laptop# cat /dev/sndstat
+ FreeBSD Audio Driver (newpcm: 32bit 2007061600/i386)
+ Installed devices:
+ pcm0: <HDA Realtek ALC262 PCM #0 Analog> at cad 0 nid 1 on hdac0 kld snd_hda [MPSAFE] (1p:1v/1r:1v channels duplex default)
+ pcm1: <HDA Realtek ALC262 PCM #1 Analog> at cad 0 nid 1 on hdac0 kld snd_hda [MPSAFE] (0p:0v/1r:1v channels)
+ pcm2: <HDA NVidia (Unknown) PCM #0 Digital> at cad 2 nid 1 on hdac0 kld snd_hda [MPSAFE] (1p:1v/0r:0v channels)
+
 
 I'll explain: the snd_driver is a meta driver, which actually finds 
 the correct sound driver for your sound card and loads it into the kernel. 
 The second command just tells us which driver it actually loaded. 
-In my case, this was snd_ich, so I simply added snd_ich_load=YES to the 
+In my case, this was snd_hda, so I simply added snd_hda_load="YES" to the 
 /boot/loader.conf file, and my sound works on every boot.
 
 or just push any file into the sound output
