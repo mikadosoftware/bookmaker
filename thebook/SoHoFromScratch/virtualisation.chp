@@ -25,6 +25,39 @@ qemu-img create /usr/local/DATA/ubuntu.disk 4G
 or
 dd of=/usr/local/DATA/ubuntu.disk bs=1024 seek=4194304 count=0
 
+download iso file
+
+ qemu -hda /usr/local/DATA/ubuntu.disk -cdrom \
+  /home/pbrian/downloads/ubuntu-9.10-desktop-i386.iso -m 192 -boot d
+
+now to restart
+
+ qemu -hda /usr/local/DATA/ubuntu.disk -m 192 
+
+sound??
+
+
+networking
+----------
+Well, out of the box I got networking.
+Not sure how.  But sufficient for testing
+
+http://dryice.name/blog/freebsd/using-freebsd-as-a-network-bridge-and-use-dummynet-to-shape-the-traffic/
+http://www.freebsd.org/doc/en/books/handbook/network-bridging.html
+
+
+How to get VMX speed up?
+------------------------
+Well, one of my two processors uses VMX.
+But I think my linux-emulation mode uses the primary one.
+So I look a little stuffed.
+
+I think I need 64bit OS to get to 2nd processor?
+
+Will try virtualbox
+
+
+
 
 Issues
 ------
@@ -33,8 +66,117 @@ Getting an image
 networking
 
 
+VirtualBox
+----------
+OK, next comes the sort-of free virtualbox.
+http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/virtualization-host.html
+http://wiki.freebsd.org/VirtualBox
+
+Install
+
+emulators/virtualbox
+
+then::
+
+  echo vboxdrv_load="YES" >> /boot/loader.conf
+
+NB - loader.conf does the which kernels shall I load. not rc.conf
 
 
+
+proc filesystem
+---------------
+VirtualBox makes use of the /proc file system (not same as linprocfs which
+we enabled for qemu - qemu was run as linux compatibility.  Virtualbox runs native.  I think.)
+
+put this into /etc/fstab
+::
+
+ mount -t procfs proc /proc
+
+(proc is a virtual device so it has no leading / - the mountpoint does however)
+
+::
+
+ proc		/proc		procfs	rw		0	0
+
+
+To start run ::
+
+  VirtualBox
+
+You will get a GUI wizard (!).
+It seems straightforward - firstly create the virtual hard disk (VirtualBox uses a format no other virtualisation software does, so this is the only way), assign the amount of ram.
+
+Now install from an iso.  You set up the cd rom drive from tab, and say use this iso.
+
+I had a kernel panic - but I increased RAM from 64 to 192 (and gave it 2 cpus). worked ok.
+
+
+
+Hardware vitualisation - there is a 'tab' - but I cannot find it
+FOund it.  If we use both nested pages and VxT then I get near native speed.
+Wow.
+
+
+
+screensize
+http://forums.opensuse.org/new-user-how-faq-read-only/unreviewed-how-faq/385392-virtualbox-screen-size.html
+
+My god - what a palaver.
+VirtualBox comes with a set of extra goodies, called GuestAdditions. 
+This is an iso of drivers and so forth that amoungst other things allow you to set 
+the screen resolution > 800x600.
+Which you want.
+
+So the instructions say click Devices, then Download Guest Additions.
+
+Unfortunately the download fails, cos it is not found locally, then it asks do you want 
+to download from the net. That gives a 404.
+
+THe reason - the iso is normally included in the binary. For FreeBSD its not.
+
+The way I did it.
+
+Open up my ubunutu guest. Install virtualbox-ose-guestaddition using synaptic package manager
+Then updatedb, locate virtualbox | grep guest.
+There is a .deb package of 24MB, scp that to my actual host and use 
+deb2targz to extract it, and eventually pull out the iso.
+
+Now put the iso where devices> tries to look for it (/usr/local/share/virtualbox/VBoxGuestAdditions.iso)
+
+Now it mounts a CDROM, inside the guest.
+You need to run the approrpaite install plkg on the cd rom for the guest OS (Linux/win32/solaris are what I can see)
+
+Now with that in place we need to do some extra work
+
+On the *host* machine set a VirtualBox parameter
+
+::
+
+ $ VBoxManage setextradata global GUI/MaxGuestResolution any
+
+
+Now restart your Guest OS.  It is unlikely it is correct, and if that is a Unix box it is
+because the xorg.conf file is incorrect.  I opened up /etc/xorg.conf in the guest machine
+and it had two lines from VirtualBox.  
+
+I then added ::
+
+ Section "Screen"
+         Identifier "Screen0"
+         Device     "Card0"
+         Monitor    "Monitor0"
+         DefaultDepth 24
+
+         SubSection "Display"
+                 Viewport   0 0
+                 Depth     24
+                 Modes "1280x1024 1028x768"
+         EndSubSection
+ EndSection
+
+Restarted the Guest OS and suddenly I had a choice of resolutions.
 
 bibliography:
 
