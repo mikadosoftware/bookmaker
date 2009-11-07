@@ -10,7 +10,7 @@
 #####
 
 
-
+echo $1 >> update.log
 git pull
 python mkbook.py 
 
