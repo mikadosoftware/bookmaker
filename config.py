@@ -2,9 +2,10 @@ import os.path
 
 
 ### CONSTANTS 
-HTMLROOT = "/book"
-chapters_dir = '/root/thebook/thebook'
-FULLROOTPATH = '/root/thebook'
+HTMLROOT = ""
+working_dir = os.path.dirname(os.path.abspath(__file__))
+chapters_dir = os.path.join(working_dir, 'thebook') #'/home/pbrian/clone_upstream/thebook/thebook'
+FULLROOTPATH = working_dir
 
 BINARYPATH = os.path.abspath('./')
 
