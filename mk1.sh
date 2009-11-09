@@ -14,8 +14,8 @@
 #####
 
 
-
+clone_location=/home/pbrian/clone_upstream/cookbook/cookbook/
 git pull
-python mkbook.py 
+python $clone_location/mkbook.py 
 
 # run this on remote machie sh update_book.sh
