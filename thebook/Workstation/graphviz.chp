@@ -1,0 +1,39 @@
+========
+GraphViz
+========
+
+`Graphviz <http://www.graphviz.org>`_ is a set of tools from AT&T 
+for drawing graphs, specified in a ASCII text language.
+
+installation is simple - from graphics/graphviz
+
+Simple Example
+--------------
+We create a file _dot1_ as follows::
+
+ digraph G {
+
+ DEFECT -> BUG;
+ DEFECT -> FEATURE;
+ DEFECT -> TASK;
+ 
+ BUG -> WORK;
+ FEATURE -> WORK;
+ TASK -> WORK;
+
+ }
+
+
+Then run it as ::
+
+  dot -Tps dot1 -o dot1.ps
+
+view ::
+
+  gs dot1.ps
+
+and we see something like below.
+
+It can get complicated quickly.
+
+
