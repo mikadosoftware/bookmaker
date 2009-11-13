@@ -25,6 +25,17 @@ Let me show you how Linus [#]_ did a simple check of his bash history
 so lets go through that and see what is worth learning
 
 
+#!/bin/ksh
+
+mystring="01.Driver Report|userid@company.com"
+echo "$mystring"|while IFS="|" read f1 f2
+do
+name="$f1"
+email="$f2"
+done
+echo "$name"
+echo "$email"
+
 
 bibliography
 ------------
