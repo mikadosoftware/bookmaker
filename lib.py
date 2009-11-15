@@ -468,15 +468,12 @@ def deploylive():
  
     print "start deploy from %s to %s." % (config.HTML_BUILD_DIR, config.HTML_DEPLOY_DIR)
 
+    # remove the existing webroot, copy in the new one, then images etc
     shutil.rmtree(config.HTML_DEPLOY_DIR)
-
     shutil.copytree(config.HTML_BUILD_DIR, config.HTML_DEPLOY_DIR)
 
-    subprocess.check_call(['cp','-r','css', config.HTML_DEPLOY_DIR ])
-    subprocess.check_call(['cp','-r','img', config.HTML_DEPLOY_DIR ])
-
-    #shutil.copy(os.path.join(config.HTML_DEPLOY_DIR, "index.html"), 
-    #            os.path.join(config.HTML_DEPLOY_DIR, "contents.html")) 
+    subprocess.check_call(['cp','-r', config.CSS_DIR, config.HTML_DEPLOY_DIR ])
+    subprocess.check_call(['cp','-r', config.IMG_DIR, config.HTML_DEPLOY_DIR ])
 
     print "deploy done"
 
@@ -501,9 +498,6 @@ def check_environment():
         if not os.path.isdir(dir):
              os.makedirs(dir)
 
-    #kind of assumes its there ...
-    shutil.rmtree(os.path.join(config.chapters_dir, "img"))
-    shutil.copytree(config.IMG_DIR, os.path.join(config.chapters_dir, "img"))
     ### make destination OK
     shutil.copytree(config.IMG_DIR, os.path.join(config.HTML_BUILD_DIR, "img"))
     shutil.copytree(config.CSS_DIR, os.path.join(config.HTML_BUILD_DIR, "css"))

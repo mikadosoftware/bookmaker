@@ -5,14 +5,46 @@ Architects and Town Planners
 I've seen an advert for one of those
 ====================================
 
-Adverts for *Technical Architect* are (or were, at least before the credit crunch) rife in jobsites.  You could read them all day, and still come away with no clearer idea what one was supposed to do.
+Adverts for *Technical Architect* are (or were, at least before the
+credit crunch) rife in jobsites.  You could read them all day, and
+still come away with no clearer idea what one was supposed to do.
 
-And this is one of the reasons why the term "Enterprise Architect" is held in rather lower esteem than perhaps it should be.  Joel Spolsky (http://www.joelonsoftware.com) is a good example of the approach - his essay *Architecture Astromauts* lays out the general view - that there is a class of technical worker who spends all day coming up with more and more "general" frameworks to explain and encompass all 
+And this is one of the reasons why the term "Enterprise Architect" is
+held in rather lower esteem than perhaps it should be.  `Joel Spolsky
+<http://www.joelonsoftware.com>`_ is a good example of the approach -
+his essay *Architecture Astromauts* lays out the general view - that
+there is a class of technical worker who spends all day coming up with
+more and more "general" frameworks to explain and encompass all.
+
+My generally negative view of this role can be boiled down to comparing 
+them to a real-world architect.  An Enterprise Architect is usually compared to a building architect, someone supposed to be at the top
+of the power hierarchy - holding the clients hand (while he signs the cheques) and imposing his/her vision of the final product.
+
+Sounds good, doesn't it.  Unfortunately, a normal architect works for
+one building.  One building generally can have a vision *imposed*.
+Pretty much every enterprise has such an agglomeration of different
+systems that it cannot be thought of as a single building - perhaps a
+town, perhaps an eco-system.  Try imposing your vision on a jungle.
 
 
-So we have to find a defintion of Technical Architecture that determines when to stop making more and more generalisations, and leads away from the huam tendancy to put off anything too abstract.
+So if we *architect* is no longer a viable term, what is?  
+*Head Gardener* might be a good term, *town planner* a bit more
+official, *chief behavioural economist* maybe, and *artificial evolutionist* is probably my favourite.
 
-Luckily for you I have one like that here...
+
+I think it is impossible to escape the idea that in any organisation of a decent size the organisation is a loose federation of groups with varying degrees of autonomy.  In fact in small organisations, the more robust and flexible systems are designed that way [#]_.  So if an architect is not really looking after one building but a town-full, what principles can we look at to help.
+
+The economist point of view
+---------------------------
+That is economist as in Keynes, not the magazine.  Keynes would describe a Market as the interaction of autonomous agents, guided by a information mechanism such a market price.  And we can see that different programs interact with each other, messily or not.  Finding the boundaries between buildings can occassionally be hard, between systems much harder, 
+
+There is not a pricing mechanism in most computer interactions, or is there. 
+Speed of response is often a pricing signal - routing another.
+
+Inside each system command and control is the major player.  Between systems, it is automous interaction.
+
+One major thing to take awy is the concept of the enterprise messaging bus.
+
 
 
 - markets and autonomous agents
@@ -22,15 +54,12 @@ Luckily for you I have one like that here...
 
 
 
-
-
-
-
-What is an Enterprise Architect?
-What are the keys to EA?
-
 Simplicity - simple enough to be held in one persons head.
 If not then need a different approach
+
+Town Planning
+-------------
+Ref gradyBooch article
 
 Architecture v town planning
 
@@ -42,6 +71,7 @@ failure of NftIP - lorenzo project, navy comparison
 
 EA is like KGB agent who asked british ambassador "Who is the person responsible for the delivery of bread to lOndon"
 If you are asking that question, you need to use market forces not a better methodology
+
 
 
 Boeing architects - yes, complex application (a Boeing 747) but simple function - to fly, safely.  GOod architects are invaluable here - but first the owner of the house, must make clear their strategy. 
@@ -115,3 +145,5 @@ quantify
 - fast is not a requirement, nor is responsive or extensible
 - will deliver xx in xx time under normal load - is
 
+
+.. [#] The Unix philosophy (ref) can be summed up as "Do one thing well, expect to be chained together with other programs, and ..."

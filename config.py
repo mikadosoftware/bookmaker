@@ -10,8 +10,8 @@ BINARYPATH = os.path.abspath('./')
 
 HTML_DIR = '/tmp/bookbuild'
 HTML_DEPLOY_DIR = "/usr/local/www/apache22/data/book"
-IMG_DIR = os.path.join(FULLROOTPATH, "img")
-CSS_DIR = os.path.join(FULLROOTPATH, "css")
+IMG_DIR = os.path.join(chapters_dir, "img")
+CSS_DIR = os.path.join(chapters_dir, "css")
 
 
 ### valid exts for files that are raw test
