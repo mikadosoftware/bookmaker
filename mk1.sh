@@ -10,12 +10,12 @@
 # but it does not run from the bare repo, but from the clone
 # clone : /home/pbrian/clone_upstream/cookbook/mk1.sh
 #
-# 12
+# 123
 #####
 
 
-clone_location=/home/pbrian/clone_upstream/cookbook/cookbook/
+echo $1 >> update.log
 git pull
-python $clone_location/mkbook.py 
+python mkbook.py 
 
 # run this on remote machie sh update_book.sh
