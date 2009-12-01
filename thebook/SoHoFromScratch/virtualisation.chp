@@ -178,6 +178,27 @@ I then added ::
 
 Restarted the Guest OS and suddenly I had a choice of resolutions.
 
+Loading from CD/DVD Drive
+-------------------------
+Booting from a downloaded iso is nice.
+However I have WIndows Disk and wanted to load from CD.
+
+from the wiki
+# atapicam kernel module needs to be loaded
+# HAL has to run at the moment
+# Permissions to access /dev/xpt0, /dev/cdN and /dev/passN 
+
+$ kldload atapicam
+$ echo atapicam_load="YES" >> /boot/loader.conf
+$ echo dbus_enable="YES" >> /etc/rc.conf
+$ echo hald_enable="YES" >> /etc/rc.conf
+
+
+Ref:
+http://www.freebsd.org/gnome/docs/halfaq.html
+http://wiki.freebsd.org/VirtualBox
+
+
 bibliography:
 
 - https://help.ubuntu.com/community/Installation/QemuEmulator
