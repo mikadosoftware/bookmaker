@@ -165,10 +165,9 @@ from lib import  publish_this_file,\
 getdestpath, get_html_from_rst, write_index, deploylive, \
 get_tmpl_dict, check_environment, applog, dir_identity, rst_to_page
 import lib
-
-
 import config
 
+from lib import BookMakerError
 
 
 def loopthrudir(full_current_root, dirs, files):
@@ -335,23 +334,39 @@ def main():
     deploylive()
     
 
+def check_chp_dir_arg_valid(chp_dir):
+    ''' '''
+    return os.path.isdir(chp_dir)
 
 
 if __name__ == '__main__':
 
 
     ### parse options
-    parser = OptionParser()
+    usage="""usage: %prog [options] location_of_chp_dir """
+    parser = OptionParser(usage=usage)
+
     parser.add_option("--no-pdf", dest="no_pdf", action="store_true",
                       default=False, help="do not generate pdfs")
+
     parser.add_option("--ignore-exclude", 
                       dest="ignore_exclude", action="store_true",
                       default=False, help="if set, ignore exclude files and publish everything")
 
     (opts, args) = parser.parse_args()
-    
+
+    #check if args is a viable location for a chp_dir
+    if len(args) == 1:
+        chp_dir = os.path.abspath(args[0])
+    else:
+        raise BookMakerError("Supply only one argument - Chapter Directory Path")
+
+    if not check_chp_dir_arg_valid(chp_dir):
+        raise BookMakerError("Chapter Directory (%s) is not a dir" % chp_dir)
+    else:
+        config.setup_chp_dir(chp_dir)
+
     if opts.ignore_exclude == True:    
-        print '>>>', opts.ignore_exclude
         config.IGNORE_EXCLUDE = True
 
 

@@ -78,6 +78,11 @@ import ConfigParser
 import shutil
 
 
+class BookMakerError(Exception):
+    '''Dumb error class'''
+    pass
+
+
 ########### BUILD PAGES FUNCTIONS
 def first_sentences(txt, ct=5):
     """
