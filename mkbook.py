@@ -223,7 +223,9 @@ def run_dirs():
     dir_list = {}
     
     for root, dirs, files in os.walk(config.chapters_dir):         
-        dirs = [d for d in dirs if d not in ignore_dirs]
+#        dirs = [d for d in dirs if d not in ignore_dirs]
+#       for some reason the above does not work .... dirs still holds .git
+        if '.git' in dirs: dirs.remove('.git')
         dir_list[dir_identity(root)] = loopthrudir(root, dirs, files)    
          
     return dir_list
