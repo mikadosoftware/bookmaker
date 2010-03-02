@@ -217,17 +217,49 @@ def loopthrudir(full_current_root, dirs, files):
 def run_dirs():
 
     """ Go through the directory holding the .chp files, and run each
-        file through the rst generator(s)"""
+        file through the rst generator(s)
 
-    ignore_dirs = ('.svn', '.git')
+
+    I have three ways of pruning the files / directories I will index
+    first two are simple remove svn / git directories from contention.
+    The third is depeandt on a dir contianing a file called *no_index*
+
+    Here this dir is then ignored and not parsed - a no index file will cut off not merely one dir but whole branch
+
+    NB - for os.walk you must use direct operators on returned dirs listing - 
+    this is an iterator and does not "do" assignment
+
+    """
+
+    ignore_dirs = ['.svn', '.git']
     dir_list = {}
     
     for root, dirs, files in os.walk(config.chapters_dir):         
-#        dirs = [d for d in dirs if d not in ignore_dirs]
-#       for some reason the above does not work .... dirs still holds .git
-        if '.git' in dirs: dirs.remove('.git')
-        dir_list[dir_identity(root)] = loopthrudir(root, dirs, files)    
-         
+        # three ways of pruning the 
+        ### 
+#        print "+", dirs
+#        dirs = [d for d in dirs if d.find(".git") == -1]
+#        dirs = [d for d in dirs if ".svn" not in d.split("/")]
+#        print "-", dirs 
+#        print raw_input(root)
+
+        ## if in THIS dir, i have a file called noindex,
+        ## then parse files in THIS dir but no sub dirs
+        if config.NO_INDEX_SUBDIRS in files: 
+            del dirs[:]
+            print "not indexing below", root
+
+        if root.find(".git") != -1: continue
+        if root.find(".svn") != -1: continue
+
+  
+        # do not collect directories with nothing in them
+        pages_list = loopthrudir(root, dirs, files)    
+        if len(pages_list) > 0:
+            dir_list[dir_identity(root)] = pages_list
+
+
+
     return dir_list
 
 
@@ -301,8 +333,13 @@ def build_contents_link(page):
 
 def get_index_body(singledirlist):
     """Given a list of page objects, build an index html page
-   
+
+
+    NB I can return "unknown directory" because there are no files in dir.
+    I think  it safer not to return anything    
+    
     """
+    
     tmpl = config.maintmpl
     dirname = 'unknown directory'
     s = """<ul> """
@@ -312,6 +349,7 @@ def get_index_body(singledirlist):
     return (s, dirname)
 
 def prepare_index(singledirlist):
+    ''' '''
     tmpl = config.maintmpl
     s, dirname = get_index_body(singledirlist)
     html = tmpl % {'maintext':s + "</ul>", 'rhs':config.rhs_text,

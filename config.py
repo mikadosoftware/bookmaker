@@ -54,6 +54,11 @@ maintmpl = open('main.tmpl').read()
 rhs_text = open('rhs.tmpl').read() % {'HTML_ROOT': HTMLROOT}
 
 chapters_dir = None; SOURCE_RST_ROOT = None; IMG_DIR = None; CSS_DIR = None
+
+
+#name of file that if in a dir will stop bookmaker parsing subdirs
+NO_INDEX_SUBDIRS = 'no_index_subdirs'
+
 def setup_chp_dir(chp_dir):
     #This will get replaced by an arg passed to mkbook os.path.join(working_dir, 'thebook') #'/home/pbrian/clone_upstream/thebook/thebook'
     global chapters_dir
@@ -64,3 +69,5 @@ def setup_chp_dir(chp_dir):
     SOURCE_RST_ROOT = chapters_dir
     IMG_DIR = os.path.join(chapters_dir, "img")
     CSS_DIR = os.path.join(chapters_dir, "css")
+
+
