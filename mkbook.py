@@ -368,7 +368,7 @@ def main():
     dir_list = run_dirs()
     write_to_disk(dir_list)
 #    TOC XXX
-    lib.make_frontpage(["Introduction/WhatsGoingOnHere.chp",
+    lib.make_frontpage(["Attitude/whatswrongwithagile.chp",
     "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
     "Attitude/business_case.chp"])
     deploylive()
