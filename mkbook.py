@@ -2,7 +2,8 @@
 #
 
 '''
-TODO:
+TODO
+----
 - need a obj for directory as well - complex to keep passing things around
 - this will solve issues with the breadcrumbs. like how to know what level to pass.
   for now I am assuming first string passed in bredcrumb is at HTML_ROOT.  THis is a fine assumption.
