@@ -2,14 +2,15 @@ import os.path
 
 
 ### CONSTANTS 
-HTMLROOT = ""
+## the root that will be added to all (relative?) urls
+HTMLROOT = "/book"
 working_dir = os.path.dirname(os.path.abspath(__file__))
 FULLROOTPATH = working_dir
 
 BINARYPATH = os.path.abspath('./')
 
 HTML_DIR = '/tmp/bookbuild'
-HTML_DEPLOY_DIR = "/usr/local/www/apache22/data/book"
+HTML_DEPLOY_DIR = "/usr/local/www/nginx/book"
 
 
 ### valid exts for files that are raw test

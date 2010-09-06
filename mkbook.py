@@ -360,6 +360,23 @@ def prepare_index(singledirlist):
 
 
 
+def set_permissions(username, grpname):
+    '''need to alter permissions on the files to be served '''
+    #    sudo chown -R nobody:nobody book/
+#    import pwd, grp, os
+#    print "set permissions", username, grpname
+#    uid = pwd.getpwnam(username).pw_uid
+#    gid = grp.getgrnam(grpname).gr_gid
+#    print "set permissions", username, uid, grpname, gid
+#    print config.HTML_DEPLOY_DIR
+#    os.chown(config.HTML_DEPLOY_DIR, uid, gid)
+#nice but no recursion...
+    l = ["chown", "-R", username + ":" + grpname, 
+          config.HTML_DEPLOY_DIR]
+    print l
+    subprocess.check_call(l)
+
+
 def main():
     """ """
 
@@ -373,7 +390,8 @@ def main():
     "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
     "Attitude/business_case.chp"])
     deploylive()
-    
+
+    set_permissions("www","www")    
 
 def check_chp_dir_arg_valid(chp_dir):
     ''' '''
