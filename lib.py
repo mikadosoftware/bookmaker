@@ -131,7 +131,7 @@ def make_frontpage(chosen_articles):
         fullstr += '<hr/>'
 
     #write out tmpl to destination - could seperate out here. 
-    tmpl_txt = open("main.tmpl").read()                
+    tmpl_txt = config.maintmpl
     
     d = get_tmpl_dict()
     d["title"] = 'Frontpage'

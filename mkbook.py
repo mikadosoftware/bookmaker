@@ -2,11 +2,58 @@
 #
 
 '''
+Overview
+--------
+
+Bookmaker is a fairly short Content Management System.  I did not
+really intend to build one, but it looks like I have.  Originally I
+wanted a way to convert ReSt based files into a website, and the then
+new Sphinx project from Python looked a good idea.  But it was a bit
+too complex for me, I did not spend enough time getting my head around
+its config stuiff (I now know why it is complex, there is no easy
+solution) and so I built my own.  It grew a bit.
+
+So, we have a script that will take a directory, assume that directory
+holds
+
+* hierachy of folders and ReSt based text files that represent the
+  content to be managed.
+
+* meta folder that holds templates and config infomration
+
+* css - seems simple enough.  might need to enforce docutils css
+  globally
+
+* imgs (well, media) for the whole hierarchy.  Yes that could be
+  better.  Well I think that hardly matters - each page refs its own
+  imgs so they can be put anywhere as long as the pages keep the right
+  refs.
+
+
 TODO
 ----
-- need a obj for directory as well - complex to keep passing things around
-- this will solve issues with the breadcrumbs. like how to know what level to pass.
-  for now I am assuming first string passed in bredcrumb is at HTML_ROOT.  THis is a fine assumption.
+
+* alter how I handle config - I made my perennial mistake of using a
+  py file for config, which means I need to know where it is to import
+  it - but the config file is supplied by the content, so to import it
+  you need to know where content is, but ... open the box with the
+  crowbar found inside.
+
+* Pre processing of 
+
+* git based approval process so others can sign off / work / see
+  betas.
+
+* go dynamic???? this does static sites.  OK, but what if we did
+  dynamic sites.  how to do this??? Dynamic always makes for easier
+  future proofing
+
+
+
+- need a obj for directory as well - complex to keep passing things
+- around this will solve issues with the breadcrumbs. like how to know
+- what level to pass.  for now I am assuming first string passed in
+- bredcrumb is at HTML_ROOT.  THis is a fine assumption.
 
 - split the text from the generator
 - make a beter HTML template, so that I can use breadcrumbs
@@ -21,11 +68,13 @@ TODO
 ReSt bookmaker
 ==============
 
-This collection of files is designed to allow you to create a simple website and/or LaTeX based-book from
-just templates and docutils markup (www.docutils.org).
+This collection of files is designed to allow you to create a simple
+website and/or LaTeX based-book from just templates and docutils
+markup (www.docutils.org).
 
-Docutils is a useful (if occassionaly complex) python application that takes simple text based markup and converts it to
-an intermediary parsed tree, then out to LaTeX or HTML etc.  A simple example is
+Docutils is a useful (if occassionaly complex) python application that
+takes simple text based markup and converts it to an intermediary
+parsed tree, then out to LaTeX or HTML etc.  A simple example is
 
 ::
    
@@ -50,13 +99,20 @@ this is why ReSt is useful
 - bulletpoints
 
 
-I have written an entire site, using this system (www.itmanagerscookbook.com) making one text file the same as one page in the website. However the structure of the site is formed from the structure of the directories I store the original text files in.
+I have written an entire site, using this system
+(www.itmanagerscookbook.com) making one text file the same as one page
+in the website. However the structure of the site is formed from the
+structure of the directories I store the original text files in.
 
 So the basics of operation are 
 
 1. Write a few text files in ReSt, with a directory structure.
-2. walk through the directories, turning the files into HTML / LaTeX but keeping the directory structure.
-3. Use templates, CSS and images as needed to help things along.  
+
+2. walk through the directories, turning the files into HTML / LaTeX
+but keeping the directory structure.
+
+3. Use templates, CSS and images as needed to help things along.
+
 4. Have some control structure 
 
 Process
@@ -84,21 +140,28 @@ dir.
 
 Antecedants
 -----------
-This is very similar to Sphinx (www.?) - but sphinx I could not quite get to suit my needs (I may need to reexamine it)
-I certainly realised I was stealing their include file idea after I wrote my own (however one can either include or exclude files in this one - I found that a bonus)
 
-Docutils - I happily recommend this - it is fast becoming standard documentation method for Python.
+This is very similar to Sphinx (www.?) - but sphinx I could not quite
+get to suit my needs (I may need to reexamine it) I certainly realised
+I was stealing their include file idea after I wrote my own (however
+one can either include or exclude files in this one - I found that a
+bonus)
 
+Docutils - I happily recommend this - it is fast becoming standard
+documentation method for Python.
 
 
 CSS
 ---
+
 Jan 09
 found, from joel spolsky
 
 http://matthewjamestaylor.com/blog/ultimate-3-column-blog-style-pixels.htm
 
-This looks a very effective solution to a problem I have long had - I just want to write simple HTML and have CSS take care of looking good (or in this case OK)
+This looks a very effective solution to a problem I have long had - I
+just want to write simple HTML and have CSS take care of looking good
+(or in this case OK)
 
 
 
@@ -115,15 +178,15 @@ Usage
 Default is to only look for files called .chp
 
 
-testings
+>>> p = create_html('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp')
+>>> p.title
+u'Domain name system' 
 
-    >>> p = create_html('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp')
-    >>> p.title
-    u'Domain name system' 
-
+Now show the page object
 
 page object 
 -----------
+
 Is created from publish_parts in docutils, which gives back a variety of html
 when processed.
 attributes of page object:
@@ -155,20 +218,15 @@ attributes of page object:
 
 
 '''
-
-
+### NB!!!!
+### hacky hack
+### I am doing a late import of the config file because the location
+### of conf is passed to this file as an arg
 
 from optparse import OptionParser
 import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
-from lib import  publish_this_file,\
-getdestpath, get_html_from_rst, write_index, deploylive, \
-get_tmpl_dict, check_environment, applog, dir_identity, rst_to_page
-import lib
-import config
-
-from lib import BookMakerError
 
 
 def loopthrudir(full_current_root, dirs, files):
@@ -177,16 +235,18 @@ def loopthrudir(full_current_root, dirs, files):
     pdf, or htmlise them, and return their meta data (title etc)
    
 
-    Note on local/full
-    ------------------
+    * Note on local/full
+
+
     I am using a tree strucutre that roots from same arbitrary point
     in a real disk tree.  So the strucutre I care about starts from
     thebook but on disk that is /foo/bar/thebook.  thebook/ is my
     local root, /foo/bar/thebook is my fullroot, but if I delve
     deeper, thebook/chapter1/ is my local_current_root
     
-    Returns
-    -------
+    * Returns
+
+ 
     a list of all "pages" in this directory, as page-like objects.
 
     >>> 1
@@ -284,7 +344,7 @@ def write_to_disk(dirlist):
             s = tmpl % {'maintext':pg.html_body, 'rhs':config.rhs_text,
                         'title':pg.title, 'html_root':config.HTMLROOT, 
                         'breadcrumbs': lib.list_to_breadtrail(pg.breadcrumbs)}  
-            open(dest, 'wb').write(s)
+            open(dest, 'wb').write(s.encode('utf8'))
         indexhtml = prepare_index(dirlist[dir]) 
         open(os.path.join(os.path.dirname(pg.ondisk_dest), 'index.html'), 'wb').write(indexhtml)
     write_contents(dirlist)
@@ -386,9 +446,7 @@ def main():
     dir_list = run_dirs()
     write_to_disk(dir_list)
 #    TOC XXX
-    lib.make_frontpage(["Attitude/whatswrongwithagile.chp",
-    "Attitude/ibmadverts.chp", "SoHoFromScratch/time.chp",
-    "Attitude/business_case.chp"])
+    lib.make_frontpage(config.frontpage_list_articles)
     deploylive()
 
     set_permissions("www","www")    
@@ -418,7 +476,24 @@ if __name__ == '__main__':
     if len(args) == 1:
         chp_dir = os.path.abspath(args[0])
     else:
-        raise BookMakerError("Supply only one argument - Chapter Directory Path")
+        raise BookMakerError("Supply only one argument - Chapter Directory Path"
+)
+
+
+
+    ### setup config files
+    #### All content directories MUST have a folder named this:
+    book_config_folder = "book_config"
+    #### and a config fole formatted as needed called config.py 
+    sys.path.insert(0, os.path.abspath(chp_dir))
+    sys.path.insert(0, os.path.abspath(os.path.join(chp_dir, book_config_folder)))
+    import config    
+
+    from lib import  publish_this_file, getdestpath, \
+                     get_html_from_rst, write_index, deploylive,  \
+                     get_tmpl_dict, check_environment, applog, \
+                     dir_identity, rst_to_page, BookMakerError
+    import lib
 
     if not check_chp_dir_arg_valid(chp_dir):
         raise BookMakerError("Chapter Directory (%s) is not a dir" % chp_dir)
