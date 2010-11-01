@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Overview &mdash; bookmaker v1.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="bookmaker v1.0.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">bookmaker v1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-bookmaker.mkbook"></span><div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>Bookmaker is a fairly short Content Management System.  I did not
+really intend to build one, but it looks like I have.  Originally I
+wanted a way to convert ReSt based files into a website, and the then
+new Sphinx project from Python looked a good idea.  But it was a bit
+too complex for me, I did not spend enough time getting my head around
+its config stuiff (I now know why it is complex, there is no easy
+solution) and so I built my own.  It grew a bit.</p>
+<p>So, we have a script that will take a directory, assume that directory
+holds</p>
+<ul class="simple">
+<li>hierachy of folders and ReSt based text files that represent the
+content to be managed.</li>
+<li>meta folder that holds templates and config infomration</li>
+<li>css - seems simple enough.  might need to enforce docutils css
+globally</li>
+<li>imgs (well, media) for the whole hierarchy.  Yes that could be
+better.  Well I think that hardly matters - each page refs its own
+imgs so they can be put anywhere as long as the pages keep the right
+refs.</li>
+</ul>
+</div>
+<div class="section" id="todo">
+<h1>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>alter how I handle config - I made my perennial mistake of using a
+py file for config, which means I need to know where it is to import
+it - but the config file is supplied by the content, so to import it
+you need to know where content is, but ... open the box with the
+crowbar found inside.</li>
+<li>Pre processing of</li>
+<li>git based approval process so others can sign off / work / see
+betas.</li>
+<li>go dynamic???? this does static sites.  OK, but what if we did
+dynamic sites.  how to do this??? Dynamic always makes for easier
+future proofing</li>
+</ul>
+<ul class="simple">
+<li>need a obj for directory as well - complex to keep passing things</li>
+<li>around this will solve issues with the breadcrumbs. like how to know</li>
+<li>what level to pass.  for now I am assuming first string passed in</li>
+<li>bredcrumb is at HTML_ROOT.  THis is a fine assumption.</li>
+<li>split the text from the generator</li>
+<li>make a beter HTML template, so that I can use breadcrumbs</li>
+<li>see about releaseing this. sort of sphinx-nose
+somewhere between sphinx and ruby jekyll</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">author:</th><td class="field-body">pbrian</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="rest-bookmaker">
+<h2>ReSt bookmaker<a class="headerlink" href="#rest-bookmaker" title="Permalink to this headline">¶</a></h2>
+<p>This collection of files is designed to allow you to create a simple
+website and/or LaTeX based-book from just templates and docutils
+markup (www.docutils.org).</p>
+<p>Docutils is a useful (if occassionaly complex) python application that
+takes simple text based markup and converts it to an intermediary
+parsed tree, then out to LaTeX or HTML etc.  A simple example is</p>
+<div class="highlight-python"><pre>my heading
+==========
+this is why ReSt is useful
+
+- it 
+- has 
+- bulletpoints</pre>
+</div>
+<p>which will become</p>
+<div class="section" id="my-heading">
+<h3>my heading<a class="headerlink" href="#my-heading" title="Permalink to this headline">¶</a></h3>
+<p>this is why ReSt is useful</p>
+<ul class="simple">
+<li>it</li>
+<li>has</li>
+<li>bulletpoints</li>
+</ul>
+<p>I have written an entire site, using this system
+(www.itmanagerscookbook.com) making one text file the same as one page
+in the website. However the structure of the site is formed from the
+structure of the directories I store the original text files in.</p>
+<p>So the basics of operation are</p>
+<ol class="arabic simple">
+<li>Write a few text files in ReSt, with a directory structure.</li>
+</ol>
+<p>2. walk through the directories, turning the files into HTML / LaTeX
+but keeping the directory structure.</p>
+<ol class="arabic simple" start="3">
+<li>Use templates, CSS and images as needed to help things along.</li>
+<li>Have some control structure</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="process">
+<h1>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h1>
+<p>main() &#8211; runs an os.walk over chapters_dir, passing the details of
+each dir to loopthrudir(), and holds the site_dict</p>
+<p>site_dict &#8211; keyed to hold a rst2htmlpage obj for each chp in a dir,
+within a dir dict</p>
+<div class="highlight-python"><pre>site_obj =    metadata ....
+              contents = {'path/from/root/foodir': 
+                           {'mychp': &lt;pageobj&gt;, ...</pre>
+</div>
+<dl class="docutils">
+<dt>loopthrudir() &#8211; for each file in src_dir </dt>
+<dd>checks if it should be published,  asks create_html() to rst-&gt;html
+and stores in site_obj,</dd>
+</dl>
+<p>write_index &#8211; given site_obj, create a TOC page and a subTOC for each
+dir.</p>
+</div>
+<div class="section" id="antecedants">
+<h1>Antecedants<a class="headerlink" href="#antecedants" title="Permalink to this headline">¶</a></h1>
+<p>This is very similar to Sphinx (www.?) - but sphinx I could not quite
+get to suit my needs (I may need to reexamine it) I certainly realised
+I was stealing their include file idea after I wrote my own (however
+one can either include or exclude files in this one - I found that a
+bonus)</p>
+<p>Docutils - I happily recommend this - it is fast becoming standard
+documentation method for Python.</p>
+</div>
+<div class="section" id="css">
+<h1>CSS<a class="headerlink" href="#css" title="Permalink to this headline">¶</a></h1>
+<p>Jan 09
+found, from joel spolsky</p>
+<p><a class="reference external" href="http://matthewjamestaylor.com/blog/ultimate-3-column-blog-style-pixels.htm">http://matthewjamestaylor.com/blog/ultimate-3-column-blog-style-pixels.htm</a></p>
+<p>This looks a very effective solution to a problem I have long had - I
+just want to write simple HTML and have CSS take care of looking good
+(or in this case OK)</p>
+</div>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python"><pre>$ &lt;edit config file&gt;
+$ python mkbook.py --no-pdf</pre>
+</div>
+<p>Default is to only look for files called .chp</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">create_html</span><span class="p">(</span><span class="s">&#39;/root/thebook/thebook/SoHoFromScratch&#39;</span><span class="p">,</span> <span class="s">&#39;DNS.chp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">title</span>
+<span class="go">u&#39;Domain name system&#39; </span>
+</pre></div>
+</div>
+<p>Now show the page object</p>
+</div>
+<div class="section" id="page-object">
+<h1>page object<a class="headerlink" href="#page-object" title="Permalink to this headline">¶</a></h1>
+<p>Is created from publish_parts in docutils, which gives back a variety of html
+when processed.
+attributes of page object:
+[&#8216;body&#8217;,</p>
+<blockquote>
+&#8216;body_pre_docinfo&#8217;,
+&#8216;body_prefix&#8217;,
+&#8216;body_suffix&#8217;,
+&#8216;breadcrumbs&#8217;,
+&#8216;docinfo&#8217;,
+&#8216;encoding&#8217;,
+&#8216;footer&#8217;,
+&#8216;fragment&#8217;,
+&#8216;get_dest_to_write_to&#8217;,
+&#8216;head&#8217;,
+&#8216;head_prefix&#8217;,
+&#8216;header&#8217;,
+&#8216;html_body&#8217;,
+&#8216;html_head&#8217;,
+&#8216;html_prolog&#8217;,
+&#8216;html_subtitle&#8217;,
+&#8216;html_title&#8217;,
+&#8216;meta&#8217;,
+&#8216;src&#8217;,
+&#8216;stylesheet&#8217;,
+&#8216;subtitle&#8217;,
+&#8216;title&#8217;,
+&#8216;version&#8217;,
+&#8216;whole&#8217;]</blockquote>
+<dl class="function">
+<dt id="bookmaker.mkbook.build_contents_link">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">build_contents_link</tt><big>(</big><em>page</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.build_contents_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>given a page return a html fragment that is li for content page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.check_chp_dir_arg_valid">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">check_chp_dir_arg_valid</tt><big>(</big><em>chp_dir</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.check_chp_dir_arg_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.get_index_body">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">get_index_body</tt><big>(</big><em>singledirlist</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.get_index_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of page objects, build an index html page</p>
+<p>NB I can return &#8220;unknown directory&#8221; because there are no files in dir.
+I think  it safer not to return anything</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.loopthrudir">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">loopthrudir</tt><big>(</big><em>full_current_root</em>, <em>dirs</em>, <em>files</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.loopthrudir" title="Permalink to this definition">¶</a></dt>
+<dd><p>This does the meat of the work. 
+Go through all files in a dir, 
+pdf, or htmlise them, and return their meta data (title etc)</p>
+<ul class="simple">
+<li>Note on local/full</li>
+</ul>
+<p>I am using a tree strucutre that roots from same arbitrary point
+in a real disk tree.  So the strucutre I care about starts from
+thebook but on disk that is /foo/bar/thebook.  thebook/ is my
+local root, /foo/bar/thebook is my fullroot, but if I delve
+deeper, thebook/chapter1/ is my local_current_root</p>
+<ul class="simple">
+<li>Returns</li>
+</ul>
+<p>a list of all &#8220;pages&#8221; in this directory, as page-like objects.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.main">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#bookmaker.mkbook.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.prepare_index">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">prepare_index</tt><big>(</big><em>singledirlist</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.prepare_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.run_dirs">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">run_dirs</tt><big>(</big><big>)</big><a class="headerlink" href="#bookmaker.mkbook.run_dirs" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Go through the directory holding the .chp files, and run each</dt>
+<dd>file through the rst generator(s)</dd>
+</dl>
+<p>I have three ways of pruning the files / directories I will index
+first two are simple remove svn / git directories from contention.
+The third is depeandt on a dir contianing a file called <em>no_index</em></p>
+<p>Here this dir is then ignored and not parsed - a no index file will cut off not merely one dir but whole branch</p>
+<p>NB - for os.walk you must use direct operators on returned dirs listing - 
+this is an iterator and does not &#8220;do&#8221; assignment</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.set_permissions">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">set_permissions</tt><big>(</big><em>username</em>, <em>grpname</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.set_permissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>need to alter permissions on the files to be served</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.write_contents">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">write_contents</tt><big>(</big><em>fulldirlist</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.write_contents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="bookmaker.mkbook.write_to_disk">
+<tt class="descclassname">bookmaker.mkbook.</tt><tt class="descname">write_to_disk</tt><big>(</big><em>dirlist</em><big>)</big><a class="headerlink" href="#bookmaker.mkbook.write_to_disk" title="Permalink to this definition">¶</a></dt>
+<dd><p>given a list of dir containing page classes write to disk</p>
+<ul class="simple">
+<li>test if it is to be published</li>
+<li>put it in the tmpl form</li>
+</ul>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Overview</a></li>
+<li><a class="reference internal" href="#todo">TODO</a><ul>
+<li><a class="reference internal" href="#rest-bookmaker">ReSt bookmaker</a><ul>
+<li><a class="reference internal" href="#my-heading">my heading</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#process">Process</a></li>
+<li><a class="reference internal" href="#antecedants">Antecedants</a></li>
+<li><a class="reference internal" href="#css">CSS</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#page-object">page object</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/.stubs/stub_mkbook.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">bookmaker v1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Paul Brian.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

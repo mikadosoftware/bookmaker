@@ -1,0 +1,4 @@
+
+.. automodule:: bookmaker.mkbook
+   :members:
+

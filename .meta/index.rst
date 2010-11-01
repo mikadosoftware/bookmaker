@@ -1,0 +1,50 @@
+.. bookmaker documentation master file, created by
+   sphinx-quickstart on Fri Sep 10 08:37:29 2010.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Bookmaker  - Documentaionn
+==========================
+
+This is the root of documentation for Bookmaker 
+
+
+
+
+
+Documentation 
+-------------
+
+.. toctree::
+   :glob:
+ 
+   .doc/*
+
+
+
+Testing
+-------
+
+.. toctree::
+   :glob:
+
+   .test/*
+
+   
+
+
+The below seems to require a stub file (holding ::
+
+   .. automodule:: bookmaker.mkbook
+      :members:
+
+in it, and so I can summarise on one page all my modules. 
+Then link to half decent stuff on them, and reflect the package strucutre with those stubs
+
+
+
+.. autosummary::
+
+   bookmaker.mkbook
+
+
