@@ -341,9 +341,12 @@ def write_to_disk(dirlist):
           
             if not os.path.isdir(dest_dir):
                 os.makedirs(dest_dir)
+
             s = tmpl % {'maintext':pg.html_body, 'rhs':config.rhs_text,
                         'title':pg.title, 'html_root':config.HTMLROOT, 
-                        'breadcrumbs': lib.list_to_breadtrail(pg.breadcrumbs)}  
+                        'breadcrumbs': lib.list_to_breadtrail(pg.breadcrumbs),
+                        'css_theme': config.css_theme
+                       }  
             open(dest, 'wb').write(s.encode('utf8'))
         indexhtml = prepare_index(dirlist[dir]) 
         open(os.path.join(os.path.dirname(pg.ondisk_dest), 'index.html'), 'wb').write(indexhtml)
@@ -367,7 +370,10 @@ def write_contents(fulldirlist):
     maintmpl = config.maintmpl
     fullhtml = maintmpl % {'maintext':html, 'rhs':config.rhs_text,
                         'title': 'Contents', 'html_root':config.HTMLROOT,
-                        'breadcrumbs': lib.list_to_breadtrail(['contents',])}
+                        'breadcrumbs': lib.list_to_breadtrail(['contents',]),
+                        'css_theme':config.css_theme
+
+                          }
 
     open(os.path.join(config.HTML_BUILD_DIR, 'contents.html'), 'wb').write(fullhtml)
 
@@ -415,7 +421,9 @@ def prepare_index(singledirlist):
     s, dirname = get_index_body(singledirlist)
     html = tmpl % {'maintext':s + "</ul>", 'rhs':config.rhs_text,
                         'title':dirname, 'html_root':config.HTMLROOT,
-                  'breadcrumbs': lib.list_to_breadtrail([dirname,])}
+                  'breadcrumbs': lib.list_to_breadtrail([dirname,]),
+                  'css_theme': config.css_theme
+                  }
     return html
 
 

@@ -310,7 +310,8 @@ def get_tmpl_dict():
     """
 
     d = {"html_root":config.HTMLROOT,
-         "HTML_BUILD_DIR":config.HTML_BUILD_DIR, 
+         "HTML_BUILD_DIR":config.HTML_BUILD_DIR,
+         "css_theme": config.css_theme, 
          "title":"",
          "maintext":'',
          "rhs":''}
