@@ -444,6 +444,11 @@ def set_permissions(username, grpname):
     print l
     subprocess.check_call(l)
 
+    l = ["chmod", "-R", '0775', 
+          config.HTML_DEPLOY_DIR]
+    print l
+    subprocess.check_call(l)
+
 
 def main():
     """ """
