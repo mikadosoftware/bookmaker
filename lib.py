@@ -562,7 +562,8 @@ class page(object):
            local_current_root = dir_identity(full_current_root)
            local_source = os.path.join(local_current_root, file)
 
-        
+           >>> p.src
+           '/home/pbrian/com.mikadosoftware/cookbook/SoHoFromScratch/DNS.chp'   
 
         """
         destfile = dir_identity(self.src).replace(".chp", ".html")
