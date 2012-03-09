@@ -259,6 +259,7 @@ def loopthrudir(full_current_root, dirs, files):
 
 
     for f in files:
+        print " ", f
         applog("use: %s\n" % os.path.basename(f))
         #decide on source and destimation. src_dir is told to us and is not really "this"
         try:
@@ -266,11 +267,11 @@ def loopthrudir(full_current_root, dirs, files):
             ### to make command feel responsive
             print '.',
         except Exception, e:
-            pass # this is v bad. dont do it kids.
+            raise e
 
     ### remove files we dont want to publish.  Done after the fact because I want to use page object
-    files = [page for page in thisdirlist if publish_this_file(page)]
-    applog('ignore: %s\n' % ' '.join([page.src_filename for page in thisdirlist if not publish_this_file(page)]))
+    files = [page for page in thisdirlist if lib.publish_this_file(page)]
+    applog('ignore: %s\n' % ' '.join([page.src_filename for page in thisdirlist if not lib.publish_this_file(page)]))
     return files
 
 
@@ -298,7 +299,7 @@ def run_dirs():
     for root, dirs, files in os.walk(config.chapters_dir):         
         # three ways of pruning the 
         ### 
-#        print "+", dirs
+        print root
 #        dirs = [d for d in dirs if d.find(".git") == -1]
 #        dirs = [d for d in dirs if ".svn" not in d.split("/")]
 #        print "-", dirs 
@@ -317,7 +318,7 @@ def run_dirs():
         # do not collect directories with nothing in them
         pages_list = loopthrudir(root, dirs, files)    
         if len(pages_list) > 0:
-            dir_list[dir_identity(root)] = pages_list
+            dir_list[lib.dir_identity(root)] = pages_list
 
 
 
@@ -413,10 +414,38 @@ def get_index_body(singledirlist):
     for pg in singledirlist:
         dirname = os.path.dirname(pg.src)
         s += build_contents_link(pg)
-    return (s, dirname)
+
+    s += '</ul>'
+
+
+    topic_file = os.path.join(dirname, 'topic.rst')
+    print "********", topic_file
+    if not os.path.isfile(topic_file):
+        #not topic file defined, so plain index file please
+        return (s, dirname)
+    else:
+ 
+        topic_pg = lib.rst_to_page(topic_file)
+        html = topic_pg.teaser + s 
+        return (html, dirname)    
+ 
+
+
+
 
 def prepare_index(singledirlist):
-    ''' '''
+    ''' 
+    * generate the index page for a chapter directory
+    
+    takes list of page objects in the dir, returns complete html page to be written to disk
+
+    What I want to do is pull in a new file topic.rst, which is a title, subtitle and body,
+    that provides the overview of a topic.   I then list the articles under that topic.
+    I need therefore to have a prepare_index body, which is the maintext here, ie not pluggedinto tmpl
+    this index body can be reused to put on front page.
+
+
+    '''
     tmpl = config.maintmpl
     s, dirname = get_index_body(singledirlist)
     html = tmpl % {'maintext':s + "</ul>", 'rhs':config.rhs_text,
@@ -469,8 +498,24 @@ def check_chp_dir_arg_valid(chp_dir):
     return os.path.isdir(chp_dir)
 
 
-if __name__ == '__main__':
+def bootstrap():
+    '''There is stuff we do after import, ie import config.  I need to call this  but this whole thing needs configparser'''
 
+    global config
+    global chp_dir
+    global applog
+    global lib
+
+    global  getdestpath
+    global  get_html_from_rst
+    global  write_index
+    global  deploylive
+    global  get_tmpl_dict
+    global  check_environment
+   
+    global  dir_identity
+    global  rst_to_page
+    global  BookMakerError
 
     ### parse options
     usage="""usage: %prog [options] location_of_chp_dir """
@@ -489,14 +534,12 @@ if __name__ == '__main__':
     if len(args) == 1:
         chp_dir = os.path.abspath(args[0])
     else:
-        raise BookMakerError("Supply only one argument - Chapter Directory Path"
-)
-
+        raise BookMakerError("Supply only one argument - Chapter Directory Path")
 
 
     ### setup config files
     #### All content directories MUST have a folder named this:
-    book_config_folder = "book_config"
+    book_config_folder = ".bookmaker"
     #### and a config fole formatted as needed called config.py 
     sys.path.insert(0, os.path.abspath(chp_dir))
     sys.path.insert(0, os.path.abspath(os.path.join(chp_dir, book_config_folder)))
@@ -517,4 +560,13 @@ if __name__ == '__main__':
         config.IGNORE_EXCLUDE = True
 
 
+
+if __name__ == '__main__':
+
+
+
+
+
+    
+    bootstrap()
     main()
