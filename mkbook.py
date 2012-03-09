@@ -359,7 +359,7 @@ def write_contents(fulldirlist):
 #    previousdir = ''
     for dir in  sorted(fulldirlist.keys()):
         singledirlist = fulldirlist[dir]
-        s, dirname = get_index_body(singledirlist)
+        s, dirname = get_index_body(singledirlist, toc=True)
         #is this dir a subdir of previous?
 #        commonpre = os.path.commonprefix([dirname, previousdir]).replace(config.chapters_dir, '')
 #        print previousdir, dirname, commonpre
@@ -399,13 +399,20 @@ def build_contents_link(page):
     return s
    
 
-def get_index_body(singledirlist):
+def get_index_body(singledirlist, toc=False):
     """Given a list of page objects, build an index html page
+    This page now has 3 uses
+
+    1. as part of the main TOC
+    2. as a stand alone index page for each direcotry
+    3. as topic blocks for the fornt page... - ie front page will now use chunks of the toc
 
 
     NB I can return "unknown directory" because there are no files in dir.
     I think  it safer not to return anything    
     
+    toc - are we calling this for the toc / front page (ie short version) or full in page version?
+
     """
     
     tmpl = config.maintmpl
@@ -419,15 +426,20 @@ def get_index_body(singledirlist):
 
 
     topic_file = os.path.join(dirname, 'topic.rst')
-    print "********", topic_file
+
     if not os.path.isfile(topic_file):
         #not topic file defined, so plain index file please
         return (s, dirname)
+
     else:
  
         topic_pg = lib.rst_to_page(topic_file)
-        html = topic_pg.teaser + s 
-        return (html, dirname)    
+        if toc:
+            html = '<h2 class="subtitle">' + topic_pg.subtitle + "</h2>" + s
+            return (html, dirname)
+        else:
+            html = topic_pg.teaser + s 
+            return (html, dirname)    
  
 
 
