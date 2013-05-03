@@ -73,9 +73,18 @@ import os, sys, subprocess
 import pprint
 from docutils.examples import html_parts
 from docutils import core
-import config
+
 import ConfigParser
 import shutil
+
+config=None
+###inject config to global module level - FIXME
+### I am deliberately breaking a lot of config handling here
+def inject_config(confd):
+    """
+    """
+    global config
+    config = confd
 
 
 class BookMakerError(Exception):
@@ -563,11 +572,11 @@ class page(object):
            local_source = os.path.join(local_current_root, file)
 
            >>> p.src
-           '/home/pbrian/com.mikadosoftware/cookbook/SoHoFromScratch/DNS.chp'   
+           'SoHoFromScratch/DNS.chp'   
 
         """
         destfile = dir_identity(self.src).replace(".chp", ".html")
-        return os.path.join(config.HTML_BUILD_DIR, destfile)
+        return destfile
 
 
     def __repr__(self):
