@@ -126,7 +126,7 @@ def make_frontpage(chosen_articles):
     for article in chosen_articles:
         try:
             articlepath = os.path.join(config.chapters_dir, article)
-            page = rst_to_page(articlepath)
+            page = file_to_page(articlepath)
             pages.append(page) 
         except Exception, e:
             raise e 
@@ -156,7 +156,9 @@ def make_frontpage(chosen_articles):
 
 
 
-def rst_to_page(articlepath):
+
+    
+def file_to_page(articlepath):
     """Convert rst file to page object
 
     returns
@@ -166,7 +168,7 @@ def rst_to_page(articlepath):
 
     teasr = first few sentences converted to HTML
 
-    >>> p = rst_to_page(os.path.join('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp'))
+    >>> p = file_to_page(os.path.join('/root/thebook/thebook/SoHoFromScratch', 'DNS.chp'))
     >>> p.title
     u'Domain name system'
 
@@ -191,7 +193,22 @@ def rst_to_page(articlepath):
     #convert to an object 
     return page(**page_info)
 
+def rst_to_page(rst_txt):
+    """
 
+    >>> rst_txt = '''Hello
+    ... -----
+    ... Boys'''
+    >>> p = rst_to_page(rst_txt)
+    >>> p.title
+    'Hello'
+    
+    """
+    page_info = get_html_from_rst(rst_txt) 
+    page_info["src"] = None
+    page_info['teaser'] = None
+    #convert to an object 
+    return page(**page_info)
 
 def get_html_from_rst(uStr):
     """ 
@@ -215,10 +232,8 @@ def get_html_from_rst(uStr):
                                settings_overrides=overrides)
         return p
 
-    except Exception, e:
-        applog("FAILED RST CONVERSION: %s" % str(e))
-        raise e
-
+    except:
+        raise 
 
 def publish_this_file(page):
     """given a file object, decide if we want to publish it
@@ -544,18 +559,6 @@ def dir_identity(fullpath):
 
     return local_src_path
 
-def applog(msg):
-    """
-    really dumb standing for proper logging 
-    .. returns:: Nothing
-
-    Nothing to test really.
-
-    """
-
-    logfileo = open(config.logfilepath, "ab")
-    logfileo.write(msg)
-    logfileo.close()
 
 class page(object):
     """represents what we know about a (html) page
